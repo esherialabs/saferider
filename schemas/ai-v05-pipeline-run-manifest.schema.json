@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-pipeline-run-manifest.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "runId", "datasetId", "mode", "sourceCommit", "packageLockSha256", "nodeVersion", "configurationSha256", "currentState", "status", "transitionCount", "commandCount", "stateSha256", "commandLedgerSha256", "blockers", "strictReady", "trainingHandoffComplete", "productionReadinessProhibited", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-pipeline-run-manifest" }, "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "minLength": 8 }, "datasetId": { "enum": ["saferide-synthetic-guidance-v0.5.0", "saferide-v05-mechanical-smoke-fixture"] },
+    "mode": { "enum": ["production", "mechanical-smoke"] }, "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "packageLockSha256": { "$ref": "#/$defs/sha" }, "nodeVersion": { "type": "string", "minLength": 3 }, "configurationSha256": { "$ref": "#/$defs/sha" },
+    "currentState": { "type": "string", "minLength": 3 }, "status": { "enum": ["active", "blocked", "complete", "invalidated"] },
+    "transitionCount": { "type": "integer", "minimum": 0 }, "commandCount": { "type": "integer", "minimum": 0 },
+    "stateSha256": { "$ref": "#/$defs/sha" }, "commandLedgerSha256": { "$ref": "#/$defs/sha" },
+    "blockers": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "strictReady": { "type": "boolean" }, "trainingHandoffComplete": { "type": "boolean" }, "productionReadinessProhibited": { "type": "boolean" },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsArtifactContent", "containsPrivatePaths", "containsArguments", "containsEnvironment", "containsCredentials", "classification"], "properties": { "containsArtifactContent": { "const": false }, "containsPrivatePaths": { "const": false }, "containsArguments": { "const": false }, "containsEnvironment": { "const": false }, "containsCredentials": { "const": false }, "classification": { "const": "public-safe-aggregate" } } }
+  },
+  "allOf": [{
+    "if": { "properties": { "mode": { "const": "mechanical-smoke" } }, "required": ["mode"] },
+    "then": { "properties": { "datasetId": { "const": "saferide-v05-mechanical-smoke-fixture" }, "strictReady": { "const": false }, "trainingHandoffComplete": { "const": false }, "productionReadinessProhibited": { "const": true } } },
+    "else": { "properties": { "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" }, "productionReadinessProhibited": { "const": false } } }
+  }],
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

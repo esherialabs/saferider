@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-evaluation-summary.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "summaryId", "evaluationRunId", "artifact", "inputs", "coverage", "review", "scores", "rates", "languageSlices", "categorySlices", "findings", "decision", "blockers", "limitations", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.evaluation-summary" },
+    "schemaVersion": { "const": 1 },
+    "summaryId": { "$ref": "#/$defs/nonEmpty" },
+    "evaluationRunId": { "$ref": "#/$defs/nonEmpty" },
+    "artifact": { "$ref": "#/$defs/artifact" },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generationManifestSha256", "reviewerResultSha256", "adjudicationSha256", "mitigationSha256", "policySha256", "promptSuiteSha256", "rubricSha256"],
+      "properties": {
+        "generationManifestSha256": { "$ref": "#/$defs/sha256" },
+        "reviewerResultSha256": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } },
+        "adjudicationSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "mitigationSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "policySha256": { "$ref": "#/$defs/sha256" },
+        "promptSuiteSha256": { "$ref": "#/$defs/sha256" },
+        "rubricSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredPrompts", "generated", "complete", "truncated", "errors", "reviewedByBoth"],
+      "properties": {
+        "requiredPrompts": { "$ref": "#/$defs/count" },
+        "generated": { "$ref": "#/$defs/count" },
+        "complete": { "$ref": "#/$defs/count" },
+        "truncated": { "$ref": "#/$defs/count" },
+        "errors": { "$ref": "#/$defs/count" },
+        "reviewedByBoth": { "$ref": "#/$defs/count" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independentReviewerCount", "roles", "exactAgreement", "cohenKappa", "adjudicationRequired", "adjudicationCompleted"],
+      "properties": {
+        "independentReviewerCount": { "$ref": "#/$defs/count" },
+        "roles": { "type": "array", "uniqueItems": true, "items": { "enum": ["product-safeguarding", "technical-ml"] } },
+        "exactAgreement": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "cohenKappa": { "type": ["number", "null"], "minimum": -1, "maximum": 1 },
+        "adjudicationRequired": { "$ref": "#/$defs/count" },
+        "adjudicationCompleted": { "$ref": "#/$defs/count" }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "safety", "usefulness", "refusalQuality", "noNewFacts"],
+      "properties": {
+        "overall": { "$ref": "#/$defs/nullableScore" },
+        "safety": { "$ref": "#/$defs/nullableScore" },
+        "usefulness": { "$ref": "#/$defs/nullableScore" },
+        "refusalQuality": { "$ref": "#/$defs/nullableScore" },
+        "noNewFacts": { "$ref": "#/$defs/nullableScore" }
+      }
+    },
+    "rates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["truncation", "error", "hallucination", "overRefusal", "latencyMsP50", "latencyMsP95"],
+      "properties": {
+        "truncation": { "type": "number", "minimum": 0, "maximum": 1 },
+        "error": { "type": "number", "minimum": 0, "maximum": 1 },
+        "hallucination": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "overRefusal": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "latencyMsP50": { "type": ["number", "null"], "minimum": 0 },
+        "latencyMsP95": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "languageSlices": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/languageSlice" } },
+    "categorySlices": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/categorySlice" } },
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "risky", "hiddenPromptDisclosures", "successfulPolicyExtractions", "jailbreakSuccesses", "unresolvedScoreOne", "pendingAdjudications"],
+      "properties": {
+        "critical": { "$ref": "#/$defs/count" },
+        "risky": { "$ref": "#/$defs/count" },
+        "hiddenPromptDisclosures": { "$ref": "#/$defs/count" },
+        "successfulPolicyExtractions": { "$ref": "#/$defs/count" },
+        "jailbreakSuccesses": { "$ref": "#/$defs/count" },
+        "unresolvedScoreOne": { "$ref": "#/$defs/count" },
+        "pendingAdjudications": { "$ref": "#/$defs/count" }
+      }
+    },
+    "decision": { "enum": ["blocked", "internal-only"] },
+    "blockers": { "type": "array", "items": { "$ref": "#/$defs/nonEmpty" } },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "privacy": { "$ref": "#/$defs/publicPrivacy" }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+    "count": { "type": "integer", "minimum": 0 },
+    "nullableScore": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot", "artifactClass", "artifactId", "immutableRevision", "baseModelId", "baseRevision", "fileManifestSha256"],
+      "properties": {
+        "slot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05", "tuned-mobile"] },
+        "artifactClass": { "enum": ["base-runtime", "adapter", "tuned-mobile-artifact"] },
+        "artifactId": { "$ref": "#/$defs/nonEmpty" },
+        "immutableRevision": { "$ref": "#/$defs/revision" },
+        "baseModelId": { "$ref": "#/$defs/nonEmpty" },
+        "baseRevision": { "$ref": "#/$defs/revision" },
+        "fileManifestSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "languageSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "reviewed", "average", "critical", "status"],
+      "properties": {
+        "language": { "enum": ["en", "sw", "sheng"] },
+        "reviewed": { "$ref": "#/$defs/count" },
+        "average": { "$ref": "#/$defs/nullableScore" },
+        "critical": { "$ref": "#/$defs/count" },
+        "status": { "enum": ["evaluated", "disabled"] }
+      }
+    },
+    "categorySlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "reviewed", "average", "critical", "risky"],
+      "properties": {
+        "category": { "$ref": "#/$defs/nonEmpty" },
+        "reviewed": { "$ref": "#/$defs/count" },
+        "average": { "$ref": "#/$defs/nullableScore" },
+        "critical": { "$ref": "#/$defs/count" },
+        "risky": { "$ref": "#/$defs/count" }
+      }
+    },
+    "publicPrivacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsRawPrompts", "containsRawCompletions", "containsSurvivorData", "containsExactLocations", "classification"],
+      "properties": {
+        "containsRawPrompts": { "const": false },
+        "containsRawCompletions": { "const": false },
+        "containsSurvivorData": { "const": false },
+        "containsExactLocations": { "const": false },
+        "classification": { "const": "public-safe-aggregate" }
+      }
+    }
+  }
+}

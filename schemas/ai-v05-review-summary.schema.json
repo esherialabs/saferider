@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-review-summary.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "classification", "candidateCount", "finalRowCount", "reviewRecordCount", "adjudicationRecordCount", "primaryReviewCount", "safetyDomainReviewCount", "specialistDomainReviewCount", "languageAssessment", "approvedByLanguage", "approvedByCategory", "systemPromptTextSha256", "selectionInventorySha256", "selections", "implementation", "passed", "failureCount"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-review-summary" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "classification": { "const": "restricted-content-free" },
+    "candidateCount": { "type": "integer", "minimum": 0 },
+    "finalRowCount": { "type": "integer", "minimum": 0, "maximum": 2600 },
+    "reviewRecordCount": { "type": "integer", "minimum": 0 },
+    "adjudicationRecordCount": { "type": "integer", "minimum": 0 },
+    "primaryReviewCount": { "type": "integer", "minimum": 0 },
+    "safetyDomainReviewCount": { "type": "integer", "minimum": 0 },
+    "specialistDomainReviewCount": { "type": "integer", "minimum": 0 },
+    "languageAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["agreed", "adjudicatedMismatch", "adjudicatedUndetermined", "blocked"],
+      "properties": {
+        "agreed": { "type": "integer", "minimum": 0 }, "adjudicatedMismatch": { "type": "integer", "minimum": 0 },
+        "adjudicatedUndetermined": { "type": "integer", "minimum": 0 }, "blocked": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "approvedByLanguage": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "approvedByCategory": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "systemPromptTextSha256": { "$ref": "#/$defs/sha256" },
+    "selectionInventorySha256": { "$ref": "#/$defs/sha256" },
+    "selections": {
+      "type": "array", "maxItems": 2600,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["rowId", "candidateId", "reviewableContentSha256", "reviewRefs"],
+        "properties": {
+          "rowId": { "type": "string", "minLength": 3 }, "candidateId": { "type": "string", "minLength": 8 },
+          "reviewableContentSha256": { "$ref": "#/$defs/sha256" },
+          "reviewRefs": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+        }
+      }
+    },
+    "implementation": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {
+        "path": { "const": "scripts/saferide-gemma4-v05-review-check.mjs" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "passed": { "type": "boolean" }, "failureCount": { "type": "integer", "minimum": 0 }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

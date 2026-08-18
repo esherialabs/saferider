@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-candidate-semantic-report.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "reportId", "datasetId", "status", "classification", "bindings", "method", "threshold", "comparisonScope", "maximumSimilarity", "findings", "clusterAssignments", "clusterDistribution", "approval", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-candidate-semantic-report" }, "schemaVersion": { "const": 1 },
+    "reportId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" }, "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["test-only", "approved-controlled"] }, "classification": { "const": "restricted-content-free-identifiers" },
+    "bindings": {
+      "type": "object", "additionalProperties": false, "required": ["semanticRequestSha256", "candidateInventorySha256", "planSha256"],
+      "properties": { "semanticRequestSha256": { "$ref": "#/$defs/sha" }, "candidateInventorySha256": { "$ref": "#/$defs/sha" }, "planSha256": { "$ref": "#/$defs/sha" } }
+    },
+    "method": {
+      "type": "object", "additionalProperties": false,
+      "required": ["embeddingModelId", "immutableRevision", "implementationId", "implementationSha256", "distanceMetric", "remote", "complete"],
+      "properties": {
+        "embeddingModelId": { "type": "string", "minLength": 3, "maxLength": 200 }, "immutableRevision": { "type": "string", "minLength": 7, "maxLength": 160 },
+        "implementationId": { "type": "string", "minLength": 3, "maxLength": 160 }, "implementationSha256": { "$ref": "#/$defs/sha" },
+        "distanceMetric": { "const": "cosine-similarity" }, "remote": { "type": "boolean" }, "complete": { "const": true }
+      }
+    },
+    "threshold": { "const": 0.92 },
+    "comparisonScope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidateCount", "crossSplitPairCount", "withinSplitPairCount", "allCrossSplitPairsCompared"],
+      "properties": { "candidateCount": { "type": "integer", "minimum": 0, "maximum": 7800 }, "crossSplitPairCount": { "type": "integer", "minimum": 0 }, "withinSplitPairCount": { "type": "integer", "minimum": 0 }, "allCrossSplitPairsCompared": { "const": true } }
+    },
+    "maximumSimilarity": { "type": "number", "minimum": -1, "maximum": 1 },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["leftCandidateId", "rightCandidateId", "leftSplit", "rightSplit", "similarity", "scope", "disposition", "adjudicationEvidenceRef"],
+        "properties": {
+          "leftCandidateId": { "$ref": "#/$defs/candidateId" }, "rightCandidateId": { "$ref": "#/$defs/candidateId" },
+          "leftSplit": { "$ref": "#/$defs/split" }, "rightSplit": { "$ref": "#/$defs/split" },
+          "similarity": { "type": "number", "minimum": 0.92, "maximum": 1 }, "scope": { "enum": ["cross-split", "within-split"] },
+          "disposition": { "enum": ["reject-left", "reject-right", "needs-adjudication", "adjudicated-not-duplicate"] },
+          "adjudicationEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+        }
+      }
+    },
+    "clusterAssignments": {
+      "type": "array", "maxItems": 7800,
+      "items": { "type": "object", "additionalProperties": false, "required": ["candidateId", "clusterIdHash"], "properties": { "candidateId": { "$ref": "#/$defs/candidateId" }, "clusterIdHash": { "$ref": "#/$defs/sha" } } }
+    },
+    "clusterDistribution": {
+      "type": "object", "additionalProperties": false, "required": ["clusterCount", "largestClusterCandidates", "largestClusterShare", "distributionSha256"],
+      "properties": { "clusterCount": { "type": "integer", "minimum": 0 }, "largestClusterCandidates": { "type": "integer", "minimum": 0 }, "largestClusterShare": { "type": "number", "minimum": 0, "maximum": 1 }, "distributionSha256": { "$ref": "#/$defs/sha" } }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false, "required": ["status", "reviewerRole", "thresholdEvidenceRef", "reportEvidenceRef"],
+      "properties": {
+        "status": { "enum": ["test-only", "approved"] }, "reviewerRole": { "enum": ["fixture", "independent-ml-data"] },
+        "thresholdEvidenceRef": { "type": ["string", "null"], "minLength": 3 }, "reportEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsRawText", "containsEmbeddings", "containsHoldouts"], "properties": { "containsRawText": { "const": false }, "containsEmbeddings": { "const": false }, "containsHoldouts": { "const": false } } }
+  },
+  "allOf": [{
+    "if": { "properties": { "status": { "const": "approved-controlled" } }, "required": ["status"] },
+    "then": { "properties": { "approval": { "properties": { "status": { "const": "approved" }, "reviewerRole": { "const": "independent-ml-data" }, "thresholdEvidenceRef": { "type": "string" }, "reportEvidenceRef": { "type": "string" } } } } },
+    "else": { "properties": { "approval": { "properties": { "status": { "const": "test-only" }, "reviewerRole": { "const": "fixture" }, "thresholdEvidenceRef": { "type": "null" }, "reportEvidenceRef": { "type": "null" } } } } }
+  }],
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "candidateId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] }
+  }
+}

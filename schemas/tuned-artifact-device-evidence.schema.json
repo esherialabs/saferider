@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/tuned-artifact-device-evidence.schema.json",
+  "title": "SafeRide public-safe tuned artifact Android evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "evidenceId", "status", "artifact", "build", "deviceMatrix", "privacy", "rollback", "reviews", "limitations"],
+  "properties": {
+    "schema": { "const": "com.saferide.tuned-artifact-device-evidence" },
+    "schemaVersion": { "const": 1 },
+    "evidenceId": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "enum": ["blocked", "in-review", "approved", "rejected"] },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestId", "sha256", "sizeBytes"],
+      "properties": {
+        "manifestId": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "sizeBytes": { "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }] }
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceCommit", "appVersion", "buildId"],
+      "properties": {
+        "sourceCommit": { "oneOf": [{ "$ref": "#/$defs/revision" }, { "type": "null" }] },
+        "appVersion": { "oneOf": [{ "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" }, { "type": "null" }] },
+        "buildId": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] }
+      }
+    },
+    "deviceMatrix": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["deviceClass", "supportDecision", "osVersion", "abi", "runtimeState", "scenarios", "metrics"],
+        "properties": {
+          "deviceClass": { "enum": ["android-2-3gb", "android-4gb", "android-6-8gb"] },
+          "supportDecision": { "enum": ["unverified", "supported", "limited", "core-app-only", "blocked"] },
+          "osVersion": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+          "abi": { "oneOf": [{ "const": "arm64-v8a" }, { "type": "null" }] },
+          "runtimeState": { "enum": ["not-run", "loaded", "unloaded", "error"] },
+          "scenarios": {
+            "type": "array",
+            "minItems": 11,
+            "maxItems": 11,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["scenario", "status", "reasonCode"],
+              "properties": {
+                "scenario": { "enum": ["load", "generate", "cancel", "unload", "offline", "restart", "low-storage", "interrupted-download", "checksum-failure", "revocation", "rollback"] },
+                "status": { "enum": ["not-run", "passed", "failed", "not-applicable"] },
+                "reasonCode": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] }
+              }
+            }
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["loadMs", "firstTokenMs", "totalGenerationMs", "tokensPerSecond", "peakPssMb", "peakRssMb", "peakSwapMb", "thermalState", "batteryDeltaPercent", "crashCount", "anrCount", "oomCount"],
+            "properties": {
+              "loadMs": { "$ref": "#/$defs/nullableNonNegative" },
+              "firstTokenMs": { "$ref": "#/$defs/nullableNonNegative" },
+              "totalGenerationMs": { "$ref": "#/$defs/nullableNonNegative" },
+              "tokensPerSecond": { "$ref": "#/$defs/nullableNonNegative" },
+              "peakPssMb": { "$ref": "#/$defs/nullableNonNegative" },
+              "peakRssMb": { "$ref": "#/$defs/nullableNonNegative" },
+              "peakSwapMb": { "$ref": "#/$defs/nullableNonNegative" },
+              "thermalState": { "oneOf": [{ "enum": ["nominal", "fair", "serious", "critical", "shutdown"] }, { "type": "null" }] },
+              "batteryDeltaPercent": { "oneOf": [{ "type": "number", "minimum": 0, "maximum": 100 }, { "type": "null" }] },
+              "crashCount": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+              "anrCount": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+              "oomCount": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] }
+            }
+          }
+        }
+      }
+    },
+    "outOfMatrixObservations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["deviceClass", "manufacturer", "brand", "model", "deviceCodename", "osVersion", "apiLevel", "abi", "memTotalKb", "dataFreeKiB", "runtimeState", "verifiedScenarios", "observedAt"],
+        "properties": {
+          "deviceClass": { "const": "android-over-8gb" },
+          "manufacturer": { "$ref": "#/$defs/nonEmpty" },
+          "brand": { "$ref": "#/$defs/nonEmpty" },
+          "model": { "$ref": "#/$defs/nonEmpty" },
+          "deviceCodename": { "$ref": "#/$defs/nonEmpty" },
+          "osVersion": { "$ref": "#/$defs/nonEmpty" },
+          "apiLevel": { "type": "integer", "minimum": 26 },
+          "abi": { "const": "arm64-v8a" },
+          "memTotalKb": { "type": "integer", "minimum": 8388609 },
+          "dataFreeKiB": { "type": "integer", "minimum": 0 },
+          "runtimeState": { "enum": ["loaded", "unloaded", "error"] },
+          "verifiedScenarios": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "enum": ["load", "generate", "cancel", "unload", "offline", "restart", "low-storage", "interrupted-download", "checksum-failure", "revocation", "rollback"] }
+          },
+          "observedAt": { "$ref": "#/$defs/dateTime" }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["syntheticInputsOnly", "contentFreeDiagnostics", "prohibitedLogContentDetected"],
+      "properties": {
+        "syntheticInputsOnly": { "const": true },
+        "contentFreeDiagnostics": { "const": true },
+        "prohibitedLogContentDetected": { "oneOf": [{ "type": "boolean" }, { "type": "null" }] }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetManifestId", "revocationRehearsed", "artifactRemoved", "readyStateCleared"],
+      "properties": {
+        "targetManifestId": { "$ref": "#/$defs/nonEmpty" },
+        "revocationRehearsed": { "type": "boolean" },
+        "artifactRemoved": { "type": "boolean" },
+        "readyStateCleared": { "type": "boolean" }
+      }
+    },
+    "reviews": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reviewerRole", "decision", "reviewedAt", "evidenceRef"],
+        "properties": {
+          "reviewerRole": { "enum": ["mobile-qa", "privacy-security"] },
+          "decision": { "enum": ["approved", "rejected"] },
+          "reviewedAt": { "$ref": "#/$defs/dateTime" },
+          "evidenceRef": { "$ref": "#/$defs/nonEmpty" }
+        }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{7,64}$" },
+    "dateTime": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "nullableNonNegative": { "oneOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }] }
+  }
+}

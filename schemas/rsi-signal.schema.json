@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/rsi-signal.schema.json",
+  "title": "SafeRide minimized RSI signal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "configVersion", "policyVersion", "consentVersion", "area", "timeBucket", "category"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "configVersion": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-zA-Z0-9._:-]+$" },
+    "policyVersion": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-zA-Z0-9._:-]+$" },
+    "consentVersion": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-zA-Z0-9._:-]+$" },
+    "area": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id"],
+          "properties": {
+            "type": { "const": "coarse_cell" },
+            "id": { "type": "string", "pattern": "^cell-[0-9]+-[0-9]+$" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id"],
+          "properties": {
+            "type": { "const": "corridor" },
+            "id": { "type": "string", "pattern": "^corridor-[a-z0-9-]+$" }
+          }
+        }
+      ]
+    },
+    "timeBucket": { "type": "string", "format": "date-time" },
+    "category": { "type": "string", "pattern": "^[a-z0-9_]+$", "maxLength": 64 }
+  }
+}

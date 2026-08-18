@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: SafeRide Local
+    orgId: 1
+    folder: SafeRide Local
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      path: /var/lib/grafana/dashboards

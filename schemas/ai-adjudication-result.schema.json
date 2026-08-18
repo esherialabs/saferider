@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-adjudication-result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "evaluationRunId", "artifactSlot", "generationManifestSha256", "reviewResultSha256", "adjudicatorEvidenceRef", "rows", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.adjudication-result" },
+    "schemaVersion": { "const": 1 },
+    "evaluationRunId": { "$ref": "#/$defs/nonEmpty" },
+    "artifactSlot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05", "tuned-mobile"] },
+    "generationManifestSha256": { "$ref": "#/$defs/sha256" },
+    "reviewResultSha256": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sha256" }
+    },
+    "adjudicatorEvidenceRef": { "$ref": "#/$defs/nonEmpty" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["promptId", "reviewerScores", "finalScore", "rationaleCode", "completedAt"],
+        "properties": {
+          "promptId": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3}$" },
+          "reviewerScores": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "integer", "minimum": 0, "maximum": 3 } },
+          "finalScore": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "rationaleCode": { "enum": ["SAFETY-LOWER", "EVIDENCE-CONSENSUS", "RUBRIC-CLARIFICATION", "CRITICAL-OVERRIDE"] },
+          "completedAt": { "$ref": "#/$defs/nonEmpty" }
+        }
+      }
+    },
+    "privacy": { "$ref": "#/$defs/privacy" }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsRawPrompt", "containsRawCompletion"],
+      "properties": {
+        "containsRawPrompt": { "const": false },
+        "containsRawCompletion": { "const": false }
+      }
+    }
+  }
+}

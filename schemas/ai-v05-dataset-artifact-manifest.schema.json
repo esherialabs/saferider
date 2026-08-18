@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-dataset-artifact-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "manifestId", "datasetId", "status", "buildImplementation", "bindings", "files", "pilotSelection", "datasetInventorySha256", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-dataset-artifact-manifest" },
+    "schemaVersion": { "const": 1 },
+    "manifestId": { "type": "string", "pattern": "^saferide-gemma4-v05-artifacts-[a-z0-9.-]{3,80}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["frozen-pending-audit", "audited"] },
+    "buildImplementation": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": { "path": { "const": "scripts/saferide-gemma4-v05-build.mjs" }, "sha256": { "$ref": "#/$defs/sha256" } }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["planSha256", "scenarioSpecSha256", "splitManifestSha256", "candidateFileSha256", "reviewLedgerSha256", "systemPromptConfigSha256", "systemPromptTextSha256", "policySha256"],
+      "properties": {
+        "planSha256": { "$ref": "#/$defs/sha256" }, "scenarioSpecSha256": { "$ref": "#/$defs/sha256" },
+        "splitManifestSha256": { "$ref": "#/$defs/sha256" }, "candidateFileSha256": { "$ref": "#/$defs/sha256" },
+        "reviewLedgerSha256": { "$ref": "#/$defs/sha256" }, "systemPromptConfigSha256": { "$ref": "#/$defs/sha256" },
+        "systemPromptTextSha256": { "$ref": "#/$defs/sha256" }, "policySha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "files": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["split", "path", "classification", "rowCount", "sizeBytes", "sha256", "rowIdInventorySha256"],
+        "properties": {
+          "split": { "$ref": "#/$defs/split" },
+          "path": { "type": "string", "pattern": "^(controlled/(train|dev)|restricted/(quality-holdout|safety-holdout))\\.jsonl$" },
+          "classification": { "enum": ["controlled", "restricted"] },
+          "rowCount": { "type": "integer", "minimum": 1 },
+          "sizeBytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "rowIdInventorySha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "pilotSelection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "rowCount", "seed", "rowsPerCategoryLanguage", "sizeBytes", "sha256", "rowIdInventorySha256"],
+      "properties": {
+        "path": { "const": "controlled/pilot-row-manifest.json" },
+        "rowCount": { "const": 320 },
+        "seed": { "const": 419805 },
+        "rowsPerCategoryLanguage": { "const": 16 },
+        "sizeBytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "rowIdInventorySha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "datasetInventorySha256": { "$ref": "#/$defs/sha256" },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsSurvivorData", "containsEvidence", "containsRawProductionLogs", "rawContentLogged", "holdoutsCommittedToPublicRepository"],
+      "properties": {
+        "containsSurvivorData": { "const": false }, "containsEvidence": { "const": false },
+        "containsRawProductionLogs": { "const": false }, "rawContentLogged": { "const": false },
+        "holdoutsCommittedToPublicRepository": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] }
+  }
+}

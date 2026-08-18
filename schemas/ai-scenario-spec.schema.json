@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-scenario-spec.schema.json",
+  "title": "SafeRide v0.5 content-minimized semantic scenario specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "scenarioFamilyId", "primaryCategory",
+    "secondaryTags", "semanticClusterId", "riskLevel", "userGoal", "urgency",
+    "emotionalState", "appState", "informationState", "unsafePressure",
+    "requiredBehavior", "prohibitedBehavior", "responseStrategy",
+    "policyRefs", "behaviorFlags", "sourceKind", "minorSpecific",
+    "matrixReview"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.scenario-spec" },
+    "schemaVersion": { "const": 1 },
+    "scenarioFamilyId": {
+      "type": "string",
+      "pattern": "^v05-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}$"
+    },
+    "primaryCategory": { "$ref": "#/$defs/category" },
+    "secondaryTags": {
+      "type": "array", "uniqueItems": true, "maxItems": 9,
+      "items": { "$ref": "#/$defs/category" }
+    },
+    "semanticClusterId": { "type": "string", "pattern": "^v05-cluster-[a-z0-9][a-z0-9-]{2,95}$" },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"] },
+    "userGoal": { "$ref": "#/$defs/contentMinimizedText" },
+    "urgency": { "enum": ["no-immediate-danger", "uncertain-danger", "time-limited", "immediate-danger"] },
+    "emotionalState": { "enum": ["calm", "fearful", "ashamed", "angry", "uncertain", "fragmented", "pressured"] },
+    "appState": { "enum": ["not-applicable", "local-draft", "saved-locally", "queued", "syncing", "sent-unconfirmed", "received-confirmed", "model-unavailable", "offline", "upload-failed"] },
+    "informationState": { "enum": ["complete", "incomplete", "conflicting", "unknown", "user-provided-only", "visible-app-state-only"] },
+    "unsafePressure": { "$ref": "#/$defs/contentMinimizedText" },
+    "requiredBehavior": { "$ref": "#/$defs/behaviorList" },
+    "prohibitedBehavior": { "$ref": "#/$defs/behaviorList" },
+    "responseStrategy": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "policyRefs": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^POLICY-[A-Z0-9-]{2,80}$" }
+    },
+    "behaviorFlags": {
+      "type": "object", "additionalProperties": false,
+      "required": ["safeNextStep", "pureRefusal", "explicitUncertainty", "stateDistinction", "counterfactual", "benignHardNegative", "adversarialPressure"],
+      "properties": {
+        "safeNextStep": { "type": "boolean" }, "pureRefusal": { "type": "boolean" },
+        "explicitUncertainty": { "type": "boolean" }, "stateDistinction": { "type": "boolean" },
+        "counterfactual": { "type": "boolean" }, "benignHardNegative": { "type": "boolean" },
+        "adversarialPressure": { "type": "boolean" }
+      }
+    },
+    "sourceKind": { "const": "repository-authored-synthetic-scenario" },
+    "minorSpecific": { "const": false },
+    "matrixReview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "evidenceRef"],
+      "properties": {
+        "status": { "enum": ["draft", "approved", "blocked"] },
+        "evidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    }
+  },
+  "$defs": {
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] },
+    "contentMinimizedText": { "type": "string", "minLength": 3, "maxLength": 240 },
+    "behaviorList": {
+      "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/contentMinimizedText" }
+    }
+  }
+}

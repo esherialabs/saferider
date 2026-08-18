@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-register-evidence-config.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "configId", "registerId", "datasetId", "desiredStatus", "createdAt", "sourceCommit", "modelBaseRevision", "repositoryBindings", "bindingApprovals", "artifacts", "gates", "holdoutControls", "publication", "trainingBlockers", "limitations", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-register-evidence-config" }, "schemaVersion": { "const": 1 },
+    "configId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "registerId": { "type": "string", "pattern": "^saferide-gemma4-v05-register-[a-z0-9.-]{3,80}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "desiredStatus": { "enum": ["blocked", "training-ready"] },
+    "createdAt": { "type": "string", "format": "date-time" }, "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "modelBaseRevision": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40,64}$" },
+    "repositoryBindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["plan", "policy", "systemPrompt", "buildImplementation", "reviewImplementation", "auditImplementation"],
+      "properties": {
+        "plan": { "$ref": "#/$defs/repoPath" }, "policy": { "$ref": "#/$defs/repoPath" }, "systemPrompt": { "$ref": "#/$defs/repoPath" },
+        "buildImplementation": { "$ref": "#/$defs/repoPath" }, "reviewImplementation": { "$ref": "#/$defs/repoPath" }, "auditImplementation": { "$ref": "#/$defs/repoPath" }
+      }
+    },
+    "bindingApprovals": {
+      "type": "object", "additionalProperties": false, "required": ["policy", "systemPrompt"],
+      "properties": { "policy": { "$ref": "#/$defs/approval" }, "systemPrompt": { "$ref": "#/$defs/approval" } }
+    },
+    "artifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenarioSpecs", "splitManifest", "candidates", "reviewLedger", "reviewSummary", "datasetManifest", "pilotSelection", "train", "dev", "qualityHoldout", "safetyHoldout", "semanticLeakageReport", "semanticLeakageDetails", "auditReport", "auditDetails", "blindEvaluation"],
+      "properties": {
+        "scenarioSpecs": { "$ref": "#/$defs/artifactInput" }, "splitManifest": { "$ref": "#/$defs/artifactInput" }, "candidates": { "$ref": "#/$defs/artifactInput" },
+        "reviewLedger": { "$ref": "#/$defs/artifactInput" }, "reviewSummary": { "$ref": "#/$defs/artifactInput" }, "datasetManifest": { "$ref": "#/$defs/artifactInput" },
+        "pilotSelection": { "$ref": "#/$defs/artifactInput" }, "train": { "$ref": "#/$defs/artifactInput" }, "dev": { "$ref": "#/$defs/artifactInput" },
+        "qualityHoldout": { "$ref": "#/$defs/artifactInput" }, "safetyHoldout": { "$ref": "#/$defs/artifactInput" },
+        "semanticLeakageReport": { "$ref": "#/$defs/artifactInput" }, "semanticLeakageDetails": { "$ref": "#/$defs/artifactInput" },
+        "auditReport": { "$ref": "#/$defs/artifactInput" }, "auditDetails": { "$ref": "#/$defs/artifactInput" }, "blindEvaluation": { "$ref": "#/$defs/artifactInput" }
+      }
+    },
+    "gates": {
+      "type": "array", "minItems": 17, "maxItems": 17,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["gateId", "status", "ownerRole", "evidenceRef"],
+        "properties": { "gateId": { "$ref": "#/$defs/gateId" }, "status": { "enum": ["pending", "approved", "passed", "blocked", "scoped-out"] }, "ownerRole": { "type": "string", "minLength": 3 }, "evidenceRef": { "type": ["string", "null"], "minLength": 3 } }
+      }
+    },
+    "holdoutControls": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trainingAccessAllowed", "routinePromptIterationAllowed", "custodianRole", "custodianIdentityRef", "segregatedAccessEvidenceRef", "accessLogEvidenceRef", "blindSuiteTrainingAccessAllowed"],
+      "properties": {
+        "trainingAccessAllowed": { "const": false }, "routinePromptIterationAllowed": { "const": false }, "custodianRole": { "const": "independent-evaluation-custodian" },
+        "custodianIdentityRef": { "type": ["string", "null"], "minLength": 3 }, "segregatedAccessEvidenceRef": { "type": ["string", "null"], "minLength": 3 },
+        "accessLogEvidenceRef": { "type": ["string", "null"], "minLength": 3 }, "blindSuiteTrainingAccessAllowed": { "const": false }
+      }
+    },
+    "publication": {
+      "type": "object", "additionalProperties": false, "required": ["defaultDatasetAccess", "trainPublicationStatus", "holdoutPublicationAllowed", "blindSuitePublicationAllowed", "approvalEvidenceRef"],
+      "properties": { "defaultDatasetAccess": { "const": "restricted" }, "trainPublicationStatus": { "enum": ["blocked", "approved"] }, "holdoutPublicationAllowed": { "const": false }, "blindSuitePublicationAllowed": { "const": false }, "approvalEvidenceRef": { "type": ["string", "null"], "minLength": 3 } }
+    },
+    "trainingBlockers": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 240 } },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 320 } },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsArtifactContent", "containsReviewerIdentities", "containsCredentials"], "properties": { "containsArtifactContent": { "const": false }, "containsReviewerIdentities": { "const": false }, "containsCredentials": { "const": false } } }
+  },
+  "allOf": [{
+    "if": { "properties": { "desiredStatus": { "const": "training-ready" } }, "required": ["desiredStatus"] },
+    "then": { "properties": { "modelBaseRevision": { "type": "string" }, "trainingBlockers": { "maxItems": 0 } } },
+    "else": { "properties": { "trainingBlockers": { "minItems": 1 } } }
+  }],
+  "$defs": {
+    "repoPath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).{3,240}$" },
+    "approval": { "type": "object", "additionalProperties": false, "required": ["status", "approvalEvidenceRef"], "properties": { "status": { "enum": ["pending", "approved", "blocked"] }, "approvalEvidenceRef": { "type": ["string", "null"], "minLength": 3 } } },
+    "artifactInput": { "type": "object", "additionalProperties": false, "required": ["path", "status"], "properties": { "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).{3,240}$" }, "status": { "enum": ["pending", "frozen", "passed", "blocked"] } } },
+    "gateId": { "enum": ["policy", "system-prompt", "scenario-matrix", "reviewer-roster", "row-reviews", "kiswahili-language", "legal-derivative-use", "clinical", "privacy", "safeguarding", "independent-ml-data", "holdout-custody", "semantic-leakage", "prohibited-data", "organization-storage", "unicef-workbook", "gpu-colab"] }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/moderated-session-aggregate.schema.json",
+  "title": "Content-free SafeRide moderated session aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sessionSequence", "syntheticScenario", "syntheticOnly", "contentFree", "consentScriptVersion", "safeguardingProtocolVersion", "reportTask", "ratings", "issueCounts"],
+  "properties": {
+    "schemaVersion": { "const": "moderated-session-aggregate.v1" },
+    "sessionSequence": { "type": "integer", "minimum": 1, "maximum": 25 },
+    "syntheticScenario": { "enum": ["core-report", "report-and-referral", "privacy-export", "offline-recovery", "accessibility-core"] },
+    "syntheticOnly": { "const": true },
+    "contentFree": { "const": true },
+    "consentScriptVersion": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "safeguardingProtocolVersion": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "reportTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started", "completed", "assistance", "timeToReportMsBucket", "dropOffStep", "retries", "errorCount"],
+      "properties": {
+        "started": { "const": true },
+        "completed": { "type": "boolean" },
+        "assistance": { "enum": ["none", "moderator", "not_recorded"] },
+        "timeToReportMsBucket": { "type": ["integer", "null"], "minimum": 0, "multipleOf": 15000 },
+        "dropOffStep": { "type": ["string", "null"], "enum": [null, "what-happened", "where-when", "evidence-detail", "consent-gate", "referral-picker"] },
+        "retries": { "type": "integer", "minimum": 0 },
+        "errorCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ratings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comprehension", "accessibility", "referralClarity", "errorRecovery"],
+      "properties": {
+        "comprehension": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "accessibility": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "referralClarity": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "errorRecovery": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "issueCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["low", "medium", "high", "critical"],
+      "properties": {
+        "low": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "critical": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

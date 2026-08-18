@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-dataset-register.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "registerId", "datasetId", "status", "createdAt", "sourceCommit", "packageLockSha256", "model", "bindings", "artifacts", "gates", "holdoutControls", "trainingReadiness", "publication", "limitations"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-dataset-register" },
+    "schemaVersion": { "const": 1 },
+    "registerId": { "type": "string", "pattern": "^saferide-gemma4-v05-register-[a-z0-9.-]{3,80}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["blocked", "draft", "training-ready", "superseded"] },
+    "createdAt": { "type": "string", "minLength": 20 },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "packageLockSha256": { "$ref": "#/$defs/sha256" },
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trainBaseModel", "immutableBaseRevision", "runtimeTargetModel", "runtimeTargetFile"],
+      "properties": {
+        "trainBaseModel": { "const": "google/gemma-4-E2B-it" },
+        "immutableBaseRevision": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40,64}$" },
+        "runtimeTargetModel": { "const": "litert-community/gemma-4-E2B-it-litert-lm" },
+        "runtimeTargetFile": { "const": "gemma-4-E2B-it.litertlm" }
+      }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["plan", "policy", "systemPrompt", "buildImplementation", "reviewImplementation", "auditImplementation"],
+      "properties": {
+        "plan": { "$ref": "#/$defs/fileBinding" },
+        "policy": { "$ref": "#/$defs/approvalFileBinding" },
+        "systemPrompt": { "$ref": "#/$defs/promptBinding" },
+        "buildImplementation": { "$ref": "#/$defs/fileBinding" },
+        "reviewImplementation": { "$ref": "#/$defs/fileBinding" },
+        "auditImplementation": { "$ref": "#/$defs/fileBinding" }
+      }
+    },
+    "artifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenarioSpecs", "splitManifest", "candidates", "reviewLedger", "reviewSummary", "datasetManifest", "pilotSelection", "train", "dev", "qualityHoldout", "safetyHoldout", "semanticLeakageReport", "semanticLeakageDetails", "auditReport", "auditDetails", "blindEvaluation"],
+      "properties": {
+        "scenarioSpecs": { "$ref": "#/$defs/artifact" }, "splitManifest": { "$ref": "#/$defs/artifact" },
+        "candidates": { "$ref": "#/$defs/artifact" }, "reviewLedger": { "$ref": "#/$defs/artifact" }, "reviewSummary": { "$ref": "#/$defs/artifact" },
+        "datasetManifest": { "$ref": "#/$defs/artifact" }, "pilotSelection": { "$ref": "#/$defs/artifact" }, "train": { "$ref": "#/$defs/artifact" },
+        "dev": { "$ref": "#/$defs/artifact" }, "qualityHoldout": { "$ref": "#/$defs/artifact" },
+        "safetyHoldout": { "$ref": "#/$defs/artifact" }, "semanticLeakageReport": { "$ref": "#/$defs/artifact" },
+        "semanticLeakageDetails": { "$ref": "#/$defs/artifact" }, "auditReport": { "$ref": "#/$defs/artifact" },
+        "auditDetails": { "$ref": "#/$defs/artifact" }, "blindEvaluation": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "gates": {
+      "type": "array", "minItems": 14, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["gateId", "status", "ownerRole", "evidenceRef"],
+        "properties": {
+          "gateId": { "$ref": "#/$defs/gateId" }, "status": { "$ref": "#/$defs/gateStatus" },
+          "ownerRole": { "type": "string", "minLength": 3 }, "evidenceRef": { "type": ["string", "null"], "minLength": 3 }
+        }
+      }
+    },
+    "holdoutControls": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trainingAccessAllowed", "routinePromptIterationAllowed", "custodianRole", "custodianIdentityRef", "segregatedAccessEvidenceRef", "accessLogEvidenceRef", "blindSuiteTrainingAccessAllowed"],
+      "properties": {
+        "trainingAccessAllowed": { "const": false }, "routinePromptIterationAllowed": { "const": false },
+        "custodianRole": { "const": "independent-evaluation-custodian" },
+        "custodianIdentityRef": { "type": ["string", "null"], "minLength": 3 },
+        "segregatedAccessEvidenceRef": { "type": ["string", "null"], "minLength": 3 },
+        "accessLogEvidenceRef": { "type": ["string", "null"], "minLength": 3 },
+        "blindSuiteTrainingAccessAllowed": { "const": false }
+      }
+    },
+    "trainingReadiness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "strictGatePassed", "trainRows", "devRows", "qualityHoldoutRows", "safetyHoldoutRows", "families", "candidateSeeds", "pilotRows", "blockers"],
+      "properties": {
+        "status": { "enum": ["blocked", "training-ready"] }, "strictGatePassed": { "type": "boolean" },
+        "trainRows": { "const": 1600 }, "devRows": { "const": 300 },
+        "qualityHoldoutRows": { "const": 300 }, "safetyHoldoutRows": { "const": 400 },
+        "families": { "const": 1300 },
+        "candidateSeeds": { "type": "array", "prefixItems": [{ "const": 419805 }, { "const": 419806 }], "minItems": 2, "maxItems": 2, "items": false },
+        "pilotRows": { "const": 320 },
+        "blockers": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+      }
+    },
+    "publication": {
+      "type": "object", "additionalProperties": false,
+      "required": ["defaultDatasetAccess", "trainPublicationStatus", "holdoutPublicationAllowed", "blindSuitePublicationAllowed", "approvalEvidenceRef"],
+      "properties": {
+        "defaultDatasetAccess": { "const": "restricted" },
+        "trainPublicationStatus": { "enum": ["blocked", "approved"] },
+        "holdoutPublicationAllowed": { "const": false }, "blindSuitePublicationAllowed": { "const": false },
+        "approvalEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "fileBinding": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": { "path": { "type": "string", "minLength": 3 }, "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" } }
+    },
+    "approvalFileBinding": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256", "status", "approvalEvidenceRef"],
+      "properties": {
+        "path": { "type": "string", "minLength": 3 }, "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "status": { "enum": ["pending", "approved", "blocked"] }, "approvalEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "promptBinding": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256", "textSha256", "status", "approvalEvidenceRef"],
+      "properties": {
+        "path": { "type": "string", "minLength": 3 }, "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "textSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "status": { "enum": ["pending", "approved", "blocked"] }, "approvalEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "status", "path", "sha256", "sizeBytes", "ownerRole"],
+      "properties": {
+        "classification": { "enum": ["public-safe", "controlled", "restricted"] },
+        "status": { "enum": ["pending", "frozen", "passed", "blocked"] },
+        "path": { "type": ["string", "null"], "minLength": 3 },
+        "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "sizeBytes": { "type": ["integer", "null"], "minimum": 0 },
+        "ownerRole": { "type": "string", "minLength": 3 },
+        "recordCount": { "type": ["integer", "null"], "minimum": 0 },
+        "schema": { "type": ["string", "null"], "minLength": 3 },
+        "schemaVersion": { "type": ["integer", "null"], "minimum": 1 },
+        "upstreamSha256": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "gateStatus": { "enum": ["pending", "approved", "passed", "blocked", "scoped-out"] },
+    "gateId": { "enum": ["policy", "system-prompt", "scenario-matrix", "reviewer-roster", "row-reviews", "kiswahili-language", "legal-derivative-use", "clinical", "privacy", "safeguarding", "independent-ml-data", "holdout-custody", "semantic-leakage", "prohibited-data", "organization-storage", "unicef-workbook", "gpu-colab"] }
+  }
+}

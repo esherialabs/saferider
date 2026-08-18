@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-comparison-summary.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "comparisonId", "createdAt", "planId", "planSha256", "commonInputs", "artifacts", "regressions", "decision", "blockers", "limitations", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.comparison-summary" },
+    "schemaVersion": { "const": 1 },
+    "comparisonId": { "$ref": "#/$defs/nonEmpty" },
+    "createdAt": { "$ref": "#/$defs/nonEmpty" },
+    "planId": { "$ref": "#/$defs/nonEmpty" },
+    "planSha256": { "$ref": "#/$defs/sha256" },
+    "commonInputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promptSuiteSha256", "promptInventorySha256", "rubricSha256", "policySha256", "systemPromptTextSha256", "generationConfigSha256"],
+      "properties": {
+        "promptSuiteSha256": { "$ref": "#/$defs/sha256" },
+        "promptInventorySha256": { "$ref": "#/$defs/sha256" },
+        "rubricSha256": { "$ref": "#/$defs/sha256" },
+        "policySha256": { "$ref": "#/$defs/sha256" },
+        "systemPromptTextSha256": { "$ref": "#/$defs/sha256" },
+        "generationConfigSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot", "artifactId", "immutableRevision", "generationManifestSha256", "evaluationSummarySha256", "complete", "truncated", "errors", "decision", "scores"],
+        "properties": {
+          "slot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05"] },
+          "artifactId": { "$ref": "#/$defs/nonEmpty" },
+          "immutableRevision": { "$ref": "#/$defs/revision" },
+          "generationManifestSha256": { "$ref": "#/$defs/sha256" },
+          "evaluationSummarySha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+          "complete": { "$ref": "#/$defs/count" },
+          "truncated": { "$ref": "#/$defs/count" },
+          "errors": { "$ref": "#/$defs/count" },
+          "decision": { "enum": ["awaiting-reviews", "blocked", "internal-only"] },
+          "scores": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["overall", "safety", "usefulness"],
+            "properties": {
+              "overall": { "$ref": "#/$defs/nullableScore" },
+              "safety": { "$ref": "#/$defs/nullableScore" },
+              "usefulness": { "$ref": "#/$defs/nullableScore" }
+            }
+          }
+        }
+      }
+    },
+    "regressions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maximumAllowedPoints", "meaningfulRegression"],
+      "properties": {
+        "maximumAllowedPoints": { "type": "number", "minimum": 0, "maximum": 3 },
+        "targetSlot": { "enum": ["v04", "v05"] },
+        "targetVsBaseSafety": { "type": ["number", "null"], "minimum": -3, "maximum": 3 },
+        "targetVsBaseUsefulness": { "type": ["number", "null"], "minimum": -3, "maximum": 3 },
+        "v04VsBaseSafety": { "type": ["number", "null"], "minimum": -3, "maximum": 3 },
+        "v04VsBaseUsefulness": { "type": ["number", "null"], "minimum": -3, "maximum": 3 },
+        "meaningfulRegression": { "type": ["boolean", "null"] }
+      },
+      "anyOf": [
+        { "required": ["targetSlot", "targetVsBaseSafety", "targetVsBaseUsefulness"] },
+        { "required": ["v04VsBaseSafety", "v04VsBaseUsefulness"] }
+      ]
+    },
+    "decision": { "enum": ["blocked", "internal-comparison-only"] },
+    "blockers": { "type": "array", "items": { "$ref": "#/$defs/nonEmpty" } },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsRawPrompts", "containsRawCompletions", "classification"],
+      "properties": {
+        "containsRawPrompts": { "const": false },
+        "containsRawCompletions": { "const": false },
+        "classification": { "const": "public-safe-aggregate" }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+    "count": { "type": "integer", "minimum": 0 },
+    "nullableScore": { "type": ["number", "null"], "minimum": 0, "maximum": 3 }
+  }
+}

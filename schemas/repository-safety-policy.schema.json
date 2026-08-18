@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/repository-safety-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "policyId", "maxTrackedFileBytes", "maxHistoricalBlobBytes", "forbiddenExtensions", "forbiddenBasenames", "allowedLargeExtensions", "allowedCurrentFiles", "knownHistoricalObjects", "publicReviewEvidence"],
+  "properties": {
+    "schema": { "const": "schemas/repository-safety-policy.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "policyId": { "const": "saferide-repository-safety-policy-v1" },
+    "maxTrackedFileBytes": { "type": "integer", "minimum": 1 },
+    "maxHistoricalBlobBytes": { "type": "integer", "minimum": 1 },
+    "forbiddenExtensions": { "$ref": "#/$defs/nonEmptyArray" },
+    "forbiddenBasenames": { "$ref": "#/$defs/nonEmptyArray" },
+    "allowedLargeExtensions": { "$ref": "#/$defs/nonEmptyArray" },
+    "allowedCurrentFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "sizeBytes", "classification"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "sizeBytes": { "type": "integer", "minimum": 1 },
+          "classification": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "knownHistoricalObjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["objectId", "path", "sizeBytes", "disposition"],
+        "properties": {
+          "objectId": { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+          "path": { "type": "string", "minLength": 1 },
+          "sizeBytes": { "type": "integer", "minimum": 1 },
+          "disposition": { "enum": ["allowed-non-production", "blocks-publication"] }
+        }
+      }
+    },
+    "publicReviewEvidence": { "const": "docs/security/repository-publication-review.pending.json" }
+  },
+  "$defs": {
+    "nonEmptyArray": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+  }
+}

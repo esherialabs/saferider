@@ -1,0 +1,48 @@
+{
+  "schema": "com.saferide.provider-pack-manifest",
+  "schemaVersion": 1,
+  "manifestId": "ke-support-directory-1.0.0-candidate.2",
+  "packId": "ke-support-directory",
+  "packVersion": "1.0.0-candidate.2",
+  "packSha256": "bb4c173b140f417cb1e3b8495460213db0d7e28d26fb2be17f4c2a4e32084775",
+  "hashCanonicalization": "sorted-json-v1",
+  "createdAt": "2026-08-15T00:00:00.000Z",
+  "expiresAt": "2026-08-30T00:00:00.000Z",
+  "status": "candidate",
+  "attestation": {
+    "status": "pending",
+    "evidenceId": "PROVIDER-ATTESTATION-PENDING",
+    "evidencePath": "docs/providers/provider-pack-attestation.pending.json",
+    "reviewerId": null,
+    "reviewedAt": null,
+    "expiresAt": null,
+    "artifactSha256": null
+  },
+  "partnerValidation": {
+    "status": "pending",
+    "evidenceId": "PROVIDER-PARTNER-PENDING",
+    "evidencePath": "docs/providers/provider-partner-validation.pending.json",
+    "partnerId": null,
+    "reviewerId": null,
+    "reviewedAt": null,
+    "expiresAt": null,
+    "artifactSha256": null
+  },
+  "changelog": [
+    "Updates the schema-bound candidate pack to five source-linked listings.",
+    "Adds Human Rights Agenda (HURIA) as a Coast-based legal-aid and human-rights listing from official sources.",
+    "Marks every contact, hours statement, and eligibility statement pending attributable review.",
+    "Keeps remote distribution and referral contact actions disabled."
+  ],
+  "rollback": {
+    "strategy": "last-known-good",
+    "reference": "provider-pack-cache/previous-valid",
+    "previousPackVersion": null,
+    "previousPackSha256": null
+  },
+  "release": {
+    "status": "blocked",
+    "rolloutPercent": 0,
+    "immutableRevision": null
+  }
+}

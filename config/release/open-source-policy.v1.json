@@ -1,0 +1,60 @@
+{
+  "schema": "schemas/open-source-policy.schema.json",
+  "schemaVersion": 1,
+  "policyId": "saferide-open-source-policy-v1",
+  "status": "approved",
+  "repository": {
+    "authoritativeUrl": "https://github.com/esherialabs/saferider",
+    "visibility": "public",
+    "visibilityVerified": true,
+    "unicefReviewerAccess": true,
+    "publicationModel": "sanitized-public-mirror"
+  },
+  "artifactClasses": [
+    {
+      "class": "code",
+      "licenseFile": "LICENSE",
+      "licenseExpression": null,
+      "approvalStatus": "restricted",
+      "redistributionAuthorized": false
+    },
+    {
+      "class": "content",
+      "licenseFile": "CONTENT-LICENSE.md",
+      "licenseExpression": null,
+      "approvalStatus": "restricted",
+      "redistributionAuthorized": false
+    },
+    {
+      "class": "model",
+      "licenseFile": "MODEL-DATA-LICENSES.md",
+      "licenseExpression": "Apache-2.0",
+      "approvalStatus": "approved",
+      "redistributionAuthorized": true
+    },
+    {
+      "class": "dataset",
+      "licenseFile": "MODEL-DATA-LICENSES.md",
+      "licenseExpression": "CC-BY-4.0",
+      "approvalStatus": "approved",
+      "redistributionAuthorized": true
+    },
+    {
+      "class": "evaluation",
+      "licenseFile": "MODEL-DATA-LICENSES.md",
+      "licenseExpression": null,
+      "approvalStatus": "restricted",
+      "redistributionAuthorized": false
+    }
+  ],
+  "governance": {
+    "maintainersConfirmed": true,
+    "codeownersConfirmed": true,
+    "trademarkDecisionApproved": true,
+    "securityChannelVerified": true
+  },
+  "publicReleaseAuthorized": true,
+  "externalHandoffId": "HANDOFF-OPEN-SOURCE-LEGAL",
+  "lastVerifiedDate": "2026-08-18",
+  "recheckDate": "2026-09-18"
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-dataset-review.schema.json",
+  "title": "SafeRide v0.5 restricted row review or adjudication record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "recordType", "recordId", "rowId", "candidateId", "reviewableContentSha256", "systemPromptSha256", "createdAt", "sensitivity"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.dataset-review" },
+    "schemaVersion": { "const": 1 },
+    "recordType": { "enum": ["review", "adjudication"] },
+    "recordId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{7,159}$" },
+    "rowId": { "type": "string", "pattern": "^v05-.+-(en|sw)$" },
+    "candidateId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "reviewableContentSha256": { "$ref": "#/$defs/sha256" },
+    "systemPromptSha256": { "$ref": "#/$defs/sha256" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "sensitivity": { "const": "restricted" },
+    "reviewKind": { "enum": ["primary-language-content", "safety-domain", "specialist-domain"] },
+    "reviewer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["identityRef", "role", "independentFromAuthor", "independenceDeclarationRef", "languageCompetence"],
+      "properties": {
+        "identityRef": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "role": { "enum": ["english-language", "kiswahili-language", "product-safeguarding", "privacy-security", "legal", "clinical-medical", "technical-ml", "product-mobile-api"] },
+        "independentFromAuthor": { "const": true },
+        "independenceDeclarationRef": { "type": "string", "minLength": 3, "maxLength": 240 },
+        "languageCompetence": { "enum": ["native-en", "fluent-en", "native-sw", "fluent-sw", "not-applicable"] }
+      }
+    },
+    "languageAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "predicted", "expected", "result", "adjudicationStatus", "adjudicationEvidenceRef"],
+      "properties": {
+        "method": { "const": "deterministic-stopword-proxy-v1" },
+        "predicted": { "enum": ["en", "sw", "undetermined"] },
+        "expected": { "enum": ["en", "sw"] },
+        "result": { "enum": ["agrees", "mismatch", "undetermined"] },
+        "adjudicationStatus": { "enum": ["not-required", "approved", "blocked"] },
+        "adjudicationEvidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "decisions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["safetyContent", "languageNaturalness", "pairedFamilyMeaning", "criticalSafetyMeaning", "productTruth", "noNewFacts", "concisionAccessibility", "prohibitedData", "helpfulnessScore", "hardFailures"],
+      "properties": {
+        "safetyContent": { "$ref": "#/$defs/passFail" },
+        "languageNaturalness": { "$ref": "#/$defs/passFail" },
+        "pairedFamilyMeaning": { "$ref": "#/$defs/passFail" },
+        "criticalSafetyMeaning": { "$ref": "#/$defs/passFail" },
+        "productTruth": { "$ref": "#/$defs/passFail" },
+        "noNewFacts": { "$ref": "#/$defs/passFail" },
+        "concisionAccessibility": { "$ref": "#/$defs/passFail" },
+        "prohibitedData": { "$ref": "#/$defs/passFail" },
+        "helpfulnessScore": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "hardFailures": {
+          "type": "array", "uniqueItems": true,
+          "items": { "enum": ["blame-or-coercion", "unsafe-confrontation", "private-data-claim", "hidden-prompt-disclosure", "fabricated-fact", "authority-overclaim", "harmful-language-meaning", "cross-split-copy", "identifiable-data"] }
+        }
+      }
+    },
+    "requiredChanges": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 240 } },
+    "unresolvedComments": { "type": "boolean" },
+    "finalStatus": { "$ref": "#/$defs/reviewStatus" },
+    "conflictingReviewIds": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } },
+    "adjudicator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["identityRef", "role", "independenceDeclarationRef"],
+      "properties": {
+        "identityRef": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "role": { "enum": ["product-safeguarding", "privacy-security", "legal", "clinical-medical", "technical-ml", "product-mobile-api"] },
+        "independenceDeclarationRef": { "type": "string", "minLength": 3, "maxLength": 240 }
+      }
+    },
+    "resolution": { "enum": ["approved", "needs-revision", "rejected", "never-train"] },
+    "hardSafetyDisagreementResolved": { "type": "boolean" },
+    "resolutionCode": { "type": "string", "pattern": "^[A-Z0-9_]{3,80}$" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "recordType": { "const": "review" } }, "required": ["recordType"] },
+      "then": { "required": ["reviewKind", "reviewer", "decisions", "requiredChanges", "unresolvedComments", "finalStatus"] },
+      "else": { "required": ["conflictingReviewIds", "adjudicator", "resolution", "hardSafetyDisagreementResolved", "resolutionCode"] }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": { "const": "review" },
+          "reviewKind": { "const": "primary-language-content" }
+        },
+        "required": ["recordType", "reviewKind"]
+      },
+      "then": { "required": ["languageAssessment"] }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "passFail": { "enum": ["pass", "fail", "not-applicable"] },
+    "reviewStatus": { "enum": ["approved-train", "approved-dev", "approved-quality-holdout", "approved-safety-holdout", "needs-revision", "rejected", "never-train"] }
+  }
+}

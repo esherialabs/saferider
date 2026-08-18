@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-scenario-targets.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "targetId", "datasetId", "planId", "splitSeed",
+    "allocatorVersion", "familiesPerCategory", "allowedPolicyRefs", "dimensions",
+    "behaviorFamilyTargets", "counterfactualFamiliesPerCategoryBySplit",
+    "textHygiene", "categoryDesign"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-scenario-targets" },
+    "schemaVersion": { "const": 1 },
+    "targetId": { "type": "string", "minLength": 8, "maxLength": 160 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "planId": { "type": "string", "minLength": 8 },
+    "splitSeed": { "const": 419805 },
+    "allocatorVersion": { "const": "deterministic-constrained-scenario-v1" },
+    "familiesPerCategory": { "const": 130 },
+    "allowedPolicyRefs": {
+      "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/policy" }
+    },
+    "dimensions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["risk", "urgencyByRisk", "emotionalState", "appState", "informationState", "goalActions", "pressurePatterns", "responseStrategies"],
+      "properties": {
+        "risk": {
+          "type": "object", "additionalProperties": false,
+          "required": ["nonSafetyFamiliesPerCategory", "safetyHoldoutSequence", "minimumPerCategory", "maximumSharePerCategory"],
+          "properties": {
+            "nonSafetyFamiliesPerCategory": {
+              "type": "object", "additionalProperties": false,
+              "required": ["low", "medium", "high", "critical"],
+              "properties": {
+                "low": { "type": "integer", "minimum": 1 }, "medium": { "type": "integer", "minimum": 1 },
+                "high": { "type": "integer", "minimum": 1 }, "critical": { "type": "integer", "minimum": 1 }
+              }
+            },
+            "safetyHoldoutSequence": {
+              "type": "array", "minItems": 2, "uniqueItems": true,
+              "items": { "enum": ["high", "critical"] }
+            },
+            "minimumPerCategory": { "type": "integer", "minimum": 1 },
+            "maximumSharePerCategory": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+          }
+        },
+        "urgencyByRisk": {
+          "type": "object", "additionalProperties": false,
+          "required": ["low", "medium", "high", "critical"],
+          "properties": {
+            "low": { "const": "no-immediate-danger" }, "medium": { "const": "time-limited" },
+            "high": { "const": "uncertain-danger" }, "critical": { "const": "immediate-danger" }
+          }
+        },
+        "emotionalState": { "$ref": "#/$defs/dimension" },
+        "appState": { "$ref": "#/$defs/dimension" },
+        "informationState": { "$ref": "#/$defs/dimension" },
+        "goalActions": { "$ref": "#/$defs/stringDimension" },
+        "pressurePatterns": {
+          "type": "object", "additionalProperties": false,
+          "required": ["values", "minimumPerConversationForm"],
+          "properties": {
+            "values": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 160 } },
+            "minimumPerConversationForm": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "responseStrategies": {
+          "type": "object", "additionalProperties": false,
+          "required": ["values", "maximumSharePerCategory"],
+          "properties": {
+            "values": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" } },
+            "maximumSharePerCategory": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "behaviorFamilyTargets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["safeNextStep", "pureRefusal", "explicitUncertainty", "stateDistinction", "counterfactual", "benignHardNegative", "adversarialPressure"],
+      "properties": {
+        "safeNextStep": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "pureRefusal": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "explicitUncertainty": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "stateDistinction": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "counterfactual": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "benignHardNegative": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "adversarialPressure": { "type": "integer", "minimum": 0, "maximum": 130 }
+      }
+    },
+    "counterfactualFamiliesPerCategoryBySplit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["train", "dev", "quality-holdout", "safety-holdout"],
+      "properties": {
+        "train": { "type": "integer", "minimum": 0, "multipleOf": 2 },
+        "dev": { "type": "integer", "minimum": 0, "multipleOf": 2 },
+        "quality-holdout": { "type": "integer", "minimum": 0, "multipleOf": 2 },
+        "safety-holdout": { "type": "integer", "minimum": 0, "multipleOf": 2 }
+      }
+    },
+    "textHygiene": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minimumLength", "maximumLength", "maximumBehaviorItems", "forbidDialogueMarkup", "forbidNewlines", "minorSpecificAllowed"],
+      "properties": {
+        "minimumLength": { "type": "integer", "minimum": 3 },
+        "maximumLength": { "type": "integer", "minimum": 20, "maximum": 240 },
+        "maximumBehaviorItems": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "forbidDialogueMarkup": { "const": true }, "forbidNewlines": { "const": true },
+        "minorSpecificAllowed": { "const": false }
+      }
+    },
+    "categoryDesign": {
+      "type": "array", "minItems": 10, "maxItems": 10,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["category", "goalObjects", "requiredCore", "prohibitedCore", "policyRefs"],
+        "properties": {
+          "category": { "$ref": "#/$defs/category" },
+          "goalObjects": { "type": "array", "minItems": 13, "maxItems": 13, "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 100 } },
+          "requiredCore": { "type": "string", "minLength": 3, "maxLength": 160 },
+          "prohibitedCore": { "type": "string", "minLength": 3, "maxLength": 160 },
+          "policyRefs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/policy" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] },
+    "policy": { "enum": ["POLICY-PRIVACY", "POLICY-NO-NEW-FACTS", "POLICY-AGENCY", "POLICY-DOMAIN-LIMITS", "POLICY-PRODUCT-TRUTH"] },
+    "dimension": {
+      "type": "object", "additionalProperties": false,
+      "required": ["values", "minimumPerCategory", "maximumSharePerCategory"],
+      "properties": {
+        "values": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 2 } },
+        "minimumPerCategory": { "type": "integer", "minimum": 1 },
+        "maximumSharePerCategory": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    },
+    "stringDimension": {
+      "type": "object", "additionalProperties": false,
+      "required": ["values"],
+      "properties": {
+        "values": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 160 } }
+      }
+    }
+  }
+}

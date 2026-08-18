@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-dataset-split-manifest.schema.json",
+  "title": "SafeRide v0.5 deterministic family split manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "manifestId", "datasetId", "status", "planId", "planSha256", "scenarioSpecSha256", "splitSeed", "assignmentAlgorithm", "generatedFromPlanDate", "assignmentInventorySha256", "counts", "approvals", "assignments"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.dataset-split-manifest" },
+    "schemaVersion": { "const": 1 },
+    "manifestId": { "type": "string", "pattern": "^saferide-gemma4-v05-splits-[a-z0-9.-]{3,80}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["draft", "frozen"] },
+    "planId": { "type": "string", "minLength": 3 },
+    "planSha256": { "$ref": "#/$defs/sha256" },
+    "scenarioSpecSha256": { "$ref": "#/$defs/sha256" },
+    "splitSeed": { "const": 419805 },
+    "assignmentAlgorithm": { "const": "sha256-ranked-within-category-v1" },
+    "generatedFromPlanDate": { "const": "2026-08-01" },
+    "assignmentInventorySha256": { "$ref": "#/$defs/sha256" },
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["families", "rows", "bySplit"],
+      "properties": {
+        "families": { "const": 1300 }, "rows": { "const": 2600 },
+        "bySplit": {
+          "type": "object", "additionalProperties": false,
+          "required": ["train", "dev", "quality-holdout", "safety-holdout"],
+          "properties": { "train": { "const": 1600 }, "dev": { "const": 300 }, "quality-holdout": { "const": 300 }, "safety-holdout": { "const": 400 } }
+        }
+      }
+    },
+    "approvals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["safeguardingProduct", "independentMlData"],
+      "properties": {
+        "safeguardingProduct": { "$ref": "#/$defs/approval" },
+        "independentMlData": { "$ref": "#/$defs/approval" }
+      }
+    },
+    "assignments": {
+      "type": "array", "minItems": 1300, "maxItems": 1300,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["scenarioFamilyId", "primaryCategory", "semanticClusterId", "split", "conversationForm", "rowIds"],
+        "properties": {
+          "scenarioFamilyId": { "type": "string", "pattern": "^v05-.+-family-[0-9]{4}$" },
+          "primaryCategory": { "$ref": "#/$defs/category" },
+          "semanticClusterId": { "type": "string", "pattern": "^v05-cluster-[a-z0-9][a-z0-9-]{2,95}$" },
+          "split": { "$ref": "#/$defs/split" },
+          "conversationForm": { "enum": ["single-turn", "multi-turn"] },
+          "rowIds": {
+            "type": "object", "additionalProperties": false, "required": ["en", "sw"],
+            "properties": { "en": { "type": "string", "pattern": "-en$" }, "sw": { "type": "string", "pattern": "-sw$" } }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "frozen" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "approvals": {
+            "properties": {
+              "safeguardingProduct": { "properties": { "status": { "const": "approved" }, "evidenceRef": { "type": "string" } } },
+              "independentMlData": { "properties": { "status": { "const": "approved" }, "evidenceRef": { "type": "string" } } }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] },
+    "approval": {
+      "type": "object", "additionalProperties": false, "required": ["status", "evidenceRef"],
+      "properties": { "status": { "enum": ["pending", "approved", "blocked"] }, "evidenceRef": { "type": ["string", "null"], "minLength": 3 } }
+    }
+  }
+}

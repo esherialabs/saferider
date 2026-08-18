@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-training-run.schema.json",
+  "title": "SafeRide content-free AI training run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "runId",
+    "createdAt",
+    "issue",
+    "mode",
+    "runKind",
+    "candidateRun",
+    "promotionEligible",
+    "status",
+    "baseModelId",
+    "baseRevision",
+    "baseModelSource",
+    "register",
+    "registerSha256",
+    "data",
+    "dataSha256",
+    "audit",
+    "auditSha256",
+    "dataGate",
+    "dataSummary",
+    "environment",
+    "packageVersions",
+    "runArguments",
+    "repeatability",
+    "privacy",
+    "failure",
+    "outputs"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.training-run" },
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "createdAt": { "type": "string", "minLength": 20 },
+    "issue": { "const": "ESH-4198" },
+    "datasetProfile": { "enum": ["v04", "v05"] },
+    "mode": { "enum": ["dry-run", "tiny-smoke", "prototype-finetune"] },
+    "runKind": { "enum": ["preflight", "formatting-smoke", "pilot", "candidate"] },
+    "candidateRun": { "type": "boolean" },
+    "promotionEligible": { "const": false },
+    "status": { "enum": ["preflight-complete", "running", "completed", "blocked"] },
+    "baseModelId": { "type": "string", "minLength": 3 },
+    "baseRevision": { "type": "string", "minLength": 3 },
+    "baseModelSource": { "enum": ["staged-offline-snapshot", "hugging-face-hub"] },
+    "register": { "type": "string", "minLength": 3 },
+    "registerSha256": { "$ref": "#/$defs/sha256" },
+    "data": { "type": ["string", "null"] },
+    "dataSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "dataFiles": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false, "required": ["train", "dev"],
+          "properties": {
+            "train": { "$ref": "#/$defs/pathHash" },
+            "dev": { "$ref": "#/$defs/pathHash" }
+          }
+        }
+      ]
+    },
+    "audit": { "type": ["string", "null"] },
+    "auditSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "datasetManifest": { "type": ["string", "null"] },
+    "datasetManifestSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "datasetBindings": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["datasetId", "planSha256", "policySha256", "systemPromptConfigSha256", "systemPromptTextSha256", "scenarioSpecSha256", "splitManifestSha256", "reviewLedgerSha256", "pilotRowManifest", "pilotRowManifestSha256"],
+          "properties": {
+            "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+            "planSha256": { "$ref": "#/$defs/sha256" },
+            "policySha256": { "$ref": "#/$defs/sha256" },
+            "systemPromptConfigSha256": { "$ref": "#/$defs/sha256" },
+            "systemPromptTextSha256": { "$ref": "#/$defs/sha256" },
+            "scenarioSpecSha256": { "$ref": "#/$defs/sha256" },
+            "splitManifestSha256": { "$ref": "#/$defs/sha256" },
+            "reviewLedgerSha256": { "$ref": "#/$defs/sha256" },
+            "pilotRowManifest": { "type": ["string", "null"] },
+            "pilotRowManifestSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] }
+          }
+        }
+      ]
+    },
+    "dataGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "exitCode", "passed"],
+      "properties": {
+        "command": { "type": "string", "minLength": 3 },
+        "exitCode": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "dataSummary": {
+      "type": "object",
+      "required": ["rowCount"],
+      "properties": {
+        "rowCount": { "type": "integer", "minimum": 0 },
+        "datasetIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "splitCounts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "rowIdSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "environment": { "type": "object", "minProperties": 6 },
+    "packageVersions": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 },
+      "required": ["torch", "transformers", "datasets", "peft", "accelerate", "safetensors"]
+    },
+    "runArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed",
+        "epochs",
+        "maxSteps",
+        "maxSequenceLength",
+        "trainBatchSize",
+        "evalBatchSize",
+        "gradientAccumulationSteps",
+        "effectiveBatchSize",
+        "learningRate",
+        "warmupRatio",
+        "scheduler",
+        "loggingSteps",
+        "evalSteps",
+        "saveSteps",
+        "earlyStoppingPatience",
+        "selectionMetric"
+      ],
+      "properties": {
+        "seed": { "type": "integer" },
+        "epochs": { "type": "number", "exclusiveMinimum": 0 },
+        "maxSteps": { "type": ["integer", "null"], "minimum": 1 },
+        "maxSequenceLength": { "type": "integer", "minimum": 1 },
+        "trainBatchSize": { "type": "integer", "minimum": 1 },
+        "evalBatchSize": { "type": "integer", "minimum": 1 },
+        "gradientAccumulationSteps": { "type": "integer", "minimum": 1 },
+        "effectiveBatchSize": { "type": "integer", "minimum": 1 },
+        "learningRate": { "type": "number", "exclusiveMinimum": 0 },
+        "warmupRatio": { "type": "number", "minimum": 0, "exclusiveMaximum": 1 },
+        "scheduler": { "type": "string", "minLength": 1 },
+        "loggingSteps": { "type": "integer", "minimum": 1 },
+        "evalSteps": { "type": "integer", "minimum": 1 },
+        "saveSteps": { "type": "integer", "minimum": 1 },
+        "earlyStoppingPatience": { "type": "integer", "minimum": 1 },
+        "selectionMetric": { "const": "eval_loss" },
+        "loraRank": { "type": "integer", "enum": [8, 16] },
+        "loraAlpha": { "type": "integer", "minimum": 1 },
+        "loraDropout": { "type": "number", "minimum": 0, "maximum": 1 },
+        "loraRankApprovalRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "repeatability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "secondSeedRunId", "status"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "secondSeedRunId": { "type": ["string", "null"] },
+        "status": { "enum": ["pending", "passed", "variance-accepted", "not-applicable-to-non-candidate"] }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawPromptLogging", "rawCompletionLogging", "survivorDataUsed", "metadataOnly"],
+      "properties": {
+        "rawPromptLogging": { "const": "forbidden" },
+        "rawCompletionLogging": { "const": "forbidden" },
+        "survivorDataUsed": { "const": false },
+        "metadataOnly": { "const": true },
+        "classification": { "const": "controlled-content-free" },
+        "containsExactRowIds": { "const": true }
+      }
+    },
+    "failure": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phase", "errorType", "message"],
+          "properties": {
+            "phase": { "enum": ["training", "evaluation", "export"] },
+            "errorType": { "type": "string", "minLength": 1 },
+            "message": { "type": "string", "minLength": 1, "maxLength": 500 }
+          }
+        }
+      ]
+    },
+    "outputs": { "type": "object" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "runKind": { "const": "candidate" } }, "required": ["runKind"] },
+      "then": {
+        "properties": {
+          "candidateRun": { "const": true },
+          "baseRevision": { "pattern": "^[0-9a-fA-F]{40,64}$" },
+          "data": { "type": ["string", "null"] },
+          "dataSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+          "audit": { "type": "string", "minLength": 3 },
+          "auditSha256": { "$ref": "#/$defs/sha256" },
+          "repeatability": {
+            "properties": { "required": { "const": true } }
+          },
+          "runArguments": {
+            "properties": {
+              "epochs": { "minimum": 1 },
+              "maxSteps": { "type": "null" }
+            }
+          }
+        }
+      },
+      "else": { "properties": { "candidateRun": { "const": false } } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "pathHash": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": { "path": { "type": "string", "minLength": 3 }, "sha256": { "$ref": "#/$defs/sha256" } }
+    }
+  }
+}

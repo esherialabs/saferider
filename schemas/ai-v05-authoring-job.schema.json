@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-authoring-job.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "jobId", "rowId", "language", "split", "conversationForm", "scenarioFamilyId", "scenarioSpecSha256", "scenario", "maximumCandidates", "requiredInitialStatus", "contentLoggingAllowed", "classification"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-authoring-job" },
+    "schemaVersion": { "const": 1 },
+    "jobId": { "type": "string", "pattern": "^author:v05-.+-(en|sw)$" },
+    "rowId": { "type": "string", "pattern": "^v05-.+-(en|sw)$" },
+    "language": { "enum": ["en", "sw"] },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] },
+    "conversationForm": { "enum": ["single-turn", "multi-turn"] },
+    "scenarioFamilyId": { "type": "string", "pattern": "^v05-.+-family-[0-9]{4}$" },
+    "scenarioSpecSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "scenario": { "type": "object" },
+    "maximumCandidates": { "const": 3 },
+    "requiredInitialStatus": { "const": "unreviewed" },
+    "contentLoggingAllowed": { "const": false },
+    "classification": { "const": "controlled" }
+  }
+}

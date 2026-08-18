@@ -1,0 +1,23 @@
+{
+  "schema": "com.saferide.provider-pack-rollout",
+  "schemaVersion": 1,
+  "controlVersion": "provider-pack-rollout.2026-07-30.1",
+  "activation": {
+    "status": "disabled",
+    "reason": "Partner validation, release attestation, independent review, and merge are pending."
+  },
+  "closedLoopClaims": {
+    "providerReceipt": false,
+    "appointmentAttendance": false,
+    "reason": "No provider receipt or appointment-attendance integration exists."
+  },
+  "rolloutPercent": 0,
+  "approvedPackId": null,
+  "approvedPackVersion": null,
+  "approvedPackSha256": null,
+  "approvedManifestSha256": null,
+  "rollbackApprovedPacks": [],
+  "immutableRevision": null,
+  "validFrom": null,
+  "validUntil": null
+}

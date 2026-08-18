@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/tuned-artifact-controls.schema.json",
+  "title": "SafeRide tuned artifact rollout, revocation, download, and rollback controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "controlId", "lifecycleOrder", "selection", "activation", "download", "approvals", "rollback", "issuedAt", "expiresAt", "ownerRole"],
+  "properties": {
+    "schema": { "const": "com.saferide.tuned-artifact-controls" },
+    "schemaVersion": { "const": 1 },
+    "controlId": { "$ref": "#/$defs/nonEmpty" },
+    "lifecycleOrder": {
+      "const": ["training-complete", "adapter-evaluated", "export-blocked", "artifact-produced", "artifact-android-verified", "checkpoint-candidate", "release-candidate", "release-ready", "revoked"]
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestSchemaId", "requireBundledManifestById", "silentFallbackAllowed", "minimumSelectableState"],
+      "properties": {
+        "manifestSchemaId": { "const": "https://saferide.example/schemas/tuned-mobile-artifact-manifest.schema.json" },
+        "requireBundledManifestById": { "const": true },
+        "silentFallbackAllowed": { "const": false },
+        "minimumSelectableState": { "const": "release-ready" }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "reasonCode", "activeManifestId", "activeManifestSha256", "rolloutPercent", "minimumAppVersion", "remoteDisableSupported", "revokedManifestIds", "revokedArtifactSha256"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "reasonCode": { "$ref": "#/$defs/nonEmpty" },
+        "activeManifestId": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "activeManifestSha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "rolloutPercent": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "minimumAppVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "remoteDisableSupported": { "const": true },
+        "revokedManifestIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "revokedArtifactSha256": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "download": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "largeArtifactThresholdBytes", "explicitConsentRequired", "displayExactByteSize", "freeSpacePreflightRequired", "meteredNetworkOptInRequired", "unknownNetworkFailsClosed", "pauseRequired", "resumeRequired", "cancelAndPartialCleanupRequired"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "largeArtifactThresholdBytes": { "type": "integer", "minimum": 104857600 },
+        "explicitConsentRequired": { "const": true },
+        "displayExactByteSize": { "const": true },
+        "freeSpacePreflightRequired": { "const": true },
+        "meteredNetworkOptInRequired": { "const": true },
+        "unknownNetworkFailsClosed": { "const": true },
+        "pauseRequired": { "const": true },
+        "resumeRequired": { "const": true },
+        "cancelAndPartialCleanupRequired": { "const": true }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legal", "safety", "release"],
+      "properties": {
+        "legal": { "$ref": "#/$defs/approval" },
+        "safety": { "$ref": "#/$defs/approval" },
+        "release": { "$ref": "#/$defs/approval" }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetManifestId", "removeArtifactOnRevocation", "clearReadyStateOnRevocation", "coreAppRemainsAvailable"],
+      "properties": {
+        "targetManifestId": { "$ref": "#/$defs/nonEmpty" },
+        "removeArtifactOnRevocation": { "const": true },
+        "clearReadyStateOnRevocation": { "const": true },
+        "coreAppRemainsAvailable": { "const": true }
+      }
+    },
+    "issuedAt": { "$ref": "#/$defs/dateTime" },
+    "expiresAt": { "$ref": "#/$defs/dateTime" },
+    "ownerRole": { "$ref": "#/$defs/nonEmpty" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "activation": { "properties": { "enabled": { "const": false } }, "required": ["enabled"] } } },
+      "then": { "properties": { "activation": { "properties": { "activeManifestId": { "type": "null" }, "activeManifestSha256": { "type": "null" }, "rolloutPercent": { "const": 0 } } }, "download": { "properties": { "enabled": { "const": false } } } } }
+    },
+    {
+      "if": { "properties": { "activation": { "properties": { "enabled": { "const": true } }, "required": ["enabled"] } } },
+      "then": { "properties": { "activation": { "properties": { "activeManifestId": { "$ref": "#/$defs/nonEmpty" }, "activeManifestSha256": { "$ref": "#/$defs/sha256" }, "rolloutPercent": { "type": "integer", "minimum": 1 } } }, "download": { "properties": { "enabled": { "const": true } } }, "approvals": { "properties": { "legal": { "const": "approved" }, "safety": { "const": "approved" }, "release": { "const": "approved" } } } } }
+    }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "dateTime": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "approval": { "enum": ["pending", "blocked", "approved", "rejected"] }
+  }
+}

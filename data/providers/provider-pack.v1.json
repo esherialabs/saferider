@@ -1,0 +1,297 @@
+{
+  "schema": "com.saferide.provider-directory-pack",
+  "schemaVersion": 1,
+  "packId": "ke-support-directory",
+  "version": "1.0.0-candidate.2",
+  "jurisdiction": "KE",
+  "status": "candidate",
+  "updatedAt": "2026-08-15T00:00:00.000Z",
+  "expiresAt": "2026-08-30T00:00:00.000Z",
+  "providers": [
+    {
+      "stableId": "ke-national-gbv-1195",
+      "name": "National GBV Toll-Free Helpline (HAK 1195)",
+      "serviceCategory": "hotline",
+      "coverage": {
+        "countryCode": "KE",
+        "kind": "national",
+        "areas": ["Kenya"],
+        "summary": "National phone support; the provider determines service availability."
+      },
+      "hours": {
+        "summary": "Public source lists 24/7; confirmation by an accountable SafeRide reviewer is pending.",
+        "sourceIds": ["hak-1195"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "eligibility": {
+        "summary": "People seeking gender-based violence support; the provider makes the final eligibility decision.",
+        "sourceIds": ["hak-1195"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "contacts": [
+        {
+          "channel": "call",
+          "value": "1195",
+          "sourceId": "hak-1195",
+          "verification": {
+            "status": "pending",
+            "reviewerId": null,
+            "reviewerRole": "partnerships lead",
+            "reviewedAt": null
+          }
+        }
+      ],
+      "languages": ["en", "sw"],
+      "services": ["GBV support", "Referral information"],
+      "sources": [
+        {
+          "sourceId": "hak-1195",
+          "title": "Healthcare Assistance Kenya - 1195 Helpline",
+          "publisher": "Healthcare Assistance Kenya",
+          "url": "https://hakgbv1195.org/",
+          "accessedAt": "2026-07-30T00:00:00.000Z"
+        }
+      ],
+      "status": "pending_verification",
+      "updatedAt": "2026-07-30T00:00:00.000Z",
+      "expiresAt": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "stableId": "ke-nairobi-gvrc",
+      "name": "Gender Violence Recovery Centre (GVRC)",
+      "serviceCategory": "gbv_center",
+      "coverage": {
+        "countryCode": "KE",
+        "kind": "facility",
+        "areas": ["Kilimani, Nairobi"],
+        "summary": "Facility-based support in Nairobi; confirm coverage directly with the provider."
+      },
+      "hours": {
+        "summary": "Contact the provider to confirm current hours.",
+        "sourceIds": ["gvrc-contact"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "eligibility": {
+        "summary": "The provider determines eligibility and available services after contact.",
+        "sourceIds": ["gvrc-contact"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "contacts": [
+        {
+          "channel": "call",
+          "value": "0719 638 006",
+          "sourceId": "gvrc-contact",
+          "verification": {
+            "status": "pending",
+            "reviewerId": null,
+            "reviewerRole": "partnerships lead",
+            "reviewedAt": null
+          }
+        }
+      ],
+      "languages": ["en", "sw"],
+      "services": ["Medical care", "Psychosocial support", "Referral information"],
+      "sources": [
+        {
+          "sourceId": "gvrc-contact",
+          "title": "GVRC - Contact Us",
+          "publisher": "Gender Violence Recovery Centre",
+          "url": "https://gvrc.co.ke/contact-us/",
+          "accessedAt": "2026-07-30T00:00:00.000Z"
+        }
+      ],
+      "status": "pending_verification",
+      "updatedAt": "2026-07-30T00:00:00.000Z",
+      "expiresAt": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "stableId": "ke-nairobi-covaw",
+      "name": "Coalition on Violence Against Women (COVAW)",
+      "serviceCategory": "gbv_center",
+      "coverage": {
+        "countryCode": "KE",
+        "kind": "facility",
+        "areas": ["Westlands, Nairobi"],
+        "summary": "Support listed in Nairobi; confirm coverage directly with the provider."
+      },
+      "hours": {
+        "summary": "Contact the provider to confirm current hours.",
+        "sourceIds": ["covaw-help"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "eligibility": {
+        "summary": "The provider determines eligibility and available services after contact.",
+        "sourceIds": ["covaw-help"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "contacts": [
+        {
+          "channel": "call",
+          "value": "0733 594 794",
+          "sourceId": "covaw-help",
+          "verification": {
+            "status": "pending",
+            "reviewerId": null,
+            "reviewerRole": "partnerships lead",
+            "reviewedAt": null
+          }
+        }
+      ],
+      "languages": ["en", "sw"],
+      "services": ["Counselling", "Legal support", "Referral information"],
+      "sources": [
+        {
+          "sourceId": "covaw-help",
+          "title": "COVAW - Get Help",
+          "publisher": "Coalition on Violence Against Women",
+          "url": "https://covaw.or.ke/get-help/",
+          "accessedAt": "2026-07-30T00:00:00.000Z"
+        }
+      ],
+      "status": "pending_verification",
+      "updatedAt": "2026-07-30T00:00:00.000Z",
+      "expiresAt": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "stableId": "ke-nairobi-fida",
+      "name": "FIDA Kenya",
+      "serviceCategory": "legal_aid",
+      "coverage": {
+        "countryCode": "KE",
+        "kind": "facility",
+        "areas": ["Nairobi"],
+        "summary": "Legal-aid information in Nairobi; confirm coverage directly with the provider."
+      },
+      "hours": {
+        "summary": "Contact the provider to confirm current availability.",
+        "sourceIds": ["fida-contact"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "eligibility": {
+        "summary": "The provider determines legal-aid eligibility; SafeRide makes no eligibility decision.",
+        "sourceIds": ["fida-contact"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "contacts": [],
+      "languages": ["en"],
+      "services": ["Legal aid", "Rights information"],
+      "sources": [
+        {
+          "sourceId": "fida-contact",
+          "title": "FIDA Kenya - Contact",
+          "publisher": "FIDA Kenya",
+          "url": "https://www.fida-kenya.org/contact/",
+          "accessedAt": "2026-07-30T00:00:00.000Z"
+        }
+      ],
+      "status": "pending_verification",
+      "updatedAt": "2026-07-30T00:00:00.000Z",
+      "expiresAt": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "stableId": "ke-coast-huria",
+      "name": "Human Rights Agenda (HURIA)",
+      "serviceCategory": "legal_aid",
+      "coverage": {
+        "countryCode": "KE",
+        "kind": "facility",
+        "areas": ["Kenya Coast"],
+        "summary": "Coast-based human-rights and legal-aid support; confirm the appropriate office and coverage directly with HURIA."
+      },
+      "hours": {
+        "summary": "Contact HURIA to confirm current office and public-support hotline availability.",
+        "sourceIds": ["huria-contact"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "eligibility": {
+        "summary": "People seeking human-rights or legal-aid support; HURIA makes the final eligibility and service decision.",
+        "sourceIds": ["huria-legal-aid"],
+        "verification": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewerRole": "partnerships lead",
+          "reviewedAt": null
+        }
+      },
+      "contacts": [
+        {
+          "channel": "call",
+          "value": "0769 546 252",
+          "sourceId": "huria-contact",
+          "verification": {
+            "status": "pending",
+            "reviewerId": null,
+            "reviewerRole": "partnerships lead",
+            "reviewedAt": null
+          }
+        }
+      ],
+      "languages": ["en"],
+      "services": ["Legal aid", "Human rights support", "Alternative dispute resolution"],
+      "sources": [
+        {
+          "sourceId": "huria-contact",
+          "title": "HURIA - Contact us",
+          "publisher": "Human Rights Agenda",
+          "url": "https://huria.ngo/contact-us/",
+          "accessedAt": "2026-08-15T00:00:00.000Z"
+        },
+        {
+          "sourceId": "huria-legal-aid",
+          "title": "HURIA - Mombasa Legal Aid Centre",
+          "publisher": "Human Rights Agenda",
+          "url": "https://huria.ngo/labour-disputes-flocks-hurias-mombasa-legal-aid-center/",
+          "accessedAt": "2026-08-15T00:00:00.000Z"
+        }
+      ],
+      "status": "pending_verification",
+      "updatedAt": "2026-08-15T00:00:00.000Z",
+      "expiresAt": "2026-08-30T00:00:00.000Z"
+    }
+  ]
+}

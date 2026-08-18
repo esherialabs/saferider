@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-semantic-leakage-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "reportId", "datasetId", "status", "datasetArtifactManifestSha256", "splitManifestSha256", "method", "threshold", "rowCount", "crossSplitPairCount", "unresolvedPairCount", "maximumSimilarity", "pairInventorySha256", "clusterDistribution", "restrictedDetails", "review", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-semantic-leakage-report" },
+    "schemaVersion": { "const": 1 },
+    "reportId": { "type": "string", "minLength": 8, "maxLength": 160 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["blocked", "passed"] },
+    "datasetArtifactManifestSha256": { "$ref": "#/$defs/sha256" },
+    "splitManifestSha256": { "$ref": "#/$defs/sha256" },
+    "method": {
+      "type": "object", "additionalProperties": false,
+      "required": ["embeddingModelId", "immutableRevision", "implementationId", "implementationSha256", "distanceMetric"],
+      "properties": {
+        "embeddingModelId": { "type": "string", "minLength": 3 },
+        "immutableRevision": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "implementationId": { "type": "string", "minLength": 3 },
+        "implementationSha256": { "$ref": "#/$defs/sha256" },
+        "distanceMetric": { "enum": ["cosine-similarity"] }
+      }
+    },
+    "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "rowCount": { "const": 2600 },
+    "crossSplitPairCount": { "const": 1930000 },
+    "unresolvedPairCount": { "type": "integer", "minimum": 0 },
+    "maximumSimilarity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "pairInventorySha256": { "$ref": "#/$defs/sha256" },
+    "clusterDistribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["clusterCount", "largestClusterRows", "largestClusterShare", "distributionSha256"],
+      "properties": {
+        "clusterCount": { "type": "integer", "minimum": 34 },
+        "largestClusterRows": { "type": "integer", "minimum": 1, "maximum": 78 },
+        "largestClusterShare": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.03 },
+        "distributionSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "restrictedDetails": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "artifactRef", "sha256", "containsRawText", "containsEmbeddings", "rowIdentifiersPublic"],
+      "properties": {
+        "classification": { "const": "restricted" },
+        "artifactRef": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,159}$" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "containsRawText": { "const": false },
+        "containsEmbeddings": { "type": "boolean" },
+        "rowIdentifiersPublic": { "const": false }
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reviewerRole", "reviewedAt", "evidenceRef"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "blocked"] },
+        "reviewerRole": { "const": "independent-ml-data" },
+        "reviewedAt": { "type": ["string", "null"], "minLength": 10 },
+        "evidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsRawText", "containsEmbeddings", "classification"],
+      "properties": {
+        "containsRawText": { "const": false }, "containsEmbeddings": { "const": false },
+        "classification": { "const": "public-safe-aggregate" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "passed" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "unresolvedPairCount": { "const": 0 },
+          "review": { "properties": { "status": { "const": "approved" }, "reviewedAt": { "type": "string" }, "evidenceRef": { "type": "string" } } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] }
+  }
+}

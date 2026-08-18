@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-blind-evaluation-prompt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "promptId", "blindFamilyId", "semanticClusterId", "language", "primaryCategory", "conversationForm", "riskLevel", "messages", "sourceKind", "authoring", "languageAssessment", "reviewRefs", "custody", "status"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-blind-evaluation-prompt" },
+    "schemaVersion": { "const": 1 },
+    "promptId": { "type": "string", "pattern": "^v05-blind-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-(en|sw)-[0-9]{4}$" },
+    "blindFamilyId": { "type": "string", "pattern": "^v05-blind-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}$" },
+    "semanticClusterId": { "type": "string", "pattern": "^v05-blind-cluster-[a-z0-9][a-z0-9-]{2,95}$" },
+    "language": { "enum": ["en", "sw"] },
+    "primaryCategory": { "$ref": "#/$defs/category" },
+    "conversationForm": { "enum": ["single-turn", "multi-turn"] },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"] },
+    "messages": {
+      "type": "array", "minItems": 1, "maxItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["role", "content"],
+        "properties": {
+          "role": { "enum": ["user", "assistant"] },
+          "content": { "type": "string", "minLength": 1, "maxLength": 4000 }
+        }
+      }
+    },
+    "sourceKind": { "const": "repository-authored-synthetic-blind-evaluation" },
+    "authoring": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorIdentityRef", "independentFromTraining", "toolId", "toolRevision", "configurationSha256", "termsAssessmentRef", "syntheticOnlyAttested", "createdAt"],
+      "properties": {
+        "authorIdentityRef": { "type": "string", "minLength": 3 },
+        "independentFromTraining": { "const": true },
+        "toolId": { "type": "string", "minLength": 2 },
+        "toolRevision": { "type": "string", "minLength": 2 },
+        "configurationSha256": { "$ref": "#/$defs/sha256" },
+        "termsAssessmentRef": { "type": "string", "minLength": 3 },
+        "syntheticOnlyAttested": { "const": true },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "languageAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reviewerIdentityRef", "competence", "naturalness", "criticalMeaning", "evidenceRef"],
+      "properties": {
+        "reviewerIdentityRef": { "type": "string", "minLength": 3 },
+        "competence": { "enum": ["native-en", "fluent-en", "native-sw", "fluent-sw"] },
+        "naturalness": { "const": "passed" }, "criticalMeaning": { "const": "passed" },
+        "evidenceRef": { "type": "string", "minLength": 3 }
+      }
+    },
+    "reviewRefs": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } },
+    "custody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["custodianIdentityRef", "trainingEngineerAccess", "routinePromptIterationAccess", "freezeEvidenceRef", "accessLogEvidenceRef"],
+      "properties": {
+        "custodianIdentityRef": { "type": "string", "minLength": 3 },
+        "trainingEngineerAccess": { "const": false }, "routinePromptIterationAccess": { "const": false },
+        "freezeEvidenceRef": { "type": "string", "minLength": 3 }, "accessLogEvidenceRef": { "type": "string", "minLength": 3 }
+      }
+    },
+    "status": { "const": "frozen-blind-evaluation" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] }
+  }
+}

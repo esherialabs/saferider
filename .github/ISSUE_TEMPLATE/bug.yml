@@ -1,0 +1,33 @@
+name: Synthetic bug report
+description: Report reproducible product behavior without sensitive or real-person data.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic data only. Do not include survivor or participant details,
+        evidence, exact locations, credentials, raw prompts/completions, private
+        security findings, or partner-confidential material.
+  - type: input
+    id: revision
+    attributes:
+      label: Commit or app version
+      description: Use a public commit hash or version only.
+    validations:
+      required: true
+  - type: textarea
+    id: synthetic_steps
+    attributes:
+      label: Synthetic reproduction
+      description: Describe the minimum content-free steps and expected behavior.
+    validations:
+      required: true
+  - type: dropdown
+    id: sensitive
+    attributes:
+      label: Sensitive material check
+      options:
+        - "I confirm this report contains synthetic, public-safe information only."
+    validations:
+      required: true

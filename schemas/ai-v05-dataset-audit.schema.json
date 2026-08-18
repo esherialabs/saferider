@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-dataset-audit.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "auditId", "bindings", "counts", "structural", "privacy", "provenance", "language", "distribution", "overlap", "diversity", "semanticLeakage", "reviewCoverage", "restrictedDetails", "implementation", "passed", "failures"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-dataset-audit" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "auditId": { "type": "string", "minLength": 8 },
+    "bindings": { "type": "object", "minProperties": 7 },
+    "counts": { "type": "object", "minProperties": 3 },
+    "structural": { "$ref": "#/$defs/check" },
+    "privacy": { "$ref": "#/$defs/check" },
+    "provenance": { "$ref": "#/$defs/check" },
+    "language": { "$ref": "#/$defs/check" },
+    "distribution": { "$ref": "#/$defs/check" },
+    "overlap": { "type": "object", "minProperties": 8 },
+    "diversity": { "type": "object", "minProperties": 8 },
+    "semanticLeakage": { "type": "object", "minProperties": 5 },
+    "reviewCoverage": { "$ref": "#/$defs/check" },
+    "restrictedDetails": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "containsRawText", "rowIdentifiersPublic", "findingCount", "findingInventorySha256"],
+      "properties": {
+        "classification": { "const": "restricted" }, "containsRawText": { "const": false },
+        "rowIdentifiersPublic": { "const": false }, "findingCount": { "type": "integer", "minimum": 0 },
+        "findingInventorySha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "implementation": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": { "path": { "const": "scripts/saferide-gemma4-v05-audit.mjs" }, "sha256": { "$ref": "#/$defs/sha256" } }
+    },
+    "passed": { "type": "boolean" },
+    "failures": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "check": {
+      "type": "object",
+      "required": ["passed", "findingCount"],
+      "properties": { "passed": { "type": "boolean" }, "findingCount": { "type": "integer", "minimum": 0 } }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "controlVersion": "moderated-test-controls.2026-07-30.1",
+  "eventSchemaVersion": "measurement-event.v1",
+  "capability": {
+    "status": "disabled",
+    "reason": "Safeguarding protocol, measurement consent, retention, test-build, and independent privacy approvals are pending."
+  },
+  "approval": {
+    "status": "pending",
+    "approvalId": null,
+    "approvedAt": null,
+    "expiresAt": null,
+    "ownerRole": "product and safeguarding lead",
+    "reviewerRole": "independent privacy reviewer"
+  },
+  "consent": {
+    "requiredVersion": null,
+    "separateFromPathwayConsent": true,
+    "withdrawalDeletesLocalEvents": true
+  },
+  "runtime": {
+    "allowedEnvironments": ["test", "staging"],
+    "allowedBuildProfiles": ["test", "preview"],
+    "productionAllowed": false,
+    "networkUploadAllowed": false
+  },
+  "retention": {
+    "hours": null,
+    "maxEvents": 500,
+    "maxIssueReports": 100
+  }
+}

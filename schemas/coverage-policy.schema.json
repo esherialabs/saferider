@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/coverage-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "policyId", "global", "criticalTypeScript", "criticalNode"],
+  "properties": {
+    "schema": { "const": "schemas/coverage-policy.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "policyId": { "const": "saferide-coverage-policy-v1" },
+    "global": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimumPercent", "include", "exclude"],
+      "properties": {
+        "minimumPercent": { "$ref": "#/$defs/fourMetrics" },
+        "include": { "$ref": "#/$defs/nonEmptyArray" },
+        "exclude": { "$ref": "#/$defs/nonEmptyArray" }
+      }
+    },
+    "criticalTypeScript": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimumPercent", "modules", "tests"],
+      "properties": {
+        "minimumPercent": { "$ref": "#/$defs/fourMetrics" },
+        "modules": { "$ref": "#/$defs/nonEmptyArray" },
+        "tests": { "$ref": "#/$defs/nonEmptyArray" }
+      }
+    },
+    "criticalNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimumPercent", "modules", "tests"],
+      "properties": {
+        "minimumPercent": { "$ref": "#/$defs/threeMetrics" },
+        "modules": { "$ref": "#/$defs/nonEmptyArray" },
+        "tests": { "$ref": "#/$defs/nonEmptyArray" }
+      }
+    }
+  },
+  "$defs": {
+    "metric": { "type": "number", "minimum": 0, "maximum": 100 },
+    "fourMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branches", "functions", "lines", "statements"],
+      "properties": {
+        "branches": { "$ref": "#/$defs/metric" },
+        "functions": { "$ref": "#/$defs/metric" },
+        "lines": { "$ref": "#/$defs/metric" },
+        "statements": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "threeMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branches", "functions", "lines"],
+      "properties": {
+        "branches": { "$ref": "#/$defs/metric" },
+        "functions": { "$ref": "#/$defs/metric" },
+        "lines": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "nonEmptyArray": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+  }
+}

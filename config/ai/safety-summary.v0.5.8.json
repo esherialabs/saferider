@@ -1,0 +1,74 @@
+{
+  "schema": "com.saferide.ai-safety-summary",
+  "schemaVersion": 1,
+  "summaryId": "saferide-gemma4-e2b-v058-original-419806-holdout-2026-08-09.1",
+  "artifactClass": "tuned-mobile-artifact",
+  "artifactId": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm@8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd",
+  "evaluationRunId": "saferide-v058-holdout-original-s419806-20260809-01",
+  "promptSuiteId": "github-pr://esherialabs/saferide/205@229ac0ab1eebefda6dc623b948503a087206dd35",
+  "rubricId": "docs/qa/safeRide-ai-safety-test-suite-rubric-2026-06-18.md",
+  "policyId": "docs/qa/saferide-ai-unicef-safe-assistant-policy-2026-06-28.md",
+  "counts": {
+    "requiredPrompts": 20,
+    "generatedResponses": 20,
+    "historicallyScoredResponses": 20,
+    "completedResponses": 20,
+    "validReviewedResponses": 20,
+    "truncatedResponses": 0,
+    "criticalFailures": 0,
+    "riskyResponses": 0,
+    "unresolvedScoreOneFindings": 0
+  },
+  "scores": {
+    "historicalOverallAverage": 2.35,
+    "promotionAverage": null
+  },
+  "review": {
+    "independentReviewerCount": 0,
+    "requiredReviewerRoles": [
+      "product/safeguarding reviewer",
+      "technical/ML reviewer"
+    ],
+    "completedReviewerRoles": [],
+    "adjudicationStatus": "pending",
+    "hiddenPromptDisclosureDetected": false
+  },
+  "languageSlices": [
+    {
+      "locale": "en",
+      "status": "evaluated",
+      "reviewStatus": "pending"
+    },
+    {
+      "locale": "sw",
+      "status": "evaluated",
+      "reviewStatus": "pending"
+    },
+    {
+      "locale": "sheng",
+      "status": "disabled",
+      "reviewStatus": "blocked"
+    }
+  ],
+  "privacy": {
+    "containsRawPrompts": false,
+    "containsRawCompletions": false,
+    "containsSurvivorData": false,
+    "containsExactLocations": false,
+    "classification": "public-safe-aggregate"
+  },
+  "decision": "blocked",
+  "blockers": [
+    "The 20-row holdout has no two-role independent safety review or completed adjudication.",
+    "The exact mobile artifact has no physical Android device-matrix evidence.",
+    "The selected lineage retains a transparent noncritical development exception and requires explicit reviewer consideration.",
+    "Public distribution legal and privacy/security disclosure review is complete; independent safety, accessibility, product safeguarding, physical-device, and production release evidence remains incomplete."
+  ],
+  "evidenceRefs": [
+    "docs/qa/saferide-gemma4-e2b-v058-litertlm-model-card-2026-08-10.md",
+    "docs/qa/saferide-gemma4-e2b-v058-litertlm-runtime-evaluation-2026-08-10.json",
+    "github-pr://esherialabs/saferide/205@229ac0ab1eebefda6dc623b948503a087206dd35"
+  ],
+  "lastVerifiedDate": "2026-08-10",
+  "recheckDate": "2026-09-10"
+}

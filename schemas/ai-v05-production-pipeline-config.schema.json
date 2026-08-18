@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-production-pipeline-config.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "runId", "datasetId", "mode", "runCreatedAt", "sourceCommit", "generation", "paths", "handoff", "forbiddenActions", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-production-pipeline-config" }, "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "pattern": "^v05-production-[a-z0-9][a-z0-9._-]{7,95}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" }, "mode": { "const": "production" },
+    "runCreatedAt": { "type": "string", "format": "date-time" }, "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "generation": {
+      "type": "object", "additionalProperties": false, "required": ["enabled", "configurationPath"],
+      "properties": { "enabled": { "type": "boolean" }, "configurationPath": { "$ref": "#/$defs/path" } }
+    },
+    "paths": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenarioFrozen", "splitApprovals", "policy", "systemPrompt", "tokenizationReport", "candidateSemanticReport", "reviewLedger", "finalSemanticReport", "finalSemanticDetails", "blindPrompts", "registerEvidence"],
+      "properties": {
+        "scenarioFrozen": { "$ref": "#/$defs/path" }, "splitApprovals": { "$ref": "#/$defs/path" },
+        "policy": { "$ref": "#/$defs/path" }, "systemPrompt": { "$ref": "#/$defs/path" },
+        "tokenizationReport": { "$ref": "#/$defs/path" }, "candidateSemanticReport": { "$ref": "#/$defs/path" },
+        "reviewLedger": { "$ref": "#/$defs/path" }, "finalSemanticReport": { "$ref": "#/$defs/path" },
+        "finalSemanticDetails": { "$ref": "#/$defs/path" }, "blindPrompts": { "$ref": "#/$defs/path" },
+        "registerEvidence": { "$ref": "#/$defs/path" }
+      }
+    },
+    "handoff": {
+      "type": "object", "additionalProperties": false, "required": ["authorized", "evidenceRef"],
+      "properties": { "authorized": { "const": false }, "evidenceRef": { "type": "null" } }
+    },
+    "forbiddenActions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["modelDownloads", "colabTraining", "deployments", "easBuilds", "awsOperations", "dockerResets"],
+      "properties": { "modelDownloads": { "const": false }, "colabTraining": { "const": false }, "deployments": { "const": false }, "easBuilds": { "const": false }, "awsOperations": { "const": false }, "dockerResets": { "const": false } }
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["syntheticOnly", "contentLoggingAllowed", "holdoutLoggingAllowed", "environmentLoggingAllowed"],
+      "properties": { "syntheticOnly": { "const": true }, "contentLoggingAllowed": { "const": false }, "holdoutLoggingAllowed": { "const": false }, "environmentLoggingAllowed": { "const": false } }
+    }
+  },
+  "$defs": { "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).{3,240}$" } }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/public-safe-case-timeline-export.schema.json",
+  "title": "SafeRide public-safe case timeline export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "classification", "exportMetadata", "case", "events", "attachments", "limitations"],
+  "properties": {
+    "schema": { "const": "com.saferide.public-safe-case-timeline-export" },
+    "schemaVersion": { "const": 1 },
+    "classification": { "const": "public-safe-metadata" },
+    "exportMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generatedAt", "publicSafe", "protectedExportEnabled", "providerReceiptClaimed"],
+      "properties": {
+        "generatedAt": { "$ref": "#/$defs/dateTime" },
+        "publicSafe": { "const": true },
+        "protectedExportEnabled": { "const": false },
+        "providerReceiptClaimed": { "const": false }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anonymizedId", "state", "providerReceiptStatus"],
+      "properties": {
+        "anonymizedId": { "type": "string", "pattern": "^case_[a-f0-9]{24}$" },
+        "state": { "$ref": "#/$defs/state" },
+        "providerReceiptStatus": { "const": "not_confirmed" }
+      }
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["anonymizedId", "eventType", "timestamp", "state", "summaryCode", "attachmentRefs", "evidenceHashRefs"],
+        "properties": {
+          "anonymizedId": { "type": "string", "pattern": "^event_[a-f0-9]{24}$" },
+          "eventType": { "$ref": "#/$defs/state" },
+          "timestamp": { "$ref": "#/$defs/dateTime" },
+          "state": { "$ref": "#/$defs/state" },
+          "summaryCode": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "attachmentRefs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^attachment_[a-f0-9]{24}$" } },
+          "evidenceHashRefs": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+        }
+      }
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["anonymizedId", "type", "mimeCategory", "sizeBytes", "evidenceSha256", "status"],
+        "properties": {
+          "anonymizedId": { "type": "string", "pattern": "^attachment_[a-f0-9]{24}$" },
+          "type": { "enum": ["photo", "audio", "video", "document", "other"] },
+          "mimeCategory": { "enum": ["image", "audio", "video", "document", "other"] },
+          "sizeBytes": { "type": "integer", "minimum": 0, "maximum": 2147483648 },
+          "evidenceSha256": { "$ref": "#/$defs/sha256" },
+          "status": { "enum": ["local", "queued", "quarantined", "verified", "failed", "deleted"] }
+        }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "state": { "enum": ["draft", "submitted", "provider_pending", "referred", "follow_up", "closed", "failed", "queued"] },
+    "dateTime": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

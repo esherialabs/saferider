@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-sagemaker-input-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "manifestId",
+    "createdAt",
+    "sourceCommit",
+    "datasetId",
+    "region",
+    "trainingArchive",
+    "baseModel",
+    "storage",
+    "exclusions",
+    "privacy"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-sagemaker-input-manifest" },
+    "schemaVersion": { "const": 1 },
+    "manifestId": { "type": "string", "pattern": "^saferide-v05-sagemaker-input-[a-z0-9.-]{8,96}$" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "sourceCommit": { "$ref": "#/$defs/commit" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "region": { "const": "eu-central-1" },
+    "trainingArchive": { "$ref": "#/$defs/stagedObject" },
+    "baseModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modelId", "revision", "totalBytes", "fileCount", "files", "s3Prefix"],
+      "properties": {
+        "modelId": { "const": "google/gemma-4-E2B-it" },
+        "revision": { "const": "70af34e20bd4b7a91f0de6b22675850c43922a03" },
+        "totalBytes": { "type": "integer", "minimum": 10000000000 },
+        "fileCount": { "const": 9 },
+        "files": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": { "$ref": "#/$defs/stagedFile" }
+        },
+        "s3Prefix": { "type": "string", "pattern": "^s3://[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]/[^\\s]+/$" }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bucket", "prefix", "versioning", "serverSideEncryption", "publicAccessBlocked"],
+      "properties": {
+        "bucket": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$" },
+        "prefix": { "type": "string", "pattern": "^saferide/v05/sagemaker/[a-z0-9./_-]+/$" },
+        "versioning": { "const": "Enabled" },
+        "serverSideEncryption": { "const": "AES256" },
+        "publicAccessBlocked": { "const": true }
+      }
+    },
+    "exclusions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["qualityHoldout", "safetyHoldout", "blindPrompts", "candidateContent", "reviewLedgers", "reviewerIdentities", "credentials"],
+      "properties": {
+        "qualityHoldout": { "const": true },
+        "safetyHoldout": { "const": true },
+        "blindPrompts": { "const": true },
+        "candidateContent": { "const": true },
+        "reviewLedgers": { "const": true },
+        "reviewerIdentities": { "const": true },
+        "credentials": { "const": true }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "containsSurvivorData", "containsCredentials", "containsRestrictedEvaluationBytes"],
+      "properties": {
+        "classification": { "const": "controlled-training-input" },
+        "containsSurvivorData": { "const": false },
+        "containsCredentials": { "const": false },
+        "containsRestrictedEvaluationBytes": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "s3Uri": { "type": "string", "pattern": "^s3://[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]/[^\\s]+$" },
+    "stagedObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "sha256", "sizeBytes", "packageManifestSha256", "topLevelDirectory", "s3Uri", "versionId", "etag"],
+      "properties": {
+        "fileName": { "type": "string", "minLength": 3 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "sizeBytes": { "type": "integer", "minimum": 1 },
+        "packageManifestSha256": { "$ref": "#/$defs/sha256" },
+        "topLevelDirectory": { "type": "string", "pattern": "^saferide-v05-sagemaker-input-[a-f0-9]{12}$" },
+        "s3Uri": { "$ref": "#/$defs/s3Uri" },
+        "versionId": { "type": "string", "minLength": 1 },
+        "etag": { "type": "string", "minLength": 3 }
+      }
+    },
+    "stagedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "sizeBytes", "s3Uri", "versionId", "etag"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\s]+$" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "sizeBytes": { "type": "integer", "minimum": 1 },
+        "s3Uri": { "$ref": "#/$defs/s3Uri" },
+        "versionId": { "type": "string", "minLength": 1 },
+        "etag": { "type": "string", "minLength": 3 }
+      }
+    }
+  }
+}

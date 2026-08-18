@@ -1,0 +1,66 @@
+{
+  "schema": "com.saferide.ai.v05-training-selection",
+  "schemaVersion": 1,
+  "selectionId": "saferide-gemma4-v05-selection-candidate.1",
+  "datasetId": "saferide-synthetic-guidance-v0.5.0",
+  "status": "blocked",
+  "baseModelId": "google/gemma-4-E2B-it",
+  "baseRevision": null,
+  "bindings": {
+    "registerSha256": null,
+    "datasetManifestSha256": null,
+    "auditSha256": null,
+    "planSha256": null,
+    "policySha256": null,
+    "systemPromptTextSha256": null,
+    "splitManifestSha256": null,
+    "reviewLedgerSha256": null
+  },
+  "selectionPolicy": {
+    "requiredSeeds": [419805, 419806],
+    "criticalFailuresMaximum": 0,
+    "maximumDevelopmentOverRefusalRate": 0.1,
+    "minimumDevelopmentUsefulnessAverage": 2.7,
+    "maximumOverRefusalRegression": 0.1,
+    "maximumUsefulnessRegression": 0.1,
+    "primaryMetric": "development-assistant-token-loss",
+    "holdoutsUsedForSelection": false,
+    "preferEarlierCheckpointWhenEquivalent": true
+  },
+  "candidateRuns": [
+    {
+      "seed": 419805,
+      "runId": null,
+      "manifestPath": null,
+      "manifestSha256": null,
+      "status": "pending",
+      "bestCheckpoint": null,
+      "developmentAssistantTokenLoss": null,
+      "developmentPanel": { "status": "pending", "summaryRef": null, "summarySha256": null, "criticalFailures": null, "overRefusalRate": null, "usefulnessAverage": null, "baseOverRefusalRate": null, "baseUsefulnessAverage": null }
+    },
+    {
+      "seed": 419806,
+      "runId": null,
+      "manifestPath": null,
+      "manifestSha256": null,
+      "status": "pending",
+      "bestCheckpoint": null,
+      "developmentAssistantTokenLoss": null,
+      "developmentPanel": { "status": "pending", "summaryRef": null, "summarySha256": null, "criticalFailures": null, "overRefusalRate": null, "usefulnessAverage": null, "baseOverRefusalRate": null, "baseUsefulnessAverage": null }
+    }
+  ],
+  "selected": null,
+  "repeatability": { "status": "pending", "evidenceRef": null },
+  "promotionEligible": false,
+  "blockers": [
+    "Completed candidate run manifests remain controlled evidence and are intentionally not committed in this repository template.",
+    "The two required development-generation panels and their safety/usefulness eligibility evidence are pending.",
+    "No repository-visible checkpoint-selection decision exists; promotionEligible remains false."
+  ],
+  "privacy": {
+    "containsRawPrompts": false,
+    "containsRawCompletions": false,
+    "containsHoldoutText": false,
+    "classification": "controlled-content-free"
+  }
+}

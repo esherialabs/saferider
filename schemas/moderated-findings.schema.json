@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/moderated-findings.schema.json",
+  "title": "SafeRide moderated testing corrective-action register",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sourceRevision", "cohortSummarySha256", "contentFree", "findings"],
+  "properties": {
+    "schemaVersion": { "const": "moderated-findings.v1" },
+    "sourceRevision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "cohortSummarySha256": { "$ref": "#/$defs/sha256" },
+    "contentFree": { "const": true },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["findingId", "severity", "category", "issueReference", "status", "fixCommit", "retestStatus", "reviewDecision"],
+        "properties": {
+          "findingId": { "type": "string", "pattern": "^MT-[0-9]{3,}$" },
+          "severity": { "enum": ["low", "medium", "high", "critical"] },
+          "category": { "enum": ["navigation", "copy_clarity", "accessibility", "privacy_boundary", "offline_recovery", "performance", "unexpected_error"] },
+          "issueReference": { "type": "string", "pattern": "^ESH-[0-9]+$" },
+          "status": { "enum": ["open", "fixed", "risk_accepted"] },
+          "fixCommit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" },
+          "retestStatus": { "enum": ["pending", "pass", "fail", "not_applicable"] },
+          "reviewDecision": { "type": ["string", "null"], "minLength": 1 }
+        }
+      }
+    }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-safe-assistant-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "policyId", "version", "status", "effectiveDate", "scope", "languages", "criticalTriggers", "boundaries", "evaluation", "privacy", "rollout", "approvals"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.safe-assistant-policy" },
+    "schemaVersion": { "const": 1 },
+    "policyId": { "$ref": "#/$defs/nonEmpty" },
+    "version": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "enum": ["draft", "review-pending", "approved", "blocked", "superseded"] },
+    "effectiveDate": { "type": ["string", "null"] },
+    "scope": { "$ref": "#/$defs/nonEmpty" },
+    "languages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en", "sw", "sheng"],
+      "properties": {
+        "en": { "$ref": "#/$defs/language" },
+        "sw": { "$ref": "#/$defs/language" },
+        "sheng": { "$ref": "#/$defs/language" }
+      }
+    },
+    "criticalTriggers": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "boundaries": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["boundaryId", "category", "requiredBehavior", "prohibitedBehavior", "failureSeverity"],
+        "properties": {
+          "boundaryId": { "$ref": "#/$defs/nonEmpty" },
+          "category": { "$ref": "#/$defs/nonEmpty" },
+          "requiredBehavior": { "$ref": "#/$defs/nonEmpty" },
+          "prohibitedBehavior": { "$ref": "#/$defs/nonEmpty" },
+          "failureSeverity": { "enum": ["critical", "major", "minor"] }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredReviewerRoles", "completeResponsesOnly", "scoreOneRequiresMitigationAndRetest", "adjudicationDifferenceThreshold", "requiredPromptCoveragePercent", "maximumCriticalFailures", "maximumTruncationRatePercentAfterRerun", "minimumOverallAverage", "minimumEmergencyPrivacyFabricationAverage", "maximumRiskyOverall", "maximumRiskyPerCategory"],
+      "properties": {
+        "requiredReviewerRoles": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "completeResponsesOnly": { "type": "boolean" },
+        "scoreOneRequiresMitigationAndRetest": { "type": "boolean" },
+        "adjudicationDifferenceThreshold": { "type": "integer", "minimum": 0 },
+        "requiredPromptCoveragePercent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "maximumCriticalFailures": { "type": "integer", "minimum": 0 },
+        "maximumTruncationRatePercentAfterRerun": { "type": "number", "minimum": 0, "maximum": 100 },
+        "minimumOverallAverage": { "type": "number", "minimum": 1, "maximum": 3 },
+        "minimumEmergencyPrivacyFabricationAverage": { "type": "number", "minimum": 1, "maximum": 3 },
+        "maximumRiskyOverall": { "type": "integer", "minimum": 0 },
+        "maximumRiskyPerCategory": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawPromptLoggingAllowed", "rawCompletionLoggingAllowed", "survivorDataAllowed", "exactLocationAllowed", "publicResultContent"],
+      "properties": {
+        "rawPromptLoggingAllowed": { "type": "boolean" },
+        "rawCompletionLoggingAllowed": { "type": "boolean" },
+        "survivorDataAllowed": { "type": "boolean" },
+        "exactLocationAllowed": { "type": "boolean" },
+        "publicResultContent": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "rollout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxPercent", "capabilityEnabled", "reason"],
+      "properties": {
+        "maxPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "capabilityEnabled": { "type": "boolean" },
+        "reason": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "status", "reviewerIdentity", "reviewedAt", "artifactRef"],
+        "properties": {
+          "role": { "$ref": "#/$defs/nonEmpty" },
+          "status": { "enum": ["pending", "approved", "blocked"] },
+          "reviewerIdentity": { "type": ["string", "null"] },
+          "reviewedAt": { "type": ["string", "null"] },
+          "artifactRef": { "type": ["string", "null"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evaluationEnabled", "productEnabled", "humanReview"],
+      "properties": {
+        "evaluationEnabled": { "type": "boolean" },
+        "productEnabled": { "type": "boolean" },
+        "humanReview": { "enum": ["absent", "pending", "approved", "blocked"] }
+      }
+    }
+  }
+}

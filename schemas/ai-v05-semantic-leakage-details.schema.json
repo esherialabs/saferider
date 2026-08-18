@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-semantic-leakage-details.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "reportId", "datasetId", "status", "classification",
+    "datasetArtifactManifestSha256", "splitManifestSha256", "methodSha256", "threshold",
+    "rowCount", "evaluatedCrossSplitPairCount", "unresolvedPairCount", "maximumSimilarity",
+    "pairs", "pairInventorySha256", "clusters", "embeddingArtifact", "privacy"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-semantic-leakage-details" },
+    "schemaVersion": { "const": 1 },
+    "reportId": { "type": "string", "minLength": 8, "maxLength": 160 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["blocked", "passed"] },
+    "classification": { "const": "restricted" },
+    "datasetArtifactManifestSha256": { "$ref": "#/$defs/sha256" },
+    "splitManifestSha256": { "$ref": "#/$defs/sha256" },
+    "methodSha256": { "$ref": "#/$defs/sha256" },
+    "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "rowCount": { "const": 2600 },
+    "evaluatedCrossSplitPairCount": { "const": 1930000 },
+    "unresolvedPairCount": { "type": "integer", "minimum": 0 },
+    "maximumSimilarity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pairId", "leftRowId", "leftSplit", "rightRowId", "rightSplit", "similarity", "disposition", "adjudicationEvidenceRef"],
+        "properties": {
+          "pairId": { "$ref": "#/$defs/sha256" },
+          "leftRowId": { "type": "string", "minLength": 8, "maxLength": 160 },
+          "leftSplit": { "$ref": "#/$defs/split" },
+          "rightRowId": { "type": "string", "minLength": 8, "maxLength": 160 },
+          "rightSplit": { "$ref": "#/$defs/split" },
+          "similarity": { "type": "number", "minimum": 0, "maximum": 1 },
+          "disposition": { "enum": ["distinct-after-independent-review", "unresolved"] },
+          "adjudicationEvidenceRef": { "type": ["string", "null"], "minLength": 3, "maxLength": 240 }
+        }
+      }
+    },
+    "pairInventorySha256": { "$ref": "#/$defs/sha256" },
+    "clusters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assignmentCount", "rowInventorySha256", "distributionSha256", "assignments"],
+      "properties": {
+        "assignmentCount": { "const": 2600 },
+        "rowInventorySha256": { "$ref": "#/$defs/sha256" },
+        "distributionSha256": { "$ref": "#/$defs/sha256" },
+        "assignments": {
+          "type": "array", "minItems": 2600, "maxItems": 2600,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["rowId", "clusterId"],
+            "properties": {
+              "rowId": { "type": "string", "minLength": 8, "maxLength": 160 },
+              "clusterId": { "type": "string", "minLength": 3, "maxLength": 160 }
+            }
+          }
+        }
+      }
+    },
+    "embeddingArtifact": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["classification", "artifactRef", "sha256", "sizeBytes", "format", "containsRawText"],
+          "properties": {
+            "classification": { "const": "restricted" },
+            "artifactRef": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,159}$" },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "sizeBytes": { "type": "integer", "minimum": 1 },
+            "format": { "enum": ["safetensors", "npy", "parquet", "jsonl"] },
+            "containsRawText": { "const": false }
+          }
+        }
+      ]
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsRawText", "containsSurvivorData", "rowIdentifiersPublic", "containsEmbeddings"],
+      "properties": {
+        "containsRawText": { "const": false },
+        "containsSurvivorData": { "const": false },
+        "rowIdentifiersPublic": { "const": false },
+        "containsEmbeddings": { "type": "boolean" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "passed" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "unresolvedPairCount": { "const": 0 },
+          "embeddingArtifact": { "type": "object" },
+          "privacy": { "properties": { "containsEmbeddings": { "const": true } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "privacy": { "properties": { "containsEmbeddings": { "const": true } }, "required": ["containsEmbeddings"] } } },
+      "then": { "properties": { "embeddingArtifact": { "type": "object" } } },
+      "else": { "properties": { "embeddingArtifact": { "type": "null" } } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] }
+  }
+}

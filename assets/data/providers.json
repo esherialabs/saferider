@@ -1,0 +1,174 @@
+[
+  {
+    "id": "1",
+    "name": "National GBV Toll-Free Helpline (HAK 1195)",
+    "type": "Hotline",
+    "distance": "\u2014",
+    "hours": "24/7",
+    "isOpen": true,
+    "languages": [
+      "EN",
+      "SW"
+    ],
+    "services": [
+      "GBV support",
+      "Referral services"
+    ],
+    "channels": {
+      "call": true,
+      "whatsapp": false,
+      "sms": false
+    },
+    "phone": "1195",
+    "safetyPhrase": "Ask for GBV support",
+    "metadata": {
+      "reviewStatus": "Source-linked national helpline",
+      "notes": "1195 is the Kenya GBV toll-free helpline referenced by HAK and UN Women Kenya.",
+      "sources": [
+        {
+          "title": "Healthcare Assistance Kenya - 1195 Helpline",
+          "url": "https://hakgbv1195.org/"
+        },
+        {
+          "title": "UN Women Kenya - National toll-free helpline 1195",
+          "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+        }
+      ]
+    }
+  },
+  {
+    "id": "2",
+    "name": "Gender Violence Recovery Centre (GVRC)",
+    "type": "GBV center",
+    "distance": "\u2014",
+    "hours": "Contact provider to confirm hours",
+    "isOpen": false,
+    "languages": [
+      "EN",
+      "SW"
+    ],
+    "services": [
+      "Medical care",
+      "Psychosocial support",
+      "Referral support"
+    ],
+    "channels": {
+      "call": true,
+      "whatsapp": false,
+      "sms": false
+    },
+    "phone": "0719 638 006",
+    "address": "Kilimani, Nairobi",
+    "metadata": {
+      "reviewStatus": "Source-linked contact; hours not asserted",
+      "notes": "Official contact page also lists 0709 667 000. SafeRide should confirm live referral workflow before claiming partnership.",
+      "sources": [
+        {
+          "title": "GVRC - Contact Us",
+          "url": "https://gvrc.co.ke/contact-us/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "3",
+    "name": "Coalition on Violence Against Women (COVAW)",
+    "type": "GBV center",
+    "distance": "\u2014",
+    "hours": "Contact provider to confirm hours",
+    "isOpen": false,
+    "languages": [
+      "EN",
+      "SW"
+    ],
+    "services": [
+      "Counselling",
+      "Legal support",
+      "Referral services"
+    ],
+    "channels": {
+      "call": true,
+      "whatsapp": false,
+      "sms": false
+    },
+    "phone": "0733 594 794",
+    "address": "Rhapta Road, Westlands, Nairobi",
+    "metadata": {
+      "reviewStatus": "Source-linked contact; hours not asserted",
+      "notes": "Official contact page also lists 0722 594 794. SafeRide should confirm live referral workflow before claiming partnership.",
+      "sources": [
+        {
+          "title": "COVAW - Get Help",
+          "url": "https://covaw.or.ke/get-help/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "4",
+    "name": "FIDA Kenya",
+    "type": "Legal aid",
+    "distance": "\u2014",
+    "hours": "Contact provider to confirm availability",
+    "isOpen": false,
+    "languages": [
+      "EN"
+    ],
+    "services": [
+      "Legal aid",
+      "Rights information"
+    ],
+    "channels": {
+      "call": false,
+      "whatsapp": false,
+      "sms": false
+    },
+    "address": "Nairobi",
+    "metadata": {
+      "reviewStatus": "Contact details pending manual verification",
+      "notes": "Listed as a legal-aid option only; no SafeRide partnership or live contact channel is asserted.",
+      "sources": [
+        {
+          "title": "FIDA Kenya - Contact",
+          "url": "https://www.fida-kenya.org/contact/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "5",
+    "name": "Human Rights Agenda (HURIA)",
+    "type": "Legal aid",
+    "distance": "\u2014",
+    "hours": "Contact provider to confirm availability",
+    "isOpen": false,
+    "languages": [
+      "EN"
+    ],
+    "services": [
+      "Legal aid",
+      "Human rights support",
+      "Alternative dispute resolution"
+    ],
+    "channels": {
+      "call": false,
+      "whatsapp": false,
+      "sms": false
+    },
+    "address": "Kenya Coast",
+    "metadata": {
+      "reviewStatus": "Official source found; contact activation pending accountable review",
+      "notes": "HURIA's official site lists Coast-based legal-aid services and a public-support hotline. SafeRide does not enable the contact action or imply a partnership until provider-pack review is complete.",
+      "sources": [
+        {
+          "title": "HURIA - Contact us",
+          "url": "https://huria.ngo/contact-us/"
+        },
+        {
+          "title": "HURIA - Mombasa Legal Aid Centre",
+          "url": "https://huria.ngo/labour-disputes-flocks-hurias-mombasa-legal-aid-center/"
+        }
+      ]
+    }
+  }
+]

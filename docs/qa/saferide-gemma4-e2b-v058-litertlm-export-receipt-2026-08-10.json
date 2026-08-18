@@ -1,0 +1,110 @@
+{
+  "schema": "com.saferide.gemma4.litertlm-export-receipt",
+  "schemaVersion": 1,
+  "issue": "ESH-4198",
+  "status": "artifact-produced-android-pending",
+  "createdAt": "2026-08-10T10:25:45.000Z",
+  "lineage": {
+    "baseModel": "google/gemma-4-E2B-it",
+    "baseRevision": "70af34e20bd4b7a91f0de6b22675850c43922a03",
+    "baseInventorySha256": "ff7ebf6346e08ddc6c9901686b1a007ff383995a2bf15182feef5c1dbcb1d25b",
+    "baseTensorSha256": "2db5482b20d746879bb3ef79b5203e9075a2e2b98f54ec7c2f281c1477ddc550",
+    "adapterRepo": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-adapter",
+    "adapterRevision": "019dd8182883ad0721ffa70f4680d6977b7be99b",
+    "adapterTensorSha256": "1f8631d41dd3e16a62b1a95a7676c7585655ea97d100719ce0908902fb9e80aa",
+    "adapterFreezeManifestSha256": "d12b6d5d89c1facc1e2114e684d941aabf1d2dcc9f0cf7cbb9094dd44a4301cb",
+    "adapterFreezeReceiptSha256": "436e672e7c0e24b6f97d1855bb71f242a9e78676054144868ca7a11a203e63d8",
+    "selectedRunId": "saferide-v058-candidate-s419806-20260809c",
+    "selectionCommit": "229ac0ab1eebefda6dc623b948503a087206dd35",
+    "continuationSelected": false,
+    "trainingDataset": {
+      "huggingFaceRepo": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-training-data",
+      "immutableRevision": "ab43518babcf6255fddf7ae0087f7ce78a84a707",
+      "manifestSha256": "1cbb5931f418f3c63ad5c671ab7617f54ed679fc745ea96f7543511bdc638076",
+      "combinedUniqueTrainSha256": "669835b5f680b2198cf06d8c23a02d2e9aba2acba816c6283a0cdbbf8586a15e",
+      "weightedTrainSha256": "b6fd044f9e7854d358200288b195787fc9ed6e8eea52925eea9aa0d48783689e",
+      "downloadVerificationPassed": true
+    }
+  },
+  "export": {
+    "repositoryBaseRevision": "f0101a0bb1a58b36e9d572e3f9f4d8194225762d",
+    "exporterScriptSha256": "f823b1ad059ed7069f6553cac75ee699e09ed1ac345e296ceec497c52fdffa12",
+    "exporterContainerImageSha256": "8aff6a3be0d2d6e3ffdf8d8aa7ffd235b5b6167d1fc3ff872ba54c51b7f9a758",
+    "litertTorchSourceRevision": "ed258930cc86bd37f8120c2e4218eb67b57502e9",
+    "sourceLoadDtype": "float32",
+    "quantizationRecipe": "dynamic_wi8_afp32",
+    "prefillLengths": [128],
+    "cacheLength": 2048,
+    "splitCache": false,
+    "externalEmbedder": true,
+    "cpuOnly": true,
+    "networkRequiredDuringConversion": false
+  },
+  "originalPackage": {
+    "fileName": "saferide-gemma4-e2b-v058-original-419806.litertlm",
+    "sha256": "2b66de53cf08f96828de398980e886e9effe3564c3b04f99c6b5d3b47fb1672d",
+    "sizeBytes": 5071853520,
+    "status": "revoked-chat-template-runtime-incompatible",
+    "reasonCode": "embedded-template-map-get-unsupported"
+  },
+  "runtimeCompatibleRepack": {
+    "litertLmSourceRevision": "e533a5ac0da0bd9246d28a57e404f5164c8fa646",
+    "litertLmBuilderVersion": "0.16.0",
+    "originalChatTemplateSha256": "2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082",
+    "replacementChatTemplateSha256": "44c5d49300bacfae6c426118f37471a6ee84eb9d52fc953faa765652b75e8c8e",
+    "sectionComparisonInventorySha256": "7bb35da70241a0ed5ffde2ffe12480a932e7c38ca70737e01f565fe39fea36d5",
+    "unchangedSections": [
+      "ExecutorMetadataProto",
+      "HF_Tokenizer_Zlib",
+      "TFLiteModel_tf_lite_prefill_decode",
+      "TFLiteModel_tf_lite_embedder",
+      "TFLiteModel_tf_lite_per_layer_embedder"
+    ],
+    "changedSections": [
+      "LlmMetadataProto"
+    ]
+  },
+  "artifact": {
+    "fileName": "saferide-gemma4-e2b-v058-original-419806-runtime-compatible.litertlm",
+    "sha256": "8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd",
+    "sizeBytes": 5071837136,
+    "huggingFaceRepo": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm",
+    "immutableRevision": "e91ea27c3134fe21fc5bc995141675756e2c4a21",
+    "downloadVerificationPassed": true,
+    "previousModelCardRevision": "12b2f64f74c517ddf6dc34f44dfcca9bcde28434",
+    "previousModelCardSha256": "84783953f4bcf73df6761591e083f0ac7e6a5ba7fe72e1b2922305d49794eb93",
+    "modelCardRevision": "9901b122507e4f4f1f03fe414f8ed1778878e4b8",
+    "modelCardSha256": "bbc953a1abd4a7284be47c75935c9c51af486aacadf39f4b73d790d5139a208d",
+    "modelLicense": "Apache-2.0",
+    "modelLicenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "modelNoticeSha256": "b0f3d289dc81a90485fd2cb9527f069de216623230dd419fb75b7bea3a32370b",
+    "modelPublicReleaseSha256": "c70510eaaf23e183feedd9300d8ee46a7183edec3c345632a2cf68e8fdadda1c",
+    "repositoryPublic": true,
+    "repositoryGated": false,
+    "anonymousArtifactMetadataVerified": true,
+    "modelCardDownloadedBytesMatched": true,
+    "modelCardAnonymousDownloadedBytesMatched": true,
+    "artifactInventoryUnchangedAfterModelCardUpdate": true,
+    "modelCardPublicationEvidenceRef": "docs/qa/saferide-gemma4-v058-hf-public-release-2026-08-13.json",
+    "runtimeSummarySha256": "6322a354d0d8aa391062d52e58b90b584e851cb3174c6d8a25af18f382821d52"
+  },
+  "runtimeEvaluation": {
+    "runnerSha256": "357c90f41ea6892b0fcc1f287faaf2bf921154a1898144f92eb285a204f891c7",
+    "networkDisabled": true,
+    "loadGeneratePassed": true,
+    "restartPassed": true,
+    "deterministicReplayPassed": true,
+    "cancelPassed": true,
+    "physicalAndroidPassed": false,
+    "evidenceRef": "docs/qa/saferide-gemma4-e2b-v058-litertlm-runtime-evaluation-2026-08-10.json"
+  },
+  "releaseControls": {
+    "activationEnabled": false,
+    "downloadEnabled": false,
+    "rolloutPercent": 0,
+    "rollbackTargetManifestId": "fail-closed:no-local-ai",
+    "revokedArtifactSha256": [
+      "2b66de53cf08f96828de398980e886e9effe3564c3b04f99c6b5d3b47fb1672d"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-scenario-freeze-diff.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "classification", "draftSha256", "frozenSha256", "familyCount", "meaningChangeCount", "approvalOnlyChangeCount", "missingApprovalCount", "meaningInventorySha256", "passed", "failures"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-scenario-freeze-diff" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "classification": { "const": "public-safe-aggregate" },
+    "draftSha256": { "$ref": "#/$defs/sha" }, "frozenSha256": { "$ref": "#/$defs/sha" },
+    "familyCount": { "const": 1300 }, "meaningChangeCount": { "type": "integer", "minimum": 0 },
+    "approvalOnlyChangeCount": { "type": "integer", "minimum": 0 }, "missingApprovalCount": { "type": "integer", "minimum": 0 },
+    "meaningInventorySha256": { "$ref": "#/$defs/sha" }, "passed": { "type": "boolean" },
+    "failures": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+  },
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

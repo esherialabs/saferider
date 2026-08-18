@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-evidence-index.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "indexId", "datasetId", "status", "classification", "records", "privacy", "limitations"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-evidence-index" },
+    "schemaVersion": { "const": 1 },
+    "indexId": { "type": "string", "minLength": 8 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["blocked", "in-progress", "complete"] },
+    "classification": { "const": "public-safe-metadata" },
+    "records": {
+      "type": "array", "minItems": 18, "maxItems": 18,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["evidenceId", "title", "status", "classification", "artifactRef", "sha256", "ownerRole", "requiredReviewerRoles", "accessInstructions", "limitation"],
+        "properties": {
+          "evidenceId": { "type": "string", "pattern": "^V05-EVIDENCE-(0[1-9]|1[0-8])$" },
+          "title": { "type": "string", "minLength": 3 },
+          "status": { "enum": ["pending", "blocked", "available", "superseded"] },
+          "classification": { "enum": ["public-safe", "controlled", "restricted"] },
+          "artifactRef": { "type": ["string", "null"], "minLength": 3 },
+          "sha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+          "ownerRole": { "type": "string", "minLength": 3 },
+          "requiredReviewerRoles": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } },
+          "accessInstructions": { "type": "string", "minLength": 3, "maxLength": 300 },
+          "limitation": { "type": "string", "minLength": 3, "maxLength": 500 }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsCredentials", "containsPrivateUrls", "containsReviewerIdentities", "containsRawPromptsOrCompletions"],
+      "properties": {
+        "containsCredentials": { "const": false }, "containsPrivateUrls": { "const": false },
+        "containsReviewerIdentities": { "const": false }, "containsRawPromptsOrCompletions": { "const": false }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

@@ -1,0 +1,149 @@
+{
+  "schema": "com.saferide.tuned-mobile-artifact-manifest",
+  "schemaVersion": 2,
+  "manifestId": "saferide-gemma4-e2b-v058-original-419806-litertlm-artifact-produced-2026-08-10.1",
+  "modelId": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm",
+  "status": "artifact-produced",
+  "stateHistory": [
+    {
+      "state": "training-complete",
+      "enteredAt": "2026-08-09T20:53:39.000Z",
+      "evidenceRefs": [
+        "github-pr://esherialabs/saferide/205@229ac0ab1eebefda6dc623b948503a087206dd35",
+        "docs/qa/saferide-gemma4-v058-hf-dataset-release-2026-08-10.json",
+        "https://huggingface.co/datasets/esherialabs/saferide-gemma-4-e2b-v058-original-419806-training-data/blob/ab43518babcf6255fddf7ae0087f7ce78a84a707/MANIFEST.json"
+      ]
+    },
+    {
+      "state": "adapter-evaluated",
+      "enteredAt": "2026-08-09T21:37:35.000Z",
+      "evidenceRefs": [
+        "saferide-v058-holdout-original-s419806-20260809-01"
+      ]
+    },
+    {
+      "state": "export-blocked",
+      "enteredAt": "2026-08-09T21:43:47.000Z",
+      "evidenceRefs": [
+        "github-pr://esherialabs/saferide/205@229ac0ab1eebefda6dc623b948503a087206dd35"
+      ]
+    },
+    {
+      "state": "artifact-produced",
+      "enteredAt": "2026-08-10T10:25:45.000Z",
+      "evidenceRefs": [
+        "docs/qa/saferide-gemma4-e2b-v058-litertlm-export-receipt-2026-08-10.json",
+        "docs/qa/saferide-gemma4-e2b-v058-litertlm-runtime-evaluation-2026-08-10.json"
+      ]
+    }
+  ],
+  "adapterModel": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-adapter",
+  "adapterRevision": "019dd8182883ad0721ffa70f4680d6977b7be99b",
+  "adapterRepoSha": "019dd8182883ad0721ffa70f4680d6977b7be99b",
+  "trainingRunId": "saferide-v058-candidate-s419806-20260809c",
+  "dataRegisterId": "https://huggingface.co/datasets/esherialabs/saferide-gemma-4-e2b-v058-original-419806-training-data/blob/ab43518babcf6255fddf7ae0087f7ce78a84a707/MANIFEST.json",
+  "baseModel": "google/gemma-4-E2B-it",
+  "baseRevision": "70af34e20bd4b7a91f0de6b22675850c43922a03",
+  "exportDecisionDoc": "docs/qa/saferide-gemma4-e2b-v058-litertlm-model-card-2026-08-10.md",
+  "exportRunner": "scripts/saferide-gemma4-tuned-litertlm-export.py",
+  "exportRunbook": "docs/qa/saferide-gemma4-e2b-v03-tuned-litertlm-colab-export-runbook-2026-07-14.md",
+  "exportPath": {
+    "decision": "merge-peft-then-export-litertlm",
+    "requiredSteps": [
+      "Resolve the pinned public adapter and pinned base checkpoint without mutable model identifiers.",
+      "Merge PEFT weights and export the complete text, embedder, tokenizer, and per-layer embedder LiteRT-LM sections.",
+      "Use the pinned official Gemma 4 LiteRT-LM compatibility template and verify all converted model sections remain byte-identical after metadata repack.",
+      "Keep in-app activation and managed download disabled until exact-artifact physical Android, revocation, rollback, safety, and app-release gates pass."
+    ]
+  },
+  "exportTooling": {
+    "environmentClass": "approved-high-memory-only",
+    "exporterRepositoryRevision": "f0101a0bb1a58b36e9d572e3f9f4d8194225762d",
+    "pythonVersion": "3.12.11",
+    "packages": {
+      "accelerate": "1.14.0",
+      "ai-edge-litert-nightly": "2.2.0.dev20260809",
+      "ai-edge-quantizer-nightly": "0.9.0.dev20260810",
+      "huggingface-hub": "1.27.0",
+      "litert-converter": "0.4.0.dev20260806",
+      "litert-lm-builder": "0.16.0",
+      "litert-torch-nightly": "0.10.0.dev20260809",
+      "peft": "0.20.0",
+      "protobuf": "6.33.6",
+      "safetensors": "0.8.0",
+      "torch": "2.12.0+cu130",
+      "torchao": "0.18.0",
+      "torchvision": "0.27.0",
+      "transformers": "5.14.1"
+    },
+    "tokenizer": {
+      "model": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-adapter",
+      "revision": "019dd8182883ad0721ffa70f4680d6977b7be99b",
+      "metadataSha256": "5c911f9996c63bfc32ff3d64e6c7c87383e12eab349107b40bb5c366a7f443f0"
+    }
+  },
+  "runtime": {
+    "contextWindow": 2048,
+    "maxOutputTokens": 128,
+    "backendPlan": [
+      "gpu",
+      "cpu-text"
+    ],
+    "cachePolicy": "app-cache"
+  },
+  "deviceRequirements": {
+    "minAndroidApi": 26,
+    "minRamGb": 8,
+    "storageRequiredBytes": 5608708048
+  },
+  "artifact": {
+    "fileName": "saferide-gemma4-e2b-v058-original-419806-runtime-compatible.litertlm",
+    "format": "litertlm",
+    "downloadMode": "controlled-import",
+    "immutableLocation": "https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm/resolve/e91ea27c3134fe21fc5bc995141675756e2c4a21/saferide-gemma4-e2b-v058-original-419806-runtime-compatible.litertlm",
+    "sha256": "8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd",
+    "sizeBytes": 5071837136,
+    "fileInventoryRef": "docs/qa/saferide-gemma4-e2b-v058-litertlm-export-receipt-2026-08-10.json"
+  },
+  "attestation": {
+    "status": "missing",
+    "processId": "HANDOFF-AI-ARTIFACT-ATTESTATION",
+    "attestationRef": null,
+    "approverRole": null,
+    "approvedAt": null
+  },
+  "safetyReport": {
+    "reportDoc": "docs/qa/saferide-gemma4-e2b-v058-litertlm-model-card-2026-08-10.md",
+    "summaryId": "saferide-gemma4-e2b-v058-original-419806-holdout-2026-08-09.1",
+    "privateEvidenceRepo": "github-pr:esherialabs/saferide#205",
+    "privateEvidenceRepoSha": "229ac0ab1eebefda6dc623b948503a087206dd35"
+  },
+  "androidProof": {
+    "baseRuntimeManifestId": "litert-community-gemma-4-e2b-litertlm-prototype-2026-06-29.1",
+    "baseRuntimeDeviceMatrixDoc": "docs/qa/saferide-gemma4-e2b-physical-android-runtime-smoke-2026-07-13.md",
+    "baseRuntimePhysicalDeviceProof": true,
+    "tunedArtifactPhysicalDeviceProof": false,
+    "deviceEvidenceId": "saferide-v058-original-419806-android-matrix-in-review-2026-08-10.1",
+    "deviceEvidenceRef": "docs/qa/saferide-tuned-artifact-device-evidence.pending.json"
+  },
+  "controlPolicy": {
+    "controlId": "saferide-tuned-artifact-controls-2026-08-10.1",
+    "sha256": "ee70c852452f06f28e58294040f47a3b2b99fb09c2cc896d82ae8895c45e6deb"
+  },
+  "approvals": {
+    "legal": "approved",
+    "safety": "blocked",
+    "release": "blocked"
+  },
+  "rollbackTargetManifestId": "fail-closed:no-local-ai",
+  "limitations": [
+    "The exact final artifact passes content-free offline server load, generation, restart, determinism, and cancellation checks but has no physical Android proof.",
+    "The original export hash 2b66de53cf08f96828de398980e886e9effe3564c3b04f99c6b5d3b47fb1672d is revoked because its embedded chat template is incompatible with the validated runtime parser.",
+    "The 2-3 GB, 4 GB, and 6-8 GB Android classes and all thermal, storage, interrupted-download, checksum-failure, revocation, and rollback scenarios remain unverified for this exact artifact.",
+    "The final internal holdout passed 20 of 20 rows with zero critical failures. Public distribution review is complete, but independent safety, physical-device, accessibility, fairness, production-release, and moderated-use evidence remains incomplete.",
+    "The selected lineage includes a transparent noncritical development exception; historical strict evidence remains unchanged.",
+    "This manifest is public for research distribution but remains controlled-import only and is not selectable by the app; it must not support survivor-facing, Android-readiness, production, app-release, or UNICEF-readiness claims."
+  ],
+  "createdAt": "2026-08-10T10:25:45.000Z",
+  "createdByRole": "ML release owner"
+}

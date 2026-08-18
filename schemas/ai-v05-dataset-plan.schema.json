@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-dataset-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "planId", "datasetId", "status", "issue",
+    "splitSeed", "assignmentAlgorithm", "history", "categories", "languages",
+    "splits", "categoryQuotas", "languageQuotas", "totals", "behaviorQuotas",
+    "auditPolicy", "candidateAuthoring", "training", "artifactPolicy",
+    "requiredHumanGates"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-dataset-plan" },
+    "schemaVersion": { "const": 1 },
+    "planId": { "$ref": "#/$defs/nonEmpty" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "const": "implementation-ready-human-gates-blocked" },
+    "issue": { "const": "ESH-4198" },
+    "splitSeed": { "const": 419805 },
+    "assignmentAlgorithm": { "const": "sha256-ranked-within-category-v1" },
+    "history": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v03", "v04"],
+      "properties": {
+        "v03": { "const": "immutable-historical-evidence" },
+        "v04": { "const": "immutable-corrected-pipeline-regression-fixture" }
+      }
+    },
+    "categories": {
+      "type": "array", "minItems": 10, "maxItems": 10, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/category" }
+    },
+    "languages": {
+      "type": "array", "prefixItems": [{ "const": "en" }, { "const": "sw" }],
+      "minItems": 2, "maxItems": 2, "items": false
+    },
+    "splits": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": { "$ref": "#/$defs/splitQuota" }
+    },
+    "categoryQuotas": {
+      "type": "array", "minItems": 10, "maxItems": 10,
+      "items": { "$ref": "#/$defs/categoryQuota" }
+    },
+    "languageQuotas": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": { "$ref": "#/$defs/languageQuota" }
+    },
+    "totals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rows", "families", "singleTurnRows", "multiTurnRows", "blindEvaluationPrompts", "blindPromptsPerCategoryLanguage"],
+      "properties": {
+        "rows": { "const": 2600 }, "families": { "const": 1300 },
+        "singleTurnRows": { "const": 1680 }, "multiTurnRows": { "const": 920 },
+        "blindEvaluationPrompts": { "const": 240 },
+        "blindPromptsPerCategoryLanguage": { "const": 12 }
+      }
+    },
+    "behaviorQuotas": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minimumSafeNextStepRows", "maximumPureRefusalRows", "minimumExplicitUncertaintyRows", "minimumStateDistinctionRows", "minimumCounterfactualRows", "minimumBenignHardNegativeRows", "minimumAdversarialPressureRows", "minimumSafetyHoldoutHighOrCriticalRows"],
+      "properties": {
+        "minimumSafeNextStepRows": { "const": 1560 }, "maximumPureRefusalRows": { "const": 260 },
+        "minimumExplicitUncertaintyRows": { "const": 520 }, "minimumStateDistinctionRows": { "const": 520 },
+        "minimumCounterfactualRows": { "const": 520 }, "minimumBenignHardNegativeRows": { "const": 390 },
+        "minimumAdversarialPressureRows": { "const": 520 },
+        "minimumSafetyHoldoutHighOrCriticalRows": { "const": 280 }
+      }
+    },
+    "auditPolicy": { "type": "object", "minProperties": 12 },
+    "candidateAuthoring": { "type": "object", "minProperties": 5 },
+    "training": { "type": "object", "minProperties": 20 },
+    "artifactPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["publicSafe", "controlled", "restricted"],
+      "properties": {
+        "publicSafe": { "$ref": "#/$defs/nonEmptyArray" },
+        "controlled": { "$ref": "#/$defs/nonEmptyArray" },
+        "restricted": { "$ref": "#/$defs/nonEmptyArray" }
+      }
+    },
+    "requiredHumanGates": { "$ref": "#/$defs/nonEmptyArray" }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "nonEmptyArray": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] },
+    "splitRows": {
+      "type": "object", "additionalProperties": false,
+      "required": ["train", "dev", "quality-holdout", "safety-holdout"],
+      "properties": {
+        "train": { "const": 160 }, "dev": { "const": 30 },
+        "quality-holdout": { "const": 30 }, "safety-holdout": { "const": 40 }
+      }
+    },
+    "splitQuota": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "rows", "families", "rowsPerCategory", "familiesPerCategory", "rowsPerCategoryLanguage", "conversationFormRowsPerCategoryLanguage", "optimizerAccess"],
+      "properties": {
+        "name": { "$ref": "#/$defs/split" }, "rows": { "type": "integer", "minimum": 1 },
+        "families": { "type": "integer", "minimum": 1 }, "rowsPerCategory": { "type": "integer", "minimum": 1 },
+        "familiesPerCategory": { "type": "integer", "minimum": 1 },
+        "rowsPerCategoryLanguage": { "type": "integer", "minimum": 1 },
+        "conversationFormRowsPerCategoryLanguage": {
+          "type": "object", "additionalProperties": false, "required": ["single-turn", "multi-turn"],
+          "properties": { "single-turn": { "type": "integer", "minimum": 0 }, "multi-turn": { "type": "integer", "minimum": 0 } }
+        },
+        "optimizerAccess": { "enum": ["weight-updates-after-strict-gate", "never"] }
+      }
+    },
+    "categoryQuota": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "rows", "families", "rowsPerLanguage", "splitRows"],
+      "properties": {
+        "category": { "$ref": "#/$defs/category" }, "rows": { "const": 260 },
+        "families": { "const": 130 }, "rowsPerLanguage": { "const": 130 },
+        "splitRows": { "$ref": "#/$defs/splitRows" }
+      }
+    },
+    "languageQuota": {
+      "type": "object", "additionalProperties": false,
+      "required": ["language", "rows", "splitRows"],
+      "properties": {
+        "language": { "enum": ["en", "sw"] }, "rows": { "const": 1300 },
+        "splitRows": {
+          "type": "object", "additionalProperties": false,
+          "required": ["train", "dev", "quality-holdout", "safety-holdout"],
+          "properties": { "train": { "const": 800 }, "dev": { "const": 150 }, "quality-holdout": { "const": 150 }, "safety-holdout": { "const": 200 } }
+        }
+      }
+    }
+  }
+}

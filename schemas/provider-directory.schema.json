@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.saferide.example/provider-directory.schema.json",
+  "title": "SafeRide provider directory pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "packId",
+    "version",
+    "jurisdiction",
+    "status",
+    "updatedAt",
+    "expiresAt",
+    "providers"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.provider-directory-pack" },
+    "schemaVersion": { "const": 1 },
+    "packId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,79}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-z0-9.-]+)?$" },
+    "jurisdiction": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "status": { "enum": ["candidate", "active", "revoked"] },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "providers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/provider" }
+    }
+  },
+  "$defs": {
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewerId", "reviewerRole", "reviewedAt"],
+      "properties": {
+        "status": { "enum": ["pending", "verified", "expired", "revoked"] },
+        "reviewerId": { "type": ["string", "null"], "minLength": 3, "maxLength": 120 },
+        "reviewerRole": { "type": "string", "minLength": 3, "maxLength": 120 },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "verified" } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "reviewerId": { "type": "string", "minLength": 3 },
+              "reviewedAt": { "type": "string", "format": "date-time" }
+            }
+          },
+          "else": {
+            "if": { "properties": { "status": { "const": "pending" } }, "required": ["status"] },
+            "then": {
+              "properties": {
+                "reviewerId": { "type": "null" },
+                "reviewedAt": { "type": "null" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourcedStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "sourceIds", "verification"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" }
+        },
+        "verification": { "$ref": "#/$defs/verification" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceId", "title", "publisher", "url", "accessedAt"],
+      "properties": {
+        "sourceId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "publisher": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "accessedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["channel", "value", "sourceId", "verification"],
+      "properties": {
+        "channel": { "enum": ["call", "sms", "whatsapp", "email", "web", "in_person"] },
+        "value": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "sourceId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" },
+        "verification": { "$ref": "#/$defs/verification" }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stableId",
+        "name",
+        "serviceCategory",
+        "coverage",
+        "hours",
+        "eligibility",
+        "contacts",
+        "languages",
+        "services",
+        "sources",
+        "status",
+        "updatedAt",
+        "expiresAt"
+      ],
+      "properties": {
+        "stableId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 200 },
+        "serviceCategory": { "enum": ["hotline", "gbv_center", "legal_aid", "medical", "psychosocial", "shelter", "other"] },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["countryCode", "kind", "areas", "summary"],
+          "properties": {
+            "countryCode": { "type": "string", "pattern": "^[A-Z]{2}$" },
+            "kind": { "enum": ["national", "county", "subcounty", "facility", "remote"] },
+            "areas": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "type": "string", "minLength": 1, "maxLength": 120 }
+            },
+            "summary": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        },
+        "hours": { "$ref": "#/$defs/sourcedStatement" },
+        "eligibility": { "$ref": "#/$defs/sourcedStatement" },
+        "contacts": {
+          "type": "array",
+          "maxItems": 20,
+          "items": { "$ref": "#/$defs/contact" }
+        },
+        "languages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z]{2,3}$" }
+        },
+        "services": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 120 }
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        },
+        "status": { "enum": ["pending_verification", "active", "suspended", "expired", "removed"] },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-scenario-content.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "scenarioFamilyId", "blueprintSha256", "userGoal", "unsafePressure", "requiredBehavior", "prohibitedBehavior", "responseStrategy", "sourceKind", "status"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-scenario-content" },
+    "schemaVersion": { "const": 1 },
+    "scenarioFamilyId": { "type": "string", "pattern": "^v05-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}$" },
+    "blueprintSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "userGoal": { "$ref": "#/$defs/text" },
+    "unsafePressure": { "$ref": "#/$defs/text" },
+    "requiredBehavior": { "$ref": "#/$defs/list" },
+    "prohibitedBehavior": { "$ref": "#/$defs/list" },
+    "responseStrategy": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "sourceKind": { "const": "repository-authored-synthetic-scenario-content" },
+    "status": { "const": "draft" }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 3, "maxLength": 240 },
+    "list": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } }
+  }
+}

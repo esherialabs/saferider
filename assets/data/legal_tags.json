@@ -1,0 +1,17 @@
+[
+  { "id": "1", "tag": "unwanted_touching", "description": "Physical contact without consent", "category": "Physical" },
+  { "id": "2", "tag": "groping", "description": "Inappropriate sexual touching", "category": "Physical" },
+  { "id": "3", "tag": "verbal_harassment", "description": "Unwanted comments or remarks", "category": "Verbal" },
+  { "id": "4", "tag": "intimidation", "description": "Threatening behavior or words", "category": "Behavioral" },
+  { "id": "5", "tag": "stalking", "description": "Following or persistent pursuit", "category": "Behavioral" },
+  { "id": "6", "tag": "exposure", "description": "Indecent exposure or gestures", "category": "Visual" },
+  { "id": "7", "tag": "theft_with_contact", "description": "Stealing involving physical contact", "category": "Property" },
+  { "id": "8", "tag": "physical_assault", "description": "Physical violence or harm", "category": "Physical" },
+  { "id": "9", "tag": "conductor_misconduct", "description": "Inappropriate behavior by transport staff", "category": "Authority" },
+  { "id": "10", "tag": "unsafe_handling", "description": "Dangerous or inappropriate assistance", "category": "Safety" },
+  { "id": "11", "tag": "discrimination", "description": "Unfair treatment based on identity", "category": "Discrimination" },
+  { "id": "12", "tag": "sexual_comments", "description": "Inappropriate sexual remarks or jokes", "category": "Verbal" },
+  { "id": "13", "tag": "following", "description": "Being followed or tracked", "category": "Behavioral" },
+  { "id": "14", "tag": "blocking_path", "description": "Preventing movement or escape", "category": "Behavioral" },
+  { "id": "15", "tag": "photography_without_consent", "description": "Taking photos/videos without permission", "category": "Visual" }
+]

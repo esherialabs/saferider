@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/local-ai-manifest.schema.json",
+  "title": "SafeRide local AI model manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "manifestId",
+    "modelId",
+    "humanLabel",
+    "releaseChannel",
+    "status",
+    "runtime",
+    "lineage",
+    "artifacts",
+    "prompting",
+    "samplerDefaults",
+    "capabilities",
+    "deviceRequirements",
+    "safety",
+    "privacy",
+    "license",
+    "androidEvidence",
+    "limitations",
+    "rollout",
+    "rollback",
+    "createdAt",
+    "createdByRole"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.local-ai-model-manifest" },
+    "schemaVersion": { "const": 1 },
+    "manifestId": { "$ref": "#/$defs/nonEmptyString" },
+    "modelId": { "$ref": "#/$defs/nonEmptyString" },
+    "humanLabel": { "$ref": "#/$defs/nonEmptyString" },
+    "releaseChannel": { "$ref": "#/$defs/releaseChannel" },
+    "status": {
+      "enum": [
+        "prototype",
+        "internal-test",
+        "unicef-checkpoint",
+        "moderated-test",
+        "release-candidate",
+        "release-ready",
+        "retired",
+        "revoked"
+      ]
+    },
+    "runtime": {
+      "oneOf": [
+        { "$ref": "#/$defs/liteRtLmRuntime" },
+        { "$ref": "#/$defs/llamaRnRuntime" }
+      ]
+    },
+    "lineage": { "$ref": "#/$defs/lineage" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "prompting": { "$ref": "#/$defs/prompting" },
+    "samplerDefaults": { "$ref": "#/$defs/samplerDefaults" },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "textGuidance",
+        "incidentStructuring",
+        "audioTranscription",
+        "imageUnderstanding",
+        "offenceTagging",
+        "multilingual"
+      ],
+      "properties": {
+        "textGuidance": { "$ref": "#/$defs/capability" },
+        "incidentStructuring": { "$ref": "#/$defs/capability" },
+        "audioTranscription": { "$ref": "#/$defs/capability" },
+        "imageUnderstanding": { "$ref": "#/$defs/capability" },
+        "offenceTagging": { "$ref": "#/$defs/capability" },
+        "multilingual": { "$ref": "#/$defs/capability" }
+      }
+    },
+    "deviceRequirements": { "$ref": "#/$defs/deviceRequirements" },
+    "safety": { "$ref": "#/$defs/safety" },
+    "privacy": { "$ref": "#/$defs/privacy" },
+    "license": { "$ref": "#/$defs/license" },
+    "androidEvidence": { "$ref": "#/$defs/androidEvidence" },
+    "limitations": { "$ref": "#/$defs/nonEmptyStringArray" },
+    "rollout": { "$ref": "#/$defs/rollout" },
+    "rollback": { "$ref": "#/$defs/rollback" },
+    "createdAt": { "$ref": "#/$defs/dateTime" },
+    "createdByRole": { "$ref": "#/$defs/nonEmptyString" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["unicef-checkpoint", "moderated-test", "release-candidate", "release-ready"]
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "safety": {
+            "properties": {
+              "criticalFailures": { "const": 0 },
+              "reviewerSignoff": { "$ref": "#/$defs/nonEmptyString" }
+            },
+            "required": ["reviewerSignoff"]
+          },
+          "license": {
+            "properties": { "legalStatus": { "const": "approved" } }
+          },
+          "androidEvidence": {
+            "properties": {
+              "physicalDeviceProof": { "const": true },
+              "loadGenerateCancelUnload": { "const": true },
+              "offlineProof": { "const": true }
+            }
+          },
+          "rollback": {
+            "properties": {
+              "rollbackTargetManifestId": { "$ref": "#/$defs/nonEmptyString" }
+            },
+            "required": ["rollbackTargetManifestId"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "immutableRevision": { "type": "string", "pattern": "^[a-f0-9]{7,64}$" },
+    "dateTime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$"
+    },
+    "releaseChannel": {
+      "enum": [
+        "prototype",
+        "internal-test",
+        "unicef-checkpoint",
+        "moderated-test",
+        "release-candidate",
+        "release-ready"
+      ]
+    },
+    "liteRtLmRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "engine",
+        "androidModule",
+        "primaryFileRole",
+        "modelFileExtension",
+        "backendPlan",
+        "cachePolicy",
+        "acceleratorDefaults"
+      ],
+      "properties": {
+        "kind": { "const": "litert-lm" },
+        "engine": { "const": "google-ai-edge-litert-lm" },
+        "androidModule": { "const": "saferide-litert-lm" },
+        "primaryFileRole": { "const": "model" },
+        "modelFileExtension": { "const": ".litertlm" },
+        "backendPlan": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["npu", "gpu", "cpu-multimodal", "cpu-text"] }
+        },
+        "cachePolicy": { "enum": ["app-cache", "app-documents"] },
+        "acceleratorDefaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["textBackend", "visionBackend", "audioBackend", "npuNativeLibraryDirRequired"],
+          "properties": {
+            "textBackend": { "enum": ["gpu", "cpu", "npu"] },
+            "visionBackend": { "enum": ["disabled", "gpu", "cpu", "npu"] },
+            "audioBackend": { "enum": ["disabled", "gpu", "cpu", "npu"] },
+            "npuNativeLibraryDirRequired": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "llamaRnRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "engine", "primaryFileRole", "modelFileExtension", "contextWindow", "gpuLayers"],
+      "properties": {
+        "kind": { "const": "llama-rn-gguf" },
+        "engine": { "const": "llama.rn" },
+        "primaryFileRole": { "const": "model" },
+        "modelFileExtension": { "const": ".gguf" },
+        "contextWindow": { "type": "integer", "minimum": 1 },
+        "gpuLayers": { "type": "integer", "minimum": 0 },
+        "loraScale": { "type": "number", "minimum": 0 }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseModel", "baseRevision", "baseTermsOwnerRole", "exportPipelineId", "quantization"],
+      "properties": {
+        "baseModel": { "$ref": "#/$defs/nonEmptyString" },
+        "baseRevision": { "$ref": "#/$defs/nonEmptyString" },
+        "baseTermsOwnerRole": { "$ref": "#/$defs/nonEmptyString" },
+        "adapterModel": { "$ref": "#/$defs/nonEmptyString" },
+        "adapterRevision": { "$ref": "#/$defs/immutableRevision" },
+        "trainingRunId": { "$ref": "#/$defs/nonEmptyString" },
+        "dataRegisterId": { "$ref": "#/$defs/nonEmptyString" },
+        "exportPipelineId": { "$ref": "#/$defs/nonEmptyString" },
+        "exportCommit": { "$ref": "#/$defs/immutableRevision" },
+        "quantization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "precision", "tool", "toolVersion"],
+          "properties": {
+            "method": { "$ref": "#/$defs/nonEmptyString" },
+            "precision": { "$ref": "#/$defs/nonEmptyString" },
+            "tool": { "$ref": "#/$defs/nonEmptyString" },
+            "toolVersion": { "$ref": "#/$defs/nonEmptyString" }
+          }
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "fileName", "format", "sha256", "sizeBytes", "required"],
+      "properties": {
+        "role": {
+          "enum": ["model", "lora-sidecar", "tokenizer", "processor", "audio-package", "vision-package", "manifest-signature"]
+        },
+        "fileName": { "$ref": "#/$defs/nonEmptyString" },
+        "format": { "enum": ["litertlm", "gguf", "safetensors", "json", "model", "other"] },
+        "immutableUrl": { "type": "string", "pattern": "^https://" },
+        "controlledImportOnly": { "type": "boolean" },
+        "immutableRevision": { "$ref": "#/$defs/immutableRevision" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "sizeBytes": { "type": "integer", "minimum": 1 },
+        "required": { "type": "boolean" }
+      },
+      "anyOf": [
+        { "required": ["immutableUrl"] },
+        {
+          "properties": { "controlledImportOnly": { "const": true } },
+          "required": ["controlledImportOnly"]
+        }
+      ]
+    },
+    "prompting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["systemPromptId", "systemPromptRevision", "chatTemplateId", "chatTemplateRevision", "stopTokens", "contextWindow", "maxInputTokens", "maxOutputTokens"],
+      "properties": {
+        "systemPromptId": { "$ref": "#/$defs/nonEmptyString" },
+        "systemPromptRevision": { "$ref": "#/$defs/nonEmptyString" },
+        "chatTemplateId": { "$ref": "#/$defs/nonEmptyString" },
+        "chatTemplateRevision": { "$ref": "#/$defs/nonEmptyString" },
+        "stopTokens": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmptyString" } },
+        "contextWindow": { "type": "integer", "minimum": 1 },
+        "maxInputTokens": { "type": "integer", "minimum": 1 },
+        "maxOutputTokens": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "samplerDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["temperature", "topP"],
+      "properties": {
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "topP": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "topK": { "type": "integer", "minimum": 1 },
+        "repeatPenalty": { "type": "number", "minimum": 0 }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "stage", "limitations"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "stage": { "enum": ["disabled", "prototype", "internal-only", "controlled", "release"] },
+        "evidenceRef": { "$ref": "#/$defs/nonEmptyString" },
+        "limitations": { "$ref": "#/$defs/nonEmptyStringArray" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "enabled": { "const": false } }, "required": ["enabled"] },
+          "then": { "properties": { "stage": { "const": "disabled" } } }
+        },
+        {
+          "if": { "properties": { "enabled": { "const": true } }, "required": ["enabled"] },
+          "then": {
+            "properties": { "stage": { "not": { "const": "disabled" } } },
+            "required": ["evidenceRef"]
+          }
+        }
+      ]
+    },
+    "deviceRequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["androidMinSdk", "supportedAbis", "minRamGb", "storageRequiredBytes", "additionalFreeStorageBytes", "thermalRisk"],
+      "properties": {
+        "androidMinSdk": { "type": "integer", "minimum": 23 },
+        "supportedAbis": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmptyString" } },
+        "minRamGb": { "type": "number", "exclusiveMinimum": 0 },
+        "recommendedRamGb": { "type": "number", "exclusiveMinimum": 0 },
+        "storageRequiredBytes": { "type": "integer", "minimum": 1 },
+        "additionalFreeStorageBytes": { "type": "integer", "minimum": 0 },
+        "expectedFirstTokenMs": { "type": "integer", "minimum": 0 },
+        "expectedTokensPerSecond": { "type": "number", "exclusiveMinimum": 0 },
+        "thermalRisk": { "enum": ["unknown", "low", "medium", "high"] }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policyDoc", "promptSuiteVersion", "rubricVersion", "criticalFailures"],
+      "properties": {
+        "policyDoc": { "$ref": "#/$defs/nonEmptyString" },
+        "promptSuiteVersion": { "$ref": "#/$defs/nonEmptyString" },
+        "rubricVersion": { "$ref": "#/$defs/nonEmptyString" },
+        "evalReport": { "$ref": "#/$defs/nonEmptyString" },
+        "criticalFailures": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "const": "unknown" }] },
+        "reviewerSignoff": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawPromptLogging", "rawCompletionLogging", "sensitiveDataUse"],
+      "properties": {
+        "privacyReviewDoc": { "$ref": "#/$defs/nonEmptyString" },
+        "rawPromptLogging": { "const": "forbidden" },
+        "rawCompletionLogging": { "const": "forbidden" },
+        "sensitiveDataUse": { "enum": ["none", "blocked", "approved-internal"] }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accessDecisionDoc", "legalStatus", "publicSharing"],
+      "properties": {
+        "accessDecisionDoc": { "$ref": "#/$defs/nonEmptyString" },
+        "legalStatus": { "enum": ["pending", "approved", "blocked"] },
+        "publicSharing": { "enum": ["allowed", "restricted", "blocked"] }
+      }
+    },
+    "androidEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["physicalDeviceProof", "loadGenerateCancelUnload", "offlineProof"],
+      "properties": {
+        "deviceMatrixDoc": { "$ref": "#/$defs/nonEmptyString" },
+        "physicalDeviceProof": { "type": "boolean" },
+        "loadGenerateCancelUnload": { "type": "boolean" },
+        "offlineProof": { "type": "boolean" }
+      }
+    },
+    "rollout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["downloadMode", "allowedBuildProfiles", "userVisiblePreparationRequired"],
+      "properties": {
+        "downloadMode": { "enum": ["disabled", "controlled-import", "internal-url", "app-download"] },
+        "allowedBuildProfiles": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmptyString" } },
+        "userVisiblePreparationRequired": { "type": "boolean" },
+        "maxRolloutPercent": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disableIfStatus", "clearCachedReadyState", "blockNewDownloads", "removeLocalArtifactOnRevoke", "ownerRole"],
+      "properties": {
+        "rollbackTargetManifestId": { "$ref": "#/$defs/nonEmptyString" },
+        "disableIfStatus": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "enum": ["retired", "revoked"] }
+        },
+        "clearCachedReadyState": { "const": true },
+        "blockNewDownloads": { "const": true },
+        "removeLocalArtifactOnRevoke": { "const": true },
+        "ownerRole": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    }
+  }
+}

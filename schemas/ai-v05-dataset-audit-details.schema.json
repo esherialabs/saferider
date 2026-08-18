@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-dataset-audit-details.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "classification", "containsRawText", "bindings", "findings", "findingInventorySha256"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-dataset-audit-details" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "classification": { "const": "restricted" },
+    "containsRawText": { "const": false },
+    "bindings": { "type": "object", "minProperties": 5 },
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["structural", "privacy", "provenance", "language", "exactTurn", "normalizedTurn", "exactConversation", "normalizedConversation", "nearDuplicate", "distribution", "semantic", "reviews"],
+      "properties": {
+        "structural": { "$ref": "#/$defs/list" }, "privacy": { "$ref": "#/$defs/list" },
+        "provenance": { "$ref": "#/$defs/list" }, "language": { "$ref": "#/$defs/list" },
+        "exactTurn": { "$ref": "#/$defs/list" }, "normalizedTurn": { "$ref": "#/$defs/list" },
+        "exactConversation": { "$ref": "#/$defs/list" }, "normalizedConversation": { "$ref": "#/$defs/list" },
+        "nearDuplicate": { "$ref": "#/$defs/list" }, "distribution": { "$ref": "#/$defs/list" },
+        "semantic": { "$ref": "#/$defs/list" }, "reviews": { "$ref": "#/$defs/list" }
+      }
+    },
+    "findingInventorySha256": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "list": { "type": "array", "items": {} }
+  }
+}

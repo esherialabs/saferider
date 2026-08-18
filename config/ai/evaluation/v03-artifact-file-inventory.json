@@ -1,0 +1,15 @@
+{
+  "schema": "com.saferide.ai.artifact-file-inventory",
+  "schemaVersion": 1,
+  "artifactId": "V-ince-18/saferide-gemma-4-e2b-lora",
+  "immutableRevision": "e6d135a385352749995b988691c037e88b42a230",
+  "fileManifestSha256": "fcbca43bf0c5d743de332162b8fb254a95e18deb77da139c723e75746a81a755",
+  "files": [
+    { "path": "README.md", "sha256": "0e35b3e64f90d79698bdf1f8266742fd0687e3bd09b5e693b19046286ffebfe7" },
+    { "path": "adapter_config.json", "sha256": "e0d459af0e4b852daf213848efbd8faa693add24358db1c223d008fbd70100da" },
+    { "path": "adapter_model.safetensors", "sha256": "7739c1114d164cc25a391f6b13f926049a853510874169bdf9869c8b1b07eacc" },
+    { "path": "tokenizer/chat_template.jinja", "sha256": "2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082" },
+    { "path": "tokenizer/tokenizer.json", "sha256": "6196a0032b16e3cfb07131b087b19ba93ba7a0b8bd2f8f0c127a1e36a3162b12" },
+    { "path": "tokenizer/tokenizer_config.json", "sha256": "080d9e1aff284e2f6043889cd05367966f7c7b80e025fbc0b06745e218158656" }
+  ]
+}

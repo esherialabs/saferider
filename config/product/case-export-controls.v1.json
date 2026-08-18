@@ -1,0 +1,26 @@
+{
+  "schema": "com.saferide.case-export-controls",
+  "schemaVersion": 1,
+  "controlId": "saferide-case-export-controls-2026-07-30.1",
+  "status": "blocked_external_evidence",
+  "publicSafeTimeline": {
+    "schemaPath": "schemas/public-safe-case-timeline-export.schema.json",
+    "inMemoryBuilderEnabled": true,
+    "fileWriteEnabled": false,
+    "shareEnabled": false
+  },
+  "protectedExport": {
+    "enabled": false,
+    "authenticatedEncryption": "repository_tested_device_unverified",
+    "cleanup": "repository_tested_device_unverified",
+    "independentPrivacyReview": "pending",
+    "reason": "Protected case export remains unavailable until authenticated encryption, cleanup, disposable-device inspection, and independent privacy review are verified on the exact build."
+  },
+  "identity": {
+    "rawCaseIdAllowedInOutput": false,
+    "rawAttachmentIdAllowedInOutput": false,
+    "perExportSaltRequired": true
+  },
+  "externalHandoffId": "HANDOFF-DEVICE-ENCRYPTED-STORAGE",
+  "rollbackTarget": "fail-closed:no-protected-case-export"
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "com.saferide.rsi-privacy-controls",
+  "schemaVersion": 1,
+  "controlVersion": "rsi-privacy-controls.2026-07-30.1",
+  "activation": {
+    "signalIngestion": { "status": "disabled", "reason": "pending_privacy_mentor_and_legal_approval" },
+    "releaseGeneration": { "status": "disabled", "reason": "pending_privacy_mentor_threshold_and_cadence_approval" },
+    "retentionExecution": { "status": "disabled", "reason": "pending_legal_retention_approval" },
+    "operatorRead": { "status": "disabled", "reason": "pending_privacy_mentor_and_operator_role_approval" },
+    "export": { "status": "disabled", "reason": "pending_privacy_mentor_and_export_review" },
+    "dashboard": { "status": "disabled", "reason": "pending_privacy_mentor_and_unicef_release_approval" }
+  },
+  "approval": {
+    "status": "pending",
+    "approvalId": null,
+    "approvedByRole": null,
+    "approvedAt": null,
+    "expiresAt": null,
+    "minimumCount": null
+  },
+  "fixedBuckets": {
+    "areaDefinitionVersion": "pending-privacy-review",
+    "allowedAreaIds": [],
+    "allowedAreaTypes": ["corridor", "coarse_cell"],
+    "timeBucketMinutes": 60,
+    "releaseCadenceHours": 24,
+    "categories": ["harassment", "unsafe_driving", "route_safety", "other"]
+  },
+  "spatialTransform": {
+    "status": "pending_approval",
+    "executionBoundary": "on_device",
+    "implementationVersion": "rsi-coarse-grid-transform.1",
+    "coarseCellSizeDegrees": null,
+    "rawCoordinatesTransmitted": false
+  },
+  "consent": {
+    "requiredPurpose": "anonymous_aggregate",
+    "requiredVersion": null
+  },
+  "queryPolicy": {
+    "viewId": "rsi-fixed-grid-v1",
+    "allowedQueryKeys": ["releaseId", "viewId"],
+    "operatorRole": "rsi_operator",
+    "requestsPerMinute": 30,
+    "maxRows": 500
+  },
+  "differentialPrivacy": {
+    "status": "not_approved",
+    "epsilon": null,
+    "delta": null,
+    "sensitivity": null,
+    "clipping": null,
+    "composition": null,
+    "releaseCadenceHours": null,
+    "noiseMemoizationRequired": true
+  },
+  "rawSignalRetention": {
+    "status": "pending_legal",
+    "durationDays": null
+  },
+  "syntheticTestProfile": {
+    "testOnly": true,
+    "profileId": "rsi-synthetic-suppression-v1",
+    "minimumCount": 10,
+    "timeBucketMinutes": 60,
+    "releaseCadenceHours": 24,
+    "allowedAreaIds": ["cell-100-100", "cell-100-101", "cell-101-100", "corridor-synthetic-a"],
+    "categories": ["harassment", "unsafe_driving", "route_safety", "other"]
+  }
+}

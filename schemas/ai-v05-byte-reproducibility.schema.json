@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-byte-reproducibility.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "kind", "sourceCommit", "identical", "canonicalSha256", "reproductionSha256", "sizeBytes", "familyCount", "rowCount", "assignmentInventorySha256", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-byte-reproducibility" }, "schemaVersion": { "const": 1 },
+    "kind": { "enum": ["draft-split-assignment", "frozen-split-assignment"] },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" }, "identical": { "const": true },
+    "canonicalSha256": { "$ref": "#/$defs/sha" }, "reproductionSha256": { "$ref": "#/$defs/sha" },
+    "sizeBytes": { "type": "integer", "minimum": 1 }, "familyCount": { "const": 1300 }, "rowCount": { "const": 2600 },
+    "assignmentInventorySha256": { "$ref": "#/$defs/sha" }, "draftAssignmentInventorySha256": { "$ref": "#/$defs/sha" },
+    "privacy": {
+      "type": "object", "additionalProperties": false, "required": ["containsArtifactContent", "containsPrivatePaths"],
+      "properties": { "containsArtifactContent": { "const": false }, "containsPrivatePaths": { "const": false } }
+    }
+  },
+  "allOf": [{
+    "if": { "properties": { "kind": { "const": "frozen-split-assignment" } }, "required": ["kind"] },
+    "then": { "required": ["draftAssignmentInventorySha256"] }
+  }],
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

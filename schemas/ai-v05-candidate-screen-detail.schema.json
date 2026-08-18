@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-candidate-screen-detail.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "recordId", "recordType", "datasetId", "rowId", "split", "candidateId", "sourceOrdinal", "candidateContentSha256", "state", "findingCount", "findings", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-candidate-screen-detail" }, "schemaVersion": { "const": 1 },
+    "recordId": { "type": "string", "pattern": "^screen-detail-[a-f0-9]{24}$" },
+    "recordType": { "enum": ["candidate", "generation-failed"] }, "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "rowId": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout", "unknown"] },
+    "candidateId": { "type": ["string", "null"], "minLength": 1, "maxLength": 160 },
+    "sourceOrdinal": { "type": ["integer", "null"], "minimum": 0 },
+    "candidateContentSha256": { "anyOf": [{ "$ref": "#/$defs/sha" }, { "type": "null" }] },
+    "state": { "enum": ["eligible", "needs-adjudication", "rejected", "quarantined", "generation-failed"] },
+    "findingCount": { "type": "integer", "minimum": 0 },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["ruleId", "stage", "fieldPath", "matchClass", "severity", "outcome", "fingerprint", "otherCandidateId", "otherSplit", "comparedField", "similarity"],
+        "properties": {
+          "ruleId": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9_-]{2,95}$" },
+          "stage": { "enum": ["binding-structure", "security-privacy", "product-policy", "language", "exact-duplicate", "lexical-near-duplicate", "semantic-similarity", "diversity", "coverage"] },
+          "fieldPath": { "type": "string", "minLength": 1, "maxLength": 160 }, "matchClass": { "type": "string", "minLength": 2, "maxLength": 96 },
+          "severity": { "enum": ["hard", "quarantine", "adjudication", "information"] },
+          "outcome": { "enum": ["rejected", "quarantined", "needs-adjudication", "other-candidate-rejected", "reported"] },
+          "fingerprint": { "$ref": "#/$defs/sha" }, "otherCandidateId": { "type": ["string", "null"], "minLength": 1, "maxLength": 160 },
+          "otherSplit": { "type": ["string", "null"], "enum": ["train", "dev", "quality-holdout", "safety-holdout", "unknown", null] },
+          "comparedField": { "type": ["string", "null"], "maxLength": 96 }, "similarity": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsRawText", "containsReviewerNotes", "containsEmbeddings"], "properties": { "containsRawText": { "const": false }, "containsReviewerNotes": { "const": false }, "containsEmbeddings": { "const": false } } }
+  },
+  "allOf": [{
+    "if": { "properties": { "recordType": { "const": "generation-failed" } }, "required": ["recordType"] },
+    "then": { "properties": { "candidateId": { "type": "null" }, "sourceOrdinal": { "type": "null" }, "candidateContentSha256": { "type": "null" }, "state": { "const": "generation-failed" } } },
+    "else": { "properties": { "candidateId": { "type": "string" }, "sourceOrdinal": { "type": "integer" }, "candidateContentSha256": { "$ref": "#/$defs/sha" } } }
+  }],
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

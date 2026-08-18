@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-comparator-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "planId", "status", "promptSuite", "rubric", "policy", "systemPrompt", "generationConfig", "maximumRegressionPoints", "artifacts", "privateOutputPolicy", "blockers"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.comparator-plan" },
+    "schemaVersion": { "const": 1 },
+    "planId": { "$ref": "#/$defs/nonEmpty" },
+    "targetSlot": { "enum": ["v04", "v05"] },
+    "status": { "enum": ["blocked", "ready-for-private-generation", "generated"] },
+    "promptSuite": { "$ref": "#/$defs/fileRef" },
+    "rubric": { "$ref": "#/$defs/fileRef" },
+    "policy": { "$ref": "#/$defs/fileRef" },
+    "systemPrompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "textSha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/nonEmpty" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "textSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "generationConfig": { "$ref": "#/$defs/generationConfig" },
+    "maximumRegressionPoints": { "type": "number", "minimum": 0, "maximum": 3 },
+    "artifacts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot", "artifactClass", "artifactId", "immutableRevision", "baseModelId", "baseRevision", "fileManifestSha256", "fileInventory", "status", "blocker"],
+        "properties": {
+          "slot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05"] },
+          "artifactClass": { "enum": ["base-runtime", "adapter"] },
+          "artifactId": { "type": ["string", "null"], "minLength": 1 },
+          "immutableRevision": { "anyOf": [{ "$ref": "#/$defs/revision" }, { "type": "null" }] },
+          "baseModelId": { "$ref": "#/$defs/nonEmpty" },
+          "baseRevision": { "$ref": "#/$defs/revision" },
+          "fileManifestSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+          "fileInventory": { "anyOf": [{ "$ref": "#/$defs/fileRef" }, { "type": "null" }] },
+          "selectedFromSlot": { "type": ["string", "null"], "enum": ["v05-seed-a", "v05-seed-b", null] },
+          "status": { "enum": ["ready", "blocked", "generated"] },
+          "blocker": { "type": ["string", "null"], "minLength": 1 }
+        }
+      }
+    },
+    "privateOutputPolicy": { "const": "raw prompts and completions remain in ignored restricted storage; only hashes and aggregate metadata may be public" },
+    "blockers": { "type": "array", "items": { "$ref": "#/$defs/nonEmpty" } }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+    "fileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/nonEmpty" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "generationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxSequenceLength", "maxNewTokens", "doSample", "temperature", "topP", "topK", "seed"],
+      "properties": {
+        "maxSequenceLength": { "type": "integer", "minimum": 1 },
+        "maxNewTokens": { "type": "integer", "minimum": 1 },
+        "doSample": { "type": "boolean" },
+        "temperature": { "type": ["number", "null"], "minimum": 0 },
+        "topP": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "topK": { "type": ["integer", "null"], "minimum": 0 },
+        "seed": { "type": "integer" }
+      }
+    }
+  }
+}

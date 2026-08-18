@@ -1,0 +1,58 @@
+{
+  "schema": "schemas/coverage-policy.schema.json",
+  "schemaVersion": 1,
+  "policyId": "saferide-coverage-policy-v1",
+  "global": {
+    "minimumPercent": {
+      "branches": 15,
+      "functions": 15,
+      "lines": 15,
+      "statements": 15
+    },
+    "include": ["src/**/*.{ts,tsx}", "apps/api/src/**/*.ts"],
+    "exclude": ["**/*.d.ts", "**/*.test.ts", "**/*.test.tsx", "**/__tests__/**", "**/test/**", "**/types/**"]
+  },
+  "criticalTypeScript": {
+    "minimumPercent": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    },
+    "modules": [
+      "src/utils/consentLedger.ts",
+      "src/utils/localRetention.ts",
+      "apps/api/src/services/privacyLifecycle.ts",
+      "apps/api/src/services/deletionWorkflow.ts",
+      "apps/api/src/services/privacySuppressionService.ts",
+      "apps/api/src/services/differencingProtectionService.ts",
+      "src/utils/caseTimelineExport.ts"
+    ],
+    "tests": [
+      "src/utils/__tests__/consentLedger.test.ts",
+      "src/utils/__tests__/localRetention.test.ts",
+      "apps/api/src/services/__tests__/privacyLifecycle.test.ts",
+      "apps/api/src/services/__tests__/deletionWorkflow.test.ts",
+      "apps/api/src/services/__tests__/privacySuppressionService.test.ts",
+      "apps/api/src/services/__tests__/differencingProtectionService.test.ts",
+      "src/utils/__tests__/caseTimelineExport.test.ts"
+    ]
+  },
+  "criticalNode": {
+    "minimumPercent": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80
+    },
+    "modules": [
+      "scripts/lib/saferide-structured-evidence.mjs",
+      "scripts/lib/saferide-tuned-artifact.mjs",
+      "scripts/lib/saferide-unicef-go-no-go.mjs"
+    ],
+    "tests": [
+      "scripts/__tests__/saferide-structured-evidence.test.mjs",
+      "scripts/__tests__/saferide-tuned-artifact.test.mjs",
+      "scripts/__tests__/saferide-unicef-go-no-go.test.mjs"
+    ]
+  }
+}

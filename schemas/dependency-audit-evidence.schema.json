@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/dependency-audit-evidence.schema.json",
+  "title": "SafeRide dependency audit evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "auditId",
+    "status",
+    "classification",
+    "observedAt",
+    "sourceCommit",
+    "databaseRevision",
+    "workspaces",
+    "limitations",
+    "releasePassGate"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/dependency-audit-evidence.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "auditId": { "type": "string", "pattern": "^dependency-audit-" },
+    "status": { "enum": ["blocked", "review-pending", "passed", "expired"] },
+    "classification": { "const": "public-safe-aggregate" },
+    "observedAt": { "type": ["string", "null"], "format": "date-time" },
+    "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "databaseRevision": { "type": ["string", "null"], "minLength": 1 },
+    "workspaces": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["workspace", "lockfile", "vulnerabilities"],
+        "properties": {
+          "workspace": { "enum": ["mobile", "api", "web"] },
+          "lockfile": { "type": "string", "minLength": 1 },
+          "vulnerabilities": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["info", "low", "moderate", "high", "critical", "total"],
+            "properties": {
+              "info": { "type": "integer", "minimum": 0 },
+              "low": { "type": "integer", "minimum": 0 },
+              "moderate": { "type": "integer", "minimum": 0 },
+              "high": { "type": "integer", "minimum": 0 },
+              "critical": { "type": "integer", "minimum": 0 },
+              "total": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "releasePassGate": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 1 } }
+  }
+}

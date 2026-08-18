@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-mitigation-retest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "evaluationRunId", "artifactSlot", "generationManifestSha256", "findings", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.mitigation-retest" },
+    "schemaVersion": { "const": 1 },
+    "evaluationRunId": { "$ref": "#/$defs/nonEmpty" },
+    "artifactSlot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05", "tuned-mobile"] },
+    "generationManifestSha256": { "$ref": "#/$defs/sha256" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mitigationId", "promptId", "ownerRole", "targetVersion", "status", "retestId", "retestRunId", "retestGenerationManifestSha256", "retestReviewResultSha256", "retestOutcome"],
+        "properties": {
+          "mitigationId": { "$ref": "#/$defs/nonEmpty" },
+          "promptId": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3}$" },
+          "ownerRole": { "$ref": "#/$defs/nonEmpty" },
+          "targetVersion": { "$ref": "#/$defs/nonEmpty" },
+          "status": { "enum": ["open", "mitigated", "retest-passed", "retest-failed"] },
+          "retestId": { "type": ["string", "null"], "minLength": 1 },
+          "retestRunId": { "type": ["string", "null"], "minLength": 1 },
+          "retestGenerationManifestSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+          "retestReviewResultSha256": {
+            "type": "array",
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/sha256" }
+          },
+          "retestOutcome": { "enum": ["pending", "passed", "failed"] }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "retest-passed" } }, "required": ["status"] },
+            "then": {
+              "properties": {
+                "retestId": { "type": "string", "minLength": 1 },
+                "retestRunId": { "type": "string", "minLength": 1 },
+                "retestGenerationManifestSha256": { "$ref": "#/$defs/sha256" },
+                "retestReviewResultSha256": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } },
+                "retestOutcome": { "const": "passed" }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "retestOutcome": { "const": "passed" } }, "required": ["retestOutcome"] },
+            "then": { "properties": { "status": { "const": "retest-passed" } } }
+          }
+        ]
+      }
+    },
+    "privacy": { "$ref": "#/$defs/privacy" }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsRawPrompt", "containsRawCompletion"],
+      "properties": {
+        "containsRawPrompt": { "const": false },
+        "containsRawCompletion": { "const": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-candidate-screen-report.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "reportId", "datasetId", "classification", "bindings", "counts", "outcomes", "coverage", "stages", "duplicateSummary", "thresholds", "diversity", "artifacts", "blockers", "passed", "strictReady", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-candidate-screen-report" }, "schemaVersion": { "const": 1 },
+    "reportId": { "type": "string", "pattern": "^v05-candidate-screen-[a-f0-9]{16}$" }, "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "classification": { "const": "public-safe-aggregate" },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["planSha256", "scenarioMatrixSha256", "splitManifestSha256", "candidateFiles", "candidateFilesInventorySha256", "policySha256", "systemPromptConfigSha256", "systemPromptTextSha256", "tokenizationReportSha256", "semanticReportSha256"],
+      "properties": {
+        "planSha256": { "$ref": "#/$defs/sha" }, "scenarioMatrixSha256": { "$ref": "#/$defs/sha" }, "splitManifestSha256": { "$ref": "#/$defs/sha" },
+        "candidateFiles": { "type": "array", "items": { "$ref": "#/$defs/file" } }, "candidateFilesInventorySha256": { "$ref": "#/$defs/sha" },
+        "policySha256": { "$ref": "#/$defs/sha" }, "systemPromptConfigSha256": { "$ref": "#/$defs/sha" }, "systemPromptTextSha256": { "$ref": "#/$defs/sha" },
+        "tokenizationReportSha256": { "$ref": "#/$defs/nullableSha" }, "semanticReportSha256": { "$ref": "#/$defs/nullableSha" }
+      }
+    },
+    "counts": {
+      "type": "object", "additionalProperties": false, "required": ["candidateFiles", "candidates", "knownSlots", "representedSlots", "shortlistedCandidates", "details"],
+      "properties": { "candidateFiles": { "type": "integer", "minimum": 1 }, "candidates": { "type": "integer", "minimum": 0, "maximum": 7800 }, "knownSlots": { "const": 2600 }, "representedSlots": { "type": "integer", "minimum": 0, "maximum": 2600 }, "shortlistedCandidates": { "type": "integer", "minimum": 0, "maximum": 7800 }, "details": { "type": "integer", "minimum": 0 } }
+    },
+    "outcomes": {
+      "type": "object", "additionalProperties": false, "required": ["eligible", "needsAdjudication", "rejected", "quarantined", "generationFailed"],
+      "properties": { "eligible": { "type": "integer", "minimum": 0 }, "needsAdjudication": { "type": "integer", "minimum": 0 }, "rejected": { "type": "integer", "minimum": 0 }, "quarantined": { "type": "integer", "minimum": 0 }, "generationFailed": { "type": "integer", "minimum": 0 } }
+    },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["slotsWithZeroCandidates", "slotsWithOneCandidate", "slotsWithTwoCandidates", "slotsWithThreeCandidates", "slotsOverMaximum", "slotsWithEligibleCandidate", "slotsWithoutEligibleCandidate", "behavior"],
+      "properties": {
+        "slotsWithZeroCandidates": { "type": "integer", "minimum": 0 }, "slotsWithOneCandidate": { "type": "integer", "minimum": 0 }, "slotsWithTwoCandidates": { "type": "integer", "minimum": 0 }, "slotsWithThreeCandidates": { "type": "integer", "minimum": 0 }, "slotsOverMaximum": { "type": "integer", "minimum": 0 },
+        "slotsWithEligibleCandidate": { "type": "integer", "minimum": 0 }, "slotsWithoutEligibleCandidate": { "type": "integer", "minimum": 0 },
+        "behavior": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+      }
+    },
+    "stages": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": { "type": "object", "additionalProperties": false, "required": ["stage", "status", "findingCount"], "properties": { "stage": { "enum": ["binding-structure", "security-privacy", "product-policy", "language", "exact-duplicate", "lexical-near-duplicate", "semantic-similarity", "diversity"] }, "status": { "enum": ["passed", "failed", "pending", "insufficient-coverage"] }, "findingCount": { "type": "integer", "minimum": 0 } } }
+    },
+    "duplicateSummary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["exactConversation", "normalizedConversation", "exactUserTurn", "normalizedUserTurn", "exactAssistantTarget", "normalizedAssistantTarget", "opening", "skeleton", "ngram", "lexicalProxy", "semantic", "unresolved"],
+      "properties": { "exactConversation": { "$ref": "#/$defs/count" }, "normalizedConversation": { "$ref": "#/$defs/count" }, "exactUserTurn": { "$ref": "#/$defs/count" }, "normalizedUserTurn": { "$ref": "#/$defs/count" }, "exactAssistantTarget": { "$ref": "#/$defs/count" }, "normalizedAssistantTarget": { "$ref": "#/$defs/count" }, "opening": { "$ref": "#/$defs/count" }, "skeleton": { "$ref": "#/$defs/count" }, "ngram": { "$ref": "#/$defs/count" }, "lexicalProxy": { "$ref": "#/$defs/count" }, "semantic": { "$ref": "#/$defs/count" }, "unresolved": { "$ref": "#/$defs/count" } }
+    },
+    "thresholds": {
+      "type": "object", "additionalProperties": false,
+      "required": ["maximumSequenceLength", "rejectTruncation", "ngramSize", "ngramJaccard", "lexicalSemanticProxy", "externalEmbedding", "minimumUniqueAssistantTargetRatio", "minimumUniqueUserTurnRatio", "maximumSixWordOpeningShare", "maximumResponseSkeletonShare", "maximumUnresolvedPairs"],
+      "properties": { "maximumSequenceLength": { "const": 1024 }, "rejectTruncation": { "const": true }, "ngramSize": { "const": 3 }, "ngramJaccard": { "const": 0.8 }, "lexicalSemanticProxy": { "const": 0.92 }, "externalEmbedding": { "const": 0.92 }, "minimumUniqueAssistantTargetRatio": { "const": 0.98 }, "minimumUniqueUserTurnRatio": { "const": 0.95 }, "maximumSixWordOpeningShare": { "const": 0.05 }, "maximumResponseSkeletonShare": { "const": 0.03 }, "maximumUnresolvedPairs": { "const": 0 } }
+    },
+    "diversity": {
+      "type": "object", "additionalProperties": false, "required": ["overall", "byLanguage", "byCategory", "bySplit"],
+      "properties": {
+        "overall": { "$ref": "#/$defs/metrics" },
+        "byLanguage": { "type": "object", "additionalProperties": { "$ref": "#/$defs/metrics" } },
+        "byCategory": { "type": "object", "additionalProperties": { "$ref": "#/$defs/metrics" } },
+        "bySplit": { "type": "object", "additionalProperties": { "$ref": "#/$defs/metrics" } }
+      }
+    },
+    "artifacts": { "type": "object", "additionalProperties": false, "required": ["candidateIndex", "details", "shortlist", "semanticRequest"], "properties": { "candidateIndex": { "$ref": "#/$defs/file" }, "details": { "$ref": "#/$defs/file" }, "shortlist": { "$ref": "#/$defs/file" }, "semanticRequest": { "$ref": "#/$defs/file" } } },
+    "blockers": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9_-]{2,95}$" } },
+    "passed": { "type": "boolean" }, "strictReady": { "type": "boolean" },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsCandidateText", "containsReviewerNotes", "containsHoldouts", "containsEmbeddings", "classification"], "properties": { "containsCandidateText": { "const": false }, "containsReviewerNotes": { "const": false }, "containsHoldouts": { "const": false }, "containsEmbeddings": { "const": false }, "classification": { "const": "public-safe-aggregate" } } }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "nullableSha": { "anyOf": [{ "$ref": "#/$defs/sha" }, { "type": "null" }] }, "count": { "type": "integer", "minimum": 0 },
+    "file": { "type": "object", "additionalProperties": false, "required": ["sha256", "sizeBytes"], "properties": { "sha256": { "$ref": "#/$defs/sha" }, "sizeBytes": { "type": "integer", "minimum": 0 } } },
+    "percentiles": { "type": "object", "additionalProperties": false, "required": ["min", "p50", "p95", "max"], "properties": { "min": { "type": "number", "minimum": 0 }, "p50": { "type": "number", "minimum": 0 }, "p95": { "type": "number", "minimum": 0 }, "max": { "type": "number", "minimum": 0 } } },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidateCount", "coveredSlotCount", "userTurnCount", "assistantTargetCount", "userWords", "assistantWords", "renderedTokens", "assistantTokens", "wouldExceed1024", "wouldTruncate", "responseLengthExceptions", "distinct1", "distinct2", "distinct3", "uniqueNormalizedUserTurnRatio", "uniqueNormalizedAssistantTargetRatio", "sixWordOpeningCount", "largestSixWordOpeningShare", "responseSkeletonCount", "largestResponseSkeletonShare", "responseStrategyCount", "largestResponseStrategyShare", "embeddingClusterCount", "largestEmbeddingClusterShare"],
+      "properties": {
+        "candidateCount": { "$ref": "#/$defs/count" }, "coveredSlotCount": { "$ref": "#/$defs/count" }, "userTurnCount": { "$ref": "#/$defs/count" }, "assistantTargetCount": { "$ref": "#/$defs/count" },
+        "userWords": { "$ref": "#/$defs/percentiles" }, "assistantWords": { "$ref": "#/$defs/percentiles" }, "renderedTokens": { "$ref": "#/$defs/percentiles" }, "assistantTokens": { "$ref": "#/$defs/percentiles" },
+        "wouldExceed1024": { "$ref": "#/$defs/count" }, "wouldTruncate": { "$ref": "#/$defs/count" }, "responseLengthExceptions": { "$ref": "#/$defs/count" },
+        "distinct1": { "type": "number", "minimum": 0, "maximum": 1 }, "distinct2": { "type": "number", "minimum": 0, "maximum": 1 }, "distinct3": { "type": "number", "minimum": 0, "maximum": 1 },
+        "uniqueNormalizedUserTurnRatio": { "type": "number", "minimum": 0, "maximum": 1 }, "uniqueNormalizedAssistantTargetRatio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sixWordOpeningCount": { "$ref": "#/$defs/count" }, "largestSixWordOpeningShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "responseSkeletonCount": { "$ref": "#/$defs/count" }, "largestResponseSkeletonShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "responseStrategyCount": { "$ref": "#/$defs/count" }, "largestResponseStrategyShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "embeddingClusterCount": { "$ref": "#/$defs/count" }, "largestEmbeddingClusterShare": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

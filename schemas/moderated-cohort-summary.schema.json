@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/moderated-cohort-summary.schema.json",
+  "title": "Content-free SafeRide moderated cohort summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatedAt", "syntheticOnly", "contentFree", "sessionCount", "reportStarts", "reportCompletions", "unassistedReportCompletions", "completionRate", "unassistedCompletionRate", "unassistedThreshold", "thresholdResult", "medianTimeToReportMsBucket", "dropOffsByStep", "retries", "errors", "meanRatings", "issueCounts"],
+  "properties": {
+    "schemaVersion": { "const": "moderated-cohort-summary.v1" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "syntheticOnly": { "const": true },
+    "contentFree": { "const": true },
+    "sessionCount": { "type": "integer", "minimum": 15, "maximum": 25 },
+    "reportStarts": { "type": "integer", "minimum": 15, "maximum": 25 },
+    "reportCompletions": { "type": "integer", "minimum": 0, "maximum": 25 },
+    "unassistedReportCompletions": { "type": "integer", "minimum": 0, "maximum": 25 },
+    "completionRate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "unassistedCompletionRate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "unassistedThreshold": { "const": 0.8 },
+    "thresholdResult": { "enum": ["pass", "fail"] },
+    "medianTimeToReportMsBucket": { "type": ["integer", "null"], "minimum": 0, "multipleOf": 15000 },
+    "dropOffsByStep": { "$ref": "#/$defs/countMap" },
+    "retries": { "type": "integer", "minimum": 0 },
+    "errors": { "type": "integer", "minimum": 0 },
+    "meanRatings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comprehension", "accessibility", "referralClarity", "errorRecovery"],
+      "properties": {
+        "comprehension": { "type": "number", "minimum": 1, "maximum": 5 },
+        "accessibility": { "type": "number", "minimum": 1, "maximum": 5 },
+        "referralClarity": { "type": "number", "minimum": 1, "maximum": 5 },
+        "errorRecovery": { "type": "number", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "issueCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["low", "medium", "high", "critical"],
+      "properties": {
+        "low": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "critical": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "countMap": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    }
+  }
+}

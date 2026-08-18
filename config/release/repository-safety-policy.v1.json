@@ -1,0 +1,64 @@
+{
+  "schema": "schemas/repository-safety-policy.schema.json",
+  "schemaVersion": 1,
+  "policyId": "saferide-repository-safety-policy-v1",
+  "maxTrackedFileBytes": 10485760,
+  "maxHistoricalBlobBytes": 26214400,
+  "forbiddenExtensions": [
+    ".aab",
+    ".apk",
+    ".ckpt",
+    ".gguf",
+    ".ipa",
+    ".jks",
+    ".keystore",
+    ".onnx",
+    ".p12",
+    ".p8",
+    ".pem",
+    ".pt",
+    ".pth",
+    ".safetensors",
+    ".task",
+    ".tflite"
+  ],
+  "forbiddenBasenames": [
+    ".env",
+    ".env.development",
+    ".env.local",
+    ".env.production",
+    "id_dsa",
+    "id_ed25519",
+    "id_rsa"
+  ],
+  "allowedLargeExtensions": [".avif", ".gif", ".jpeg", ".jpg", ".png", ".ttf", ".webp", ".woff", ".woff2"],
+  "allowedCurrentFiles": [
+    {
+      "path": "android/app/debug.keystore",
+      "sha256": "221e0a3106aa4c3ccc154e0a418b55020b3f9ea6e84f92e8749cd9e2f39f5e58",
+      "sizeBytes": 2257,
+      "classification": "standard-non-production-android-debug-key"
+    },
+    {
+      "path": "data/ai/gemma4/saferide-synthetic-guidance-v0.3.jsonl",
+      "sha256": "1c62e95c3fa6bb4a7766d6704863aa0b7533ac25e03cdec591bb283a76f90736",
+      "sizeBytes": 23719930,
+      "classification": "synthetic-versioned-training-fixture"
+    }
+  ],
+  "knownHistoricalObjects": [
+    {
+      "objectId": "364e105ed39fbfd62001429a68140672b06ec0de",
+      "path": "android/app/debug.keystore",
+      "sizeBytes": 2257,
+      "disposition": "allowed-non-production"
+    },
+    {
+      "objectId": "f56a8d5b35a37417b4e2c5f9cf7fd3e06b644873",
+      "path": "saferide.apk",
+      "sizeBytes": 83441506,
+      "disposition": "blocks-publication"
+    }
+  ],
+  "publicReviewEvidence": "docs/security/repository-publication-review.pending.json"
+}

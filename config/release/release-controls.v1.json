@@ -1,0 +1,47 @@
+{
+  "schema": "schemas/release-controls.schema.json",
+  "schemaVersion": 1,
+  "controlsId": "saferide-release-controls-v1",
+  "status": "blocked",
+  "targetBranch": "feat/app-local-infra-phase-1",
+  "expiresOn": "2026-08-14",
+  "actions": {
+    "createTag": false,
+    "uploadArtifact": false,
+    "changeRepositoryVisibility": false,
+    "publishPublicRelease": false,
+    "submitStoreBuild": false,
+    "submitUnicefPackage": false,
+    "deployProduction": false
+  },
+  "requiredChecks": [
+    "mobile-typecheck",
+    "mobile-tests-and-coverage",
+    "api-typecheck-and-build",
+    "web-ci-when-touched",
+    "secret-and-history-scan",
+    "dependency-audit",
+    "sbom-integrity",
+    "structured-evidence",
+    "release-evidence",
+    "unicef-go-no-go",
+    "compose-config"
+  ],
+  "requiredReviewerRoles": [
+    "release owner",
+    "independent mobile/API reviewer",
+    "privacy/security reviewer",
+    "product/safeguarding reviewer",
+    "legal/open-source reviewer"
+  ],
+  "rollback": {
+    "defaultTarget": "fail-closed:no-unicef-release",
+    "artifactRevocationRequired": true,
+    "dataRollbackMode": "forward-repair-only"
+  },
+  "externalHandoffIds": [
+    "HANDOFF-CI-BUDGET",
+    "HANDOFF-OPEN-SOURCE-LEGAL",
+    "HANDOFF-UNICEF-CHECKPOINT"
+  ]
+}

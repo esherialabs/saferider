@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.esheria.org/schemas/public-android-release.schema.json",
+  "title": "SafeRide public Android testing release",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "releaseId",
+    "releaseName",
+    "status",
+    "publishedAt",
+    "packageId",
+    "appVersion",
+    "versionCode",
+    "platform",
+    "minimumApi",
+    "abis",
+    "artifact",
+    "model",
+    "testedDevice",
+    "limitations"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/public-android-release.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "releaseId": { "type": "string", "pattern": "^saferide-v0\\.5\\.8-android-preview-" },
+    "releaseName": { "type": "string", "minLength": 3 },
+    "status": { "const": "public-testing-preview" },
+    "publishedAt": { "type": "string", "format": "date" },
+    "packageId": { "const": "com.esheria.saferide.app" },
+    "appVersion": { "const": "1.0.0" },
+    "versionCode": { "const": 2 },
+    "platform": { "const": "android" },
+    "minimumApi": { "type": "integer", "minimum": 26 },
+    "abis": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["arm64-v8a"] }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileName",
+        "sourceFileName",
+        "downloadUrl",
+        "checksumUrl",
+        "sha256",
+        "sizeBytes",
+        "sourceCommit",
+        "buildProfile",
+        "signatureScheme"
+      ],
+      "properties": {
+        "fileName": { "const": "SafeRide-v0.5.8-Android-Preview-arm64.apk" },
+        "sourceFileName": { "const": "SafeRide-v0.5.8-Android-RC-a076878-arm64.apk" },
+        "downloadUrl": { "type": "string", "format": "uri", "pattern": "^https://saferide\\.esheria\\.org/downloads/.+\\.apk$" },
+        "checksumUrl": { "type": "string", "format": "uri", "pattern": "^https://saferide\\.esheria\\.org/downloads/.+\\.sha256$" },
+        "sha256": { "const": "56b61c7a7002a97aedc0c943a382d0e200ef152aec398ea82720effe235c65f5" },
+        "sizeBytes": { "const": 70191127 },
+        "sourceCommit": { "const": "a076878ce0a871725491c2439e8e0cdde0a7d36c" },
+        "buildProfile": { "const": "android-release-apk" },
+        "signatureScheme": { "const": "APK Signature Scheme v2" }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modelId",
+        "huggingFaceUrl",
+        "immutableRevision",
+        "sha256",
+        "sizeBytes",
+        "freeStorageBytes",
+        "runtime",
+        "lifecycleStatus",
+        "initialDownloadRequired"
+      ],
+      "properties": {
+        "modelId": { "const": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm" },
+        "huggingFaceUrl": { "type": "string", "format": "uri" },
+        "immutableRevision": { "const": "e91ea27c3134fe21fc5bc995141675756e2c4a21" },
+        "sha256": { "const": "8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd" },
+        "sizeBytes": { "const": 5071837136 },
+        "freeStorageBytes": { "const": 5608708048 },
+        "runtime": { "const": "LiteRT-LM 0.16.0" },
+        "lifecycleStatus": { "const": "artifact-produced" },
+        "initialDownloadRequired": { "const": true }
+      }
+    },
+    "testedDevice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manufacturer", "model", "device", "androidVersion", "apiLevel", "abi", "memoryKb", "result"],
+      "properties": {
+        "manufacturer": { "const": "Xiaomi/POCO" },
+        "model": { "const": "24117RK2CG" },
+        "device": { "const": "zorn" },
+        "androidVersion": { "const": "16" },
+        "apiLevel": { "const": 36 },
+        "abi": { "const": "arm64-v8a" },
+        "memoryKb": { "const": 11367156 },
+        "result": { "const": "download-pause-resume-verify-restart-chat-and-signed-install-upgrade-passed" }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "type": "string", "minLength": 10 }
+    }
+  }
+}

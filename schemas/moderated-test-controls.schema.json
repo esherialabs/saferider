@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/moderated-test-controls.schema.json",
+  "title": "SafeRide moderated-test controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "controlVersion", "eventSchemaVersion", "capability", "approval", "consent", "runtime", "retention"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "controlVersion": { "type": "string", "pattern": "^moderated-test-controls\\.[a-zA-Z0-9._-]+$" },
+    "eventSchemaVersion": { "const": "measurement-event.v1" },
+    "capability": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "reason"],
+          "properties": {
+            "status": { "const": "disabled" },
+            "reason": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "reason"],
+          "properties": {
+            "status": { "const": "enabled" },
+            "reason": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approvalId", "approvedAt", "expiresAt", "ownerRole", "reviewerRole"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "expired", "revoked"] },
+        "approvalId": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" },
+        "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+        "ownerRole": { "type": "string", "minLength": 1 },
+        "reviewerRole": { "type": "string", "minLength": 1 }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredVersion", "separateFromPathwayConsent", "withdrawalDeletesLocalEvents"],
+      "properties": {
+        "requiredVersion": { "type": ["string", "null"] },
+        "separateFromPathwayConsent": { "const": true },
+        "withdrawalDeletesLocalEvents": { "const": true }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowedEnvironments", "allowedBuildProfiles", "productionAllowed", "networkUploadAllowed"],
+      "properties": {
+        "allowedEnvironments": {
+          "type": "array",
+          "items": { "enum": ["test", "staging"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowedBuildProfiles": {
+          "type": "array",
+          "items": { "enum": ["test", "preview"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "productionAllowed": { "const": false },
+        "networkUploadAllowed": { "const": false }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hours", "maxEvents", "maxIssueReports"],
+      "properties": {
+        "hours": { "type": ["integer", "null"], "minimum": 1, "maximum": 168 },
+        "maxEvents": { "type": "integer", "minimum": 1, "maximum": 2000 },
+        "maxIssueReports": { "type": "integer", "minimum": 1, "maximum": 250 }
+      }
+    }
+  }
+}

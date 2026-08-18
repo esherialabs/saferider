@@ -1,0 +1,59 @@
+{
+  "schema": "com.saferide.tuned-artifact-controls",
+  "schemaVersion": 1,
+  "controlId": "saferide-tuned-artifact-controls-2026-07-30.1",
+  "lifecycleOrder": [
+    "training-complete",
+    "adapter-evaluated",
+    "export-blocked",
+    "artifact-produced",
+    "artifact-android-verified",
+    "checkpoint-candidate",
+    "release-candidate",
+    "release-ready",
+    "revoked"
+  ],
+  "selection": {
+    "manifestSchemaId": "https://saferide.example/schemas/tuned-mobile-artifact-manifest.schema.json",
+    "requireBundledManifestById": true,
+    "silentFallbackAllowed": false,
+    "minimumSelectableState": "release-ready"
+  },
+  "activation": {
+    "enabled": false,
+    "reasonCode": "external-evidence-incomplete",
+    "activeManifestId": null,
+    "activeManifestSha256": null,
+    "rolloutPercent": 0,
+    "minimumAppVersion": "1.0.0",
+    "remoteDisableSupported": true,
+    "revokedManifestIds": [],
+    "revokedArtifactSha256": []
+  },
+  "download": {
+    "enabled": false,
+    "largeArtifactThresholdBytes": 104857600,
+    "explicitConsentRequired": true,
+    "displayExactByteSize": true,
+    "freeSpacePreflightRequired": true,
+    "meteredNetworkOptInRequired": true,
+    "unknownNetworkFailsClosed": true,
+    "pauseRequired": true,
+    "resumeRequired": true,
+    "cancelAndPartialCleanupRequired": true
+  },
+  "approvals": {
+    "legal": "pending",
+    "safety": "blocked",
+    "release": "blocked"
+  },
+  "rollback": {
+    "targetManifestId": "fail-closed:no-local-ai",
+    "removeArtifactOnRevocation": true,
+    "clearReadyStateOnRevocation": true,
+    "coreAppRemainsAvailable": true
+  },
+  "issuedAt": "2026-07-30T00:00:00.000Z",
+  "expiresAt": "2026-08-14T00:00:00.000Z",
+  "ownerRole": "ML release owner"
+}

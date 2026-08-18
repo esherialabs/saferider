@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-pipeline-smoke-artifact.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "artifactId", "datasetId", "state", "sequence", "sourceCommit", "previousArtifactSha256", "strictReady", "productionDatasetIdAllowed", "classification", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-pipeline-smoke-artifact" }, "schemaVersion": { "const": 1 },
+    "artifactId": { "type": "string", "pattern": "^v05-smoke-[a-z0-9-]{3,100}$" },
+    "datasetId": { "const": "saferide-v05-mechanical-smoke-fixture" },
+    "state": { "type": "string", "minLength": 3 }, "sequence": { "type": "integer", "minimum": 0 },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "previousArtifactSha256": { "anyOf": [{ "$ref": "#/$defs/sha" }, { "type": "null" }] },
+    "strictReady": { "const": false }, "productionDatasetIdAllowed": { "const": false }, "classification": { "const": "smoke-only" },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsCandidateText", "containsHoldouts", "containsReviews", "containsCredentials"], "properties": { "containsCandidateText": { "const": false }, "containsHoldouts": { "const": false }, "containsReviews": { "const": false }, "containsCredentials": { "const": false } } }
+  },
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0.0",
+  "matrixVersion": "locale-availability.2026-07-30.1",
+  "resourceVersion": "product-copy.2026-07-30.1",
+  "sourceLocale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "name": "English (EN)",
+      "flag": "EN",
+      "productStatus": "enabled",
+      "claimStatus": "enabled",
+      "resource": "src/i18n/resources/en.product.v1.json",
+      "review": {
+        "status": "source",
+        "reviewId": "source-locale-declaration.2026-07-30.1",
+        "reviewedAt": "2026-07-30T00:00:00.000Z",
+        "reviewerRole": "product content owner",
+        "scope": ["app-shell", "core-settings", "accessibility", "moderated-testing"],
+        "findings": "English is the declared source locale; this is not independent legal or safeguarding approval."
+      },
+      "unavailableReason": null
+    },
+    {
+      "code": "sw",
+      "name": "Kiswahili (SW)",
+      "flag": "SW",
+      "productStatus": "disabled",
+      "claimStatus": "disabled",
+      "resource": null,
+      "review": {
+        "status": "pending",
+        "reviewId": null,
+        "reviewedAt": null,
+        "reviewerRole": "native or fluent Kiswahili reviewer",
+        "scope": [],
+        "findings": null
+      },
+      "unavailableReason": "A versioned full-screen resource pack and native or fluent safeguarding review are required before enablement."
+    },
+    {
+      "code": "sh",
+      "name": "Sheng (SH)",
+      "flag": "SH",
+      "productStatus": "disabled",
+      "claimStatus": "disabled",
+      "resource": null,
+      "review": {
+        "status": "pending",
+        "reviewId": null,
+        "reviewedAt": null,
+        "reviewerRole": "native Sheng, product, and safeguarding reviewers",
+        "scope": [],
+        "findings": null
+      },
+      "unavailableReason": "A reviewed source pack, glossary, style guide, and product and safeguarding signoff are required before enablement."
+    }
+  ]
+}

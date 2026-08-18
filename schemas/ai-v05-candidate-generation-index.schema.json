@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-candidate-generation-index.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "classification", "authoringPackSha256", "batchCount", "candidateCount", "coveredSlotCount", "failedAttemptCount", "maximumCandidatesPerSlot", "batches", "candidateInventorySha256", "status", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-candidate-generation-index" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "classification": { "const": "controlled-content-free" },
+    "authoringPackSha256": { "$ref": "#/$defs/sha" },
+    "batchCount": { "type": "integer", "minimum": 0 },
+    "candidateCount": { "type": "integer", "minimum": 0, "maximum": 7800 },
+    "coveredSlotCount": { "type": "integer", "minimum": 0, "maximum": 2600 },
+    "failedAttemptCount": { "type": "integer", "minimum": 0 },
+    "maximumCandidatesPerSlot": { "const": 3 },
+    "batches": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["batchId", "manifestPath", "manifestSha256", "candidateFilePath", "candidateFileSha256", "candidateCount", "failureCount"],
+        "properties": {
+          "batchId": { "type": "string", "minLength": 8 }, "manifestPath": { "type": "string", "minLength": 3 },
+          "manifestSha256": { "$ref": "#/$defs/sha" }, "candidateFilePath": { "type": "string", "minLength": 3 },
+          "candidateFileSha256": { "$ref": "#/$defs/sha" }, "candidateCount": { "type": "integer", "minimum": 0 },
+          "failureCount": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "candidateInventorySha256": { "$ref": "#/$defs/sha" },
+    "status": { "enum": ["complete", "partial-with-failures", "partial-coverage"] },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsPrompts", "containsCompletions", "containsCredentials", "containsRequestResponseBodies"],
+      "properties": {
+        "containsPrompts": { "const": false }, "containsCompletions": { "const": false },
+        "containsCredentials": { "const": false }, "containsRequestResponseBodies": { "const": false }
+      }
+    }
+  },
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

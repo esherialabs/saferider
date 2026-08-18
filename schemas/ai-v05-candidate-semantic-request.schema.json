@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-candidate-semantic-request.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "requestId", "datasetId", "classification", "bindings", "candidateCount", "crossSplitPairCount", "candidateInventorySha256", "candidates", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-candidate-semantic-request" }, "schemaVersion": { "const": 1 },
+    "requestId": { "type": "string", "pattern": "^v05-semantic-request-[a-f0-9]{16}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" }, "classification": { "const": "restricted-content-free-identifiers" },
+    "bindings": {
+      "type": "object", "additionalProperties": false, "required": ["planSha256", "scenarioMatrixSha256", "splitManifestSha256", "candidateFilesInventorySha256"],
+      "properties": { "planSha256": { "$ref": "#/$defs/sha" }, "scenarioMatrixSha256": { "$ref": "#/$defs/sha" }, "splitManifestSha256": { "$ref": "#/$defs/sha" }, "candidateFilesInventorySha256": { "$ref": "#/$defs/sha" } }
+    },
+    "candidateCount": { "type": "integer", "minimum": 0, "maximum": 7800 }, "crossSplitPairCount": { "type": "integer", "minimum": 0 },
+    "candidateInventorySha256": { "$ref": "#/$defs/sha" },
+    "candidates": {
+      "type": "array", "maxItems": 7800,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["candidateId", "candidateContentSha256", "split"],
+        "properties": { "candidateId": { "$ref": "#/$defs/candidateId" }, "candidateContentSha256": { "$ref": "#/$defs/sha" }, "split": { "$ref": "#/$defs/split" } }
+      }
+    },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsRawText", "containsEmbeddings"], "properties": { "containsRawText": { "const": false }, "containsEmbeddings": { "const": false } } }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "candidateId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] }
+  }
+}

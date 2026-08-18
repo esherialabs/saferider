@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/case-export-controls.schema.json",
+  "title": "SafeRide case export controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "controlId", "status", "publicSafeTimeline", "protectedExport", "identity", "externalHandoffId", "rollbackTarget"],
+  "properties": {
+    "schema": { "const": "com.saferide.case-export-controls" },
+    "schemaVersion": { "const": 1 },
+    "controlId": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "enum": ["blocked_external_evidence", "approved", "revoked"] },
+    "publicSafeTimeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaPath", "inMemoryBuilderEnabled", "fileWriteEnabled", "shareEnabled"],
+      "properties": {
+        "schemaPath": { "const": "schemas/public-safe-case-timeline-export.schema.json" },
+        "inMemoryBuilderEnabled": { "type": "boolean" },
+        "fileWriteEnabled": { "type": "boolean" },
+        "shareEnabled": { "type": "boolean" }
+      }
+    },
+    "protectedExport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "authenticatedEncryption", "cleanup", "independentPrivacyReview", "reason"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "authenticatedEncryption": { "enum": ["repository_tested_device_unverified", "verified", "revoked"] },
+        "cleanup": { "enum": ["repository_tested_device_unverified", "verified", "revoked"] },
+        "independentPrivacyReview": { "enum": ["pending", "approved", "rejected", "expired"] },
+        "reason": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawCaseIdAllowedInOutput", "rawAttachmentIdAllowedInOutput", "perExportSaltRequired"],
+      "properties": {
+        "rawCaseIdAllowedInOutput": { "type": "boolean" },
+        "rawAttachmentIdAllowedInOutput": { "type": "boolean" },
+        "perExportSaltRequired": { "type": "boolean" }
+      }
+    },
+    "externalHandoffId": { "const": "HANDOFF-DEVICE-ENCRYPTED-STORAGE" },
+    "rollbackTarget": { "const": "fail-closed:no-protected-case-export" }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 }
+  }
+}

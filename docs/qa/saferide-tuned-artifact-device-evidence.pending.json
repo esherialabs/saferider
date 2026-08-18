@@ -1,0 +1,164 @@
+{
+  "schema": "com.saferide.tuned-artifact-device-evidence",
+  "schemaVersion": 1,
+  "evidenceId": "saferide-v058-original-419806-android-matrix-in-review-2026-08-18.1",
+  "status": "in-review",
+  "artifact": {
+    "manifestId": "saferide-gemma4-e2b-v058-original-419806-litertlm-artifact-produced-2026-08-10.1",
+    "sha256": "8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd",
+    "sizeBytes": 5071837136
+  },
+  "build": {
+    "sourceCommit": "248d592643e02beeb1046f2c676d20876b562fe7",
+    "appVersion": "1.0.0",
+    "buildId": "saferide-v058-android-qa-248d592-report-save-ui-arm64"
+  },
+  "deviceMatrix": [
+    {
+      "deviceClass": "android-2-3gb",
+      "supportDecision": "unverified",
+      "osVersion": null,
+      "abi": null,
+      "runtimeState": "not-run",
+      "scenarios": [
+        { "scenario": "load", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "generate", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "cancel", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "unload", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "offline", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "restart", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "low-storage", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "interrupted-download", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "checksum-failure", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "revocation", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "rollback", "status": "not-run", "reasonCode": "physical-android-unavailable" }
+      ],
+      "metrics": {
+        "loadMs": null,
+        "firstTokenMs": null,
+        "totalGenerationMs": null,
+        "tokensPerSecond": null,
+        "peakPssMb": null,
+        "peakRssMb": null,
+        "peakSwapMb": null,
+        "thermalState": null,
+        "batteryDeltaPercent": null,
+        "crashCount": null,
+        "anrCount": null,
+        "oomCount": null
+      }
+    },
+    {
+      "deviceClass": "android-4gb",
+      "supportDecision": "unverified",
+      "osVersion": null,
+      "abi": null,
+      "runtimeState": "not-run",
+      "scenarios": [
+        { "scenario": "load", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "generate", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "cancel", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "unload", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "offline", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "restart", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "low-storage", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "interrupted-download", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "checksum-failure", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "revocation", "status": "not-run", "reasonCode": "physical-android-unavailable" },
+        { "scenario": "rollback", "status": "not-run", "reasonCode": "physical-android-unavailable" }
+      ],
+      "metrics": {
+        "loadMs": null,
+        "firstTokenMs": null,
+        "totalGenerationMs": null,
+        "tokensPerSecond": null,
+        "peakPssMb": null,
+        "peakRssMb": null,
+        "peakSwapMb": null,
+        "thermalState": null,
+        "batteryDeltaPercent": null,
+        "crashCount": null,
+        "anrCount": null,
+        "oomCount": null
+      }
+    },
+    {
+      "deviceClass": "android-6-8gb",
+      "supportDecision": "unverified",
+      "osVersion": null,
+      "abi": null,
+      "runtimeState": "not-run",
+      "scenarios": [
+        { "scenario": "load", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "generate", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "cancel", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "unload", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "offline", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "restart", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "low-storage", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "interrupted-download", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "checksum-failure", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "revocation", "status": "not-run", "reasonCode": "qualifying-device-not-tested" },
+        { "scenario": "rollback", "status": "not-run", "reasonCode": "qualifying-device-not-tested" }
+      ],
+      "metrics": {
+        "loadMs": null,
+        "firstTokenMs": null,
+        "totalGenerationMs": null,
+        "tokensPerSecond": null,
+        "peakPssMb": null,
+        "peakRssMb": null,
+        "peakSwapMb": null,
+        "thermalState": null,
+        "batteryDeltaPercent": null,
+        "crashCount": null,
+        "anrCount": null,
+        "oomCount": null
+      }
+    }
+  ],
+  "outOfMatrixObservations": [
+    {
+      "deviceClass": "android-over-8gb",
+      "manufacturer": "Xiaomi",
+      "brand": "POCO",
+      "model": "24117RK2CG",
+      "deviceCodename": "zorn",
+      "osVersion": "Android 16",
+      "apiLevel": 36,
+      "abi": "arm64-v8a",
+      "memTotalKb": 11367156,
+      "dataFreeKiB": 352615452,
+      "runtimeState": "loaded",
+      "verifiedScenarios": ["load", "generate", "restart", "interrupted-download"],
+      "observedAt": "2026-08-18T10:10:48Z"
+    }
+  ],
+  "privacy": {
+    "syntheticInputsOnly": true,
+    "contentFreeDiagnostics": true,
+    "prohibitedLogContentDetected": null
+  },
+  "rollback": {
+    "targetManifestId": "fail-closed:no-local-ai",
+    "revocationRehearsed": false,
+    "artifactRemoved": false,
+    "readyStateCleared": false
+  },
+  "reviews": [
+    {
+      "reviewerRole": "mobile-qa",
+      "decision": "approved",
+      "reviewedAt": "2026-08-18T07:28:02Z",
+      "evidenceRef": "physical-device-test-and-installed-apk-hash-2026-08-18"
+    }
+  ],
+  "limitations": [
+    "The physically tested APK was built from source commit 248d592643e02beeb1046f2c676d20876b562fe7; those changes are contained in release baseline 775ac1b4859bc450e7c932bf2fda2b657a0cfe1b, but the APK itself was not built from that later merge commit.",
+    "The installed QA APK was read directly from the handset and matched SHA-256 1cced7af5ac950811e2049345ddcc4c48ffd8ae1eedce653cbc9e0d0c3c1df3b, confirming the frozen tested candidate identity.",
+    "One out-of-matrix POCO 24117RK2CG handset with 11,367,156 kB reported memory passed exact-artifact download, pause and resume across a Wi-Fi change, verification, app restart with local-artifact persistence, and synthetic chat generation.",
+    "The required Android 2-3 GB, 4 GB, and 6-8 GB classes remain unverified, so the over-8 GB observation does not establish required-matrix or broad hardware support.",
+    "Cancellation, explicit unload, offline generation, low-storage, checksum-failure, revocation, rollback, performance, memory, thermal, battery, crash, ANR, OOM, and prohibited-content log-inspection evidence remains pending.",
+    "The separately signed release APK passed clean-install and same-certificate version-code-1 to version-code-2 upgrade smoke on the same handset; a full model redownload under the release signature was not repeated."
+  ]
+}

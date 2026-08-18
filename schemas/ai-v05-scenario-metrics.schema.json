@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-scenario-metrics.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "metricsId", "datasetId", "status", "classification", "bindings", "integrity", "ids", "heatmaps", "strategies", "policyCoverage", "behaviors", "safetyHoldoutFeasibility", "textHygiene", "redundancy", "reviewState", "failedCells", "externalApprovalBlocked", "passed"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-scenario-metrics" },
+    "schemaVersion": { "const": 1 },
+    "metricsId": { "type": "string", "minLength": 12 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["technical-draft-passed", "blocked"] },
+    "classification": { "const": "public-safe-aggregate" },
+    "bindings": { "type": "object", "additionalProperties": false, "required": ["planSha256", "targetsSha256", "scenarioSha256", "scenarioInventorySha256"], "properties": { "planSha256": { "$ref": "#/$defs/sha" }, "targetsSha256": { "$ref": "#/$defs/sha" }, "scenarioSha256": { "$ref": "#/$defs/sha" }, "scenarioInventorySha256": { "$ref": "#/$defs/sha" } } },
+    "integrity": { "type": "object", "minProperties": 4 },
+    "ids": { "type": "object", "minProperties": 4 },
+    "heatmaps": { "type": "object", "minProperties": 10 },
+    "strategies": { "type": "object", "minProperties": 3 },
+    "policyCoverage": { "type": "object", "minProperties": 3 },
+    "behaviors": { "type": "object", "minProperties": 8 },
+    "safetyHoldoutFeasibility": { "type": "object", "minProperties": 4 },
+    "textHygiene": { "type": "object", "minProperties": 5 },
+    "redundancy": { "type": "object", "minProperties": 6 },
+    "reviewState": { "type": "object", "minProperties": 4 },
+    "failedCells": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 3 } },
+    "externalApprovalBlocked": { "const": true },
+    "passed": { "type": "boolean" }
+  },
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

@@ -1,0 +1,176 @@
+name: saferide-local
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${LOCAL_POSTGRES_DB:?Set LOCAL_POSTGRES_DB in infra/local/.env}
+      POSTGRES_USER: ${LOCAL_POSTGRES_USER:?Set LOCAL_POSTGRES_USER in infra/local/.env}
+      POSTGRES_PASSWORD: ${LOCAL_POSTGRES_PASSWORD:?Set LOCAL_POSTGRES_PASSWORD in infra/local/.env}
+    ports:
+      - "${LOCAL_POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../postgres/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LOCAL_POSTGRES_USER} -d ${LOCAL_POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${LOCAL_REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${LOCAL_MINIO_ROOT_USER:?Set LOCAL_MINIO_ROOT_USER in infra/local/.env}
+      MINIO_ROOT_PASSWORD: ${LOCAL_MINIO_ROOT_PASSWORD:?Set LOCAL_MINIO_ROOT_PASSWORD in infra/local/.env}
+    ports:
+      - "${LOCAL_MINIO_API_PORT:-9000}:9000"
+      - "${LOCAL_MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio-init:
+    image: minio/mc:RELEASE.2025-04-16T18-13-26Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      LOCAL_MINIO_ROOT_USER: ${LOCAL_MINIO_ROOT_USER:?Set LOCAL_MINIO_ROOT_USER in infra/local/.env}
+      LOCAL_MINIO_ROOT_PASSWORD: ${LOCAL_MINIO_ROOT_PASSWORD:?Set LOCAL_MINIO_ROOT_PASSWORD in infra/local/.env}
+      LOCAL_MINIO_BUCKET: ${LOCAL_MINIO_BUCKET:-evidence}
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        mc alias set saferide http://minio:9000 "$$LOCAL_MINIO_ROOT_USER" "$$LOCAL_MINIO_ROOT_PASSWORD"
+        mc mb --ignore-existing "saferide/$$LOCAL_MINIO_BUCKET"
+        mc anonymous set none "saferide/$$LOCAL_MINIO_BUCKET"
+
+  api:
+    build:
+      context: ../../
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: development
+      APP_ENV: local
+      API_MODE: api
+      API_HOST: 0.0.0.0
+      API_PORT: 3333
+      API_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_API_PORT:-3333}/api
+      WS_PUBLIC_BASE_URL: ws://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_WS_PORT:-3334}
+      AUTH_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_API_PORT:-3333}/auth
+      STORAGE_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_MINIO_API_PORT:-9000}/${LOCAL_MINIO_BUCKET:-evidence}
+      DATABASE_URL: postgres://${LOCAL_POSTGRES_USER}:${LOCAL_POSTGRES_PASSWORD}@postgres:5432/${LOCAL_POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+      AUTH_JWT_SECRET: ${LOCAL_AUTH_JWT_SECRET:?Set LOCAL_AUTH_JWT_SECRET in infra/local/.env}
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_MINIO_API_PORT:-9000}
+      S3_REGION: local
+      S3_BUCKET: ${LOCAL_MINIO_BUCKET:-evidence}
+      S3_CREDENTIAL_MODE: static
+      S3_ACCESS_KEY_ID: ${LOCAL_MINIO_ROOT_USER}
+      S3_SECRET_ACCESS_KEY: ${LOCAL_MINIO_ROOT_PASSWORD}
+      CORS_ORIGINS: ${LOCAL_API_CORS_ORIGINS:-*}
+      LOG_LEVEL: ${LOCAL_API_LOG_LEVEL:-info}
+    ports:
+      - "${LOCAL_API_PORT:-3333}:3333"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3333/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  websocket:
+    build:
+      context: ../../
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      APP_ENV: local
+      API_MODE: websocket
+      WS_HOST: 0.0.0.0
+      WS_PORT: 3334
+      API_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_API_PORT:-3333}/api
+      WS_PUBLIC_BASE_URL: ws://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_WS_PORT:-3334}
+      AUTH_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_API_PORT:-3333}/auth
+      STORAGE_PUBLIC_BASE_URL: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_MINIO_API_PORT:-9000}/${LOCAL_MINIO_BUCKET:-evidence}
+      DATABASE_URL: postgres://${LOCAL_POSTGRES_USER}:${LOCAL_POSTGRES_PASSWORD}@postgres:5432/${LOCAL_POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+      AUTH_JWT_SECRET: ${LOCAL_AUTH_JWT_SECRET:?Set LOCAL_AUTH_JWT_SECRET in infra/local/.env}
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: http://${LOCAL_PUBLIC_HOST:-localhost}:${LOCAL_MINIO_API_PORT:-9000}
+      S3_REGION: local
+      S3_BUCKET: ${LOCAL_MINIO_BUCKET:-evidence}
+      S3_CREDENTIAL_MODE: static
+      S3_ACCESS_KEY_ID: ${LOCAL_MINIO_ROOT_USER}
+      S3_SECRET_ACCESS_KEY: ${LOCAL_MINIO_ROOT_PASSWORD}
+      CORS_ORIGINS: ${LOCAL_API_CORS_ORIGINS:-*}
+      LOG_LEVEL: ${LOCAL_API_LOG_LEVEL:-info}
+    ports:
+      - "${LOCAL_WS_PORT:-3334}:3334"
+
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "${LOCAL_PROMETHEUS_PORT:-9090}:9090"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:12.0.0
+    environment:
+      GF_SECURITY_ADMIN_USER: ${LOCAL_GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${LOCAL_GRAFANA_ADMIN_PASSWORD:?Set LOCAL_GRAFANA_ADMIN_PASSWORD in infra/local/.env}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "${LOCAL_GRAFANA_PORT:-3001}:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  prometheus-data:
+  grafana-data:

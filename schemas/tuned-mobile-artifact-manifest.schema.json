@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/tuned-mobile-artifact-manifest.schema.json",
+  "title": "SafeRide tuned mobile artifact lifecycle manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "manifestId", "modelId", "status", "stateHistory", "adapterModel", "adapterRevision", "adapterRepoSha", "trainingRunId", "dataRegisterId", "baseModel", "baseRevision", "exportDecisionDoc", "exportRunner", "exportRunbook", "exportPath", "exportTooling", "runtime", "deviceRequirements", "artifact", "attestation", "safetyReport", "androidProof", "controlPolicy", "approvals", "rollbackTargetManifestId", "limitations", "createdAt", "createdByRole"],
+  "properties": {
+    "schema": { "const": "com.saferide.tuned-mobile-artifact-manifest" },
+    "schemaVersion": { "const": 2 },
+    "manifestId": { "$ref": "#/$defs/nonEmpty" },
+    "modelId": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "$ref": "#/$defs/state" },
+    "stateHistory": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["state", "enteredAt", "evidenceRefs"],
+        "properties": {
+          "state": { "$ref": "#/$defs/state" },
+          "enteredAt": { "$ref": "#/$defs/dateTime" },
+          "evidenceRefs": { "$ref": "#/$defs/nonEmptyArray" }
+        }
+      }
+    },
+    "adapterModel": { "$ref": "#/$defs/nonEmpty" },
+    "adapterRevision": { "$ref": "#/$defs/revision" },
+    "adapterRepoSha": { "$ref": "#/$defs/revision" },
+    "trainingRunId": { "$ref": "#/$defs/nonEmpty" },
+    "dataRegisterId": { "$ref": "#/$defs/nonEmpty" },
+    "baseModel": { "$ref": "#/$defs/nonEmpty" },
+    "baseRevision": { "$ref": "#/$defs/revision" },
+    "exportDecisionDoc": { "$ref": "#/$defs/nonEmpty" },
+    "exportRunner": { "$ref": "#/$defs/nonEmpty" },
+    "exportRunbook": { "$ref": "#/$defs/nonEmpty" },
+    "exportPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "requiredSteps"],
+      "properties": {
+        "decision": { "enum": ["merge-peft-then-export-litertlm", "blocked"] },
+        "requiredSteps": { "$ref": "#/$defs/nonEmptyArray" },
+        "blocker": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "exportTooling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environmentClass", "exporterRepositoryRevision", "pythonVersion", "packages", "tokenizer"],
+      "properties": {
+        "environmentClass": { "const": "approved-high-memory-only" },
+        "exporterRepositoryRevision": { "oneOf": [{ "$ref": "#/$defs/revision" }, { "type": "null" }] },
+        "pythonVersion": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "packages": { "type": "object", "additionalProperties": { "$ref": "#/$defs/nonEmpty" } },
+        "tokenizer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model", "revision", "metadataSha256"],
+          "properties": {
+            "model": { "$ref": "#/$defs/nonEmpty" },
+            "revision": { "$ref": "#/$defs/revision" },
+            "metadataSha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] }
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contextWindow", "maxOutputTokens", "backendPlan", "cachePolicy"],
+      "properties": {
+        "contextWindow": { "type": "integer", "minimum": 1, "maximum": 32000 },
+        "maxOutputTokens": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "backendPlan": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["gpu", "cpu-text", "npu"] } },
+        "cachePolicy": { "enum": ["app-cache", "app-documents"] }
+      }
+    },
+    "deviceRequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minAndroidApi", "minRamGb", "storageRequiredBytes"],
+      "properties": {
+        "minAndroidApi": { "type": "integer", "minimum": 26 },
+        "minRamGb": { "oneOf": [{ "type": "number", "exclusiveMinimum": 0 }, { "type": "null" }] },
+        "storageRequiredBytes": { "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }] }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "format", "downloadMode", "immutableLocation", "sha256", "sizeBytes", "fileInventoryRef"],
+      "properties": {
+        "fileName": { "type": "string", "pattern": "\\.litertlm$" },
+        "format": { "const": "litertlm" },
+        "downloadMode": { "enum": ["disabled", "controlled-import", "app-download"] },
+        "immutableLocation": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "sizeBytes": { "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }] },
+        "fileInventoryRef": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] }
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "processId", "attestationRef", "approverRole", "approvedAt"],
+      "properties": {
+        "status": { "enum": ["missing", "pending", "approved", "rejected"] },
+        "processId": { "$ref": "#/$defs/nonEmpty" },
+        "attestationRef": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "approverRole": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "approvedAt": { "oneOf": [{ "$ref": "#/$defs/dateTime" }, { "type": "null" }] }
+      }
+    },
+    "safetyReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reportDoc", "summaryId", "privateEvidenceRepo", "privateEvidenceRepoSha"],
+      "properties": {
+        "reportDoc": { "$ref": "#/$defs/nonEmpty" },
+        "summaryId": { "$ref": "#/$defs/nonEmpty" },
+        "privateEvidenceRepo": { "$ref": "#/$defs/nonEmpty" },
+        "privateEvidenceRepoSha": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "androidProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseRuntimeManifestId", "baseRuntimeDeviceMatrixDoc", "baseRuntimePhysicalDeviceProof", "tunedArtifactPhysicalDeviceProof", "deviceEvidenceId", "deviceEvidenceRef"],
+      "properties": {
+        "baseRuntimeManifestId": { "$ref": "#/$defs/nonEmpty" },
+        "baseRuntimeDeviceMatrixDoc": { "$ref": "#/$defs/nonEmpty" },
+        "baseRuntimePhysicalDeviceProof": { "type": "boolean" },
+        "tunedArtifactPhysicalDeviceProof": { "type": "boolean" },
+        "deviceEvidenceId": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] },
+        "deviceEvidenceRef": { "oneOf": [{ "$ref": "#/$defs/nonEmpty" }, { "type": "null" }] }
+      }
+    },
+    "controlPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["controlId", "sha256"],
+      "properties": {
+        "controlId": { "$ref": "#/$defs/nonEmpty" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legal", "safety", "release"],
+      "properties": {
+        "legal": { "$ref": "#/$defs/approval" },
+        "safety": { "$ref": "#/$defs/approval" },
+        "release": { "$ref": "#/$defs/approval" }
+      }
+    },
+    "rollbackTargetManifestId": { "$ref": "#/$defs/nonEmpty" },
+    "limitations": { "$ref": "#/$defs/nonEmptyArray" },
+    "createdAt": { "$ref": "#/$defs/dateTime" },
+    "createdByRole": { "$ref": "#/$defs/nonEmpty" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "enum": ["training-complete", "adapter-evaluated", "export-blocked"] } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "deviceRequirements": { "properties": { "minRamGb": { "type": "null" }, "storageRequiredBytes": { "type": "null" } } },
+          "artifact": { "properties": { "downloadMode": { "const": "disabled" }, "immutableLocation": { "type": "null" }, "sha256": { "type": "null" }, "sizeBytes": { "type": "null" }, "fileInventoryRef": { "type": "null" } } },
+          "androidProof": { "properties": { "tunedArtifactPhysicalDeviceProof": { "const": false }, "deviceEvidenceId": { "type": "null" }, "deviceEvidenceRef": { "type": "null" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "export-blocked" } }, "required": ["status"] },
+      "then": { "properties": { "exportPath": { "required": ["blocker"], "properties": { "decision": { "const": "blocked" } } } } }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["artifact-produced", "artifact-android-verified", "checkpoint-candidate", "release-candidate", "release-ready", "revoked"] } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "exportPath": { "properties": { "decision": { "const": "merge-peft-then-export-litertlm" } } },
+          "exportTooling": { "properties": { "exporterRepositoryRevision": { "$ref": "#/$defs/revision" }, "pythonVersion": { "$ref": "#/$defs/nonEmpty" }, "packages": { "minProperties": 1 }, "tokenizer": { "properties": { "metadataSha256": { "$ref": "#/$defs/sha256" } } } } },
+          "deviceRequirements": { "properties": { "minRamGb": { "type": "number", "exclusiveMinimum": 0 }, "storageRequiredBytes": { "type": "integer", "minimum": 1 } } },
+          "artifact": { "properties": { "immutableLocation": { "$ref": "#/$defs/nonEmpty" }, "sha256": { "$ref": "#/$defs/sha256" }, "sizeBytes": { "type": "integer", "minimum": 1 }, "fileInventoryRef": { "$ref": "#/$defs/nonEmpty" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["artifact-android-verified", "checkpoint-candidate", "release-candidate", "release-ready"] } }, "required": ["status"] },
+      "then": { "properties": { "androidProof": { "properties": { "tunedArtifactPhysicalDeviceProof": { "const": true }, "deviceEvidenceId": { "$ref": "#/$defs/nonEmpty" }, "deviceEvidenceRef": { "$ref": "#/$defs/nonEmpty" } } } } }
+    },
+    {
+      "if": { "properties": { "status": { "const": "release-ready" } }, "required": ["status"] },
+      "then": { "properties": { "artifact": { "properties": { "downloadMode": { "const": "app-download" } } }, "attestation": { "properties": { "status": { "const": "approved" }, "attestationRef": { "$ref": "#/$defs/nonEmpty" }, "approverRole": { "$ref": "#/$defs/nonEmpty" }, "approvedAt": { "$ref": "#/$defs/dateTime" } } }, "approvals": { "properties": { "legal": { "const": "approved" }, "safety": { "const": "approved" }, "release": { "const": "approved" } } } } }
+    }
+  ],
+  "$defs": {
+    "state": { "enum": ["training-complete", "adapter-evaluated", "export-blocked", "artifact-produced", "artifact-android-verified", "checkpoint-candidate", "release-candidate", "release-ready", "revoked"] },
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "nonEmptyArray": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{7,64}$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "dateTime": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "approval": { "enum": ["pending", "blocked", "approved", "rejected"] }
+  }
+}

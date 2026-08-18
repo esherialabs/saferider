@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-sagemaker-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "backend",
+    "region",
+    "instance",
+    "storage",
+    "container",
+    "security",
+    "training",
+    "privacy"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-sagemaker-policy" },
+    "schemaVersion": { "const": 1 },
+    "backend": { "const": "aws-sagemaker-training-job" },
+    "region": { "const": "eu-central-1" },
+    "instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "count", "volumeSizeGb", "quotaCode"],
+      "properties": {
+        "type": { "const": "ml.g5.xlarge" },
+        "count": { "const": 1 },
+        "volumeSizeGb": { "type": "integer", "minimum": 40, "maximum": 200 },
+        "quotaCode": { "const": "L-1928E07B" }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["serverSideEncryption", "bucketVersioningRequired", "publicAccessBlockRequired", "checkpointSyncRequired"],
+      "properties": {
+        "serverSideEncryption": { "const": "AES256" },
+        "bucketVersioningRequired": { "const": true },
+        "publicAccessBlockRequired": { "const": true },
+        "checkpointSyncRequired": { "const": true }
+      }
+    },
+    "container": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "entrypoint", "requirements", "constraints", "networkDownloadAllowed"],
+      "properties": {
+        "python": { "const": "3.12" },
+        "entrypoint": { "const": "scripts/saferide-gemma4-v05-sagemaker-entrypoint.py" },
+        "requirements": { "const": "requirements-ai-smoke.txt" },
+        "constraints": { "const": "constraints-ai-training.txt" },
+        "networkDownloadAllowed": { "const": false }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["networkIsolation", "interContainerTrafficEncryption", "restrictedInputsForbidden", "rawContentLoggingForbidden"],
+      "properties": {
+        "networkIsolation": { "const": true },
+        "interContainerTrafficEncryption": { "const": true },
+        "restrictedInputsForbidden": { "const": true },
+        "rawContentLoggingForbidden": { "const": true }
+      }
+    },
+    "training": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseModelId", "baseRevision", "pilot", "candidate", "fixed"],
+      "properties": {
+        "baseModelId": { "const": "google/gemma-4-E2B-it" },
+        "baseRevision": { "const": "70af34e20bd4b7a91f0de6b22675850c43922a03" },
+        "pilot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rows", "seed", "learningRates", "epochs"],
+          "properties": {
+            "rows": { "const": 320 },
+            "seed": { "const": 419805 },
+            "learningRates": {
+              "type": "array",
+              "prefixItems": [{ "const": 0.00001 }, { "const": 0.00002 }],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": false
+            },
+            "epochs": { "const": 1 }
+          }
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["trainRows", "devRows", "seeds", "epochs"],
+          "properties": {
+            "trainRows": { "const": 1600 },
+            "devRows": { "const": 300 },
+            "seeds": {
+              "type": "array",
+              "prefixItems": [{ "const": 419805 }, { "const": 419806 }],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": false
+            },
+            "epochs": { "const": 1 }
+          }
+        },
+        "fixed": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maxSequenceLength",
+            "trainBatchSize",
+            "evalBatchSize",
+            "gradientAccumulationSteps",
+            "loraRank",
+            "loraAlpha",
+            "loraDropout",
+            "warmupRatio",
+            "scheduler",
+            "evalSteps",
+            "saveSteps",
+            "earlyStoppingPatience",
+            "gradientCheckpointing"
+          ],
+          "properties": {
+            "maxSequenceLength": { "const": 1024 },
+            "trainBatchSize": { "const": 1 },
+            "evalBatchSize": { "const": 1 },
+            "gradientAccumulationSteps": { "const": 8 },
+            "loraRank": { "const": 8 },
+            "loraAlpha": { "const": 16 },
+            "loraDropout": { "const": 0.05 },
+            "warmupRatio": { "const": 0.03 },
+            "scheduler": { "const": "cosine" },
+            "evalSteps": { "const": 25 },
+            "saveSteps": { "const": 25 },
+            "earlyStoppingPatience": { "const": 3 },
+            "gradientCheckpointing": { "const": true }
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["syntheticOnly", "holdoutsAvailableToTraining", "blindSuiteAvailableToTraining", "reviewerIdentityIncluded"],
+      "properties": {
+        "syntheticOnly": { "const": true },
+        "holdoutsAvailableToTraining": { "const": false },
+        "blindSuiteAvailableToTraining": { "const": false },
+        "reviewerIdentityIncluded": { "const": false }
+      }
+    }
+  }
+}

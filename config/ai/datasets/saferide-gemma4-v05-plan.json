@@ -1,0 +1,199 @@
+{
+  "schema": "com.saferide.ai.v05-dataset-plan",
+  "schemaVersion": 1,
+  "planId": "saferide-gemma4-v05-plan-2026-08-01.1",
+  "datasetId": "saferide-synthetic-guidance-v0.5.0",
+  "status": "implementation-ready-human-gates-blocked",
+  "issue": "ESH-4198",
+  "splitSeed": 419805,
+  "assignmentAlgorithm": "sha256-ranked-within-category-v1",
+  "history": {
+    "v03": "immutable-historical-evidence",
+    "v04": "immutable-corrected-pipeline-regression-fixture"
+  },
+  "categories": [
+    "privacy",
+    "legal",
+    "medical",
+    "emergency",
+    "tone",
+    "coercion",
+    "fabrication",
+    "product",
+    "jailbreak",
+    "noNewFacts"
+  ],
+  "languages": ["en", "sw"],
+  "splits": [
+    {
+      "name": "train",
+      "rows": 1600,
+      "families": 800,
+      "rowsPerCategory": 160,
+      "familiesPerCategory": 80,
+      "rowsPerCategoryLanguage": 80,
+      "conversationFormRowsPerCategoryLanguage": { "single-turn": 56, "multi-turn": 24 },
+      "optimizerAccess": "weight-updates-after-strict-gate"
+    },
+    {
+      "name": "dev",
+      "rows": 300,
+      "families": 150,
+      "rowsPerCategory": 30,
+      "familiesPerCategory": 15,
+      "rowsPerCategoryLanguage": 15,
+      "conversationFormRowsPerCategoryLanguage": { "single-turn": 9, "multi-turn": 6 },
+      "optimizerAccess": "never"
+    },
+    {
+      "name": "quality-holdout",
+      "rows": 300,
+      "families": 150,
+      "rowsPerCategory": 30,
+      "familiesPerCategory": 15,
+      "rowsPerCategoryLanguage": 15,
+      "conversationFormRowsPerCategoryLanguage": { "single-turn": 9, "multi-turn": 6 },
+      "optimizerAccess": "never"
+    },
+    {
+      "name": "safety-holdout",
+      "rows": 400,
+      "families": 200,
+      "rowsPerCategory": 40,
+      "familiesPerCategory": 20,
+      "rowsPerCategoryLanguage": 20,
+      "conversationFormRowsPerCategoryLanguage": { "single-turn": 10, "multi-turn": 10 },
+      "optimizerAccess": "never"
+    }
+  ],
+  "categoryQuotas": [
+    { "category": "privacy", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "legal", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "medical", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "emergency", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "tone", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "coercion", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "fabrication", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "product", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "jailbreak", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } },
+    { "category": "noNewFacts", "rows": 260, "families": 130, "rowsPerLanguage": 130, "splitRows": { "train": 160, "dev": 30, "quality-holdout": 30, "safety-holdout": 40 } }
+  ],
+  "languageQuotas": [
+    { "language": "en", "rows": 1300, "splitRows": { "train": 800, "dev": 150, "quality-holdout": 150, "safety-holdout": 200 } },
+    { "language": "sw", "rows": 1300, "splitRows": { "train": 800, "dev": 150, "quality-holdout": 150, "safety-holdout": 200 } }
+  ],
+  "totals": {
+    "rows": 2600,
+    "families": 1300,
+    "singleTurnRows": 1680,
+    "multiTurnRows": 920,
+    "blindEvaluationPrompts": 240,
+    "blindPromptsPerCategoryLanguage": 12
+  },
+  "behaviorQuotas": {
+    "minimumSafeNextStepRows": 1560,
+    "maximumPureRefusalRows": 260,
+    "minimumExplicitUncertaintyRows": 520,
+    "minimumStateDistinctionRows": 520,
+    "minimumCounterfactualRows": 520,
+    "minimumBenignHardNegativeRows": 390,
+    "minimumAdversarialPressureRows": 520,
+    "minimumSafetyHoldoutHighOrCriticalRows": 280
+  },
+  "auditPolicy": {
+    "exactCrossSplitMaximum": 0,
+    "normalizedCrossSplitMaximum": 0,
+    "ngramSize": 3,
+    "ngramJaccardThreshold": 0.8,
+    "lexicalSemanticProxyThreshold": 0.92,
+    "externalEmbeddingThreshold": 0.92,
+    "maximumUnresolvedNearDuplicatePairs": 0,
+    "minimumUniqueAssistantTargetRatio": 0.98,
+    "minimumUniqueUserTurnRatio": 0.95,
+    "maximumSixWordOpeningShare": 0.05,
+    "maximumResponseSkeletonShare": 0.03,
+    "normalResponseWordMinimum": 25,
+    "normalResponseWordMaximum": 120,
+    "thresholdApprovalStatus": "pending-independent-ml-review"
+  },
+  "candidateAuthoring": {
+    "maximumCandidatesPerFamilyLanguage": 3,
+    "sourceBoundary": "synthetic-only",
+    "initialStatus": "unreviewed",
+    "remoteGenerationEnabledByRepository": false,
+    "rawContentLoggingAllowed": false
+  },
+  "training": {
+    "method": "peft-lora",
+    "objective": "assistant-only-next-token-loss",
+    "baseModelId": "google/gemma-4-E2B-it",
+    "maxSequenceLength": 1024,
+    "rejectTruncation": true,
+    "pilotRows": 320,
+    "pilotRowsPerCategoryLanguage": 16,
+    "pilotLearningRates": [0.00001, 0.00002],
+    "candidateSeeds": [419805, 419806],
+    "epochs": { "minimum": 1, "maximum": 3 },
+    "trainBatchSize": 1,
+    "gradientAccumulationSteps": 8,
+    "effectiveBatchSize": 8,
+    "loraRank": 8,
+    "loraAlpha": 16,
+    "loraDropout": 0.05,
+    "scheduler": "cosine",
+    "warmupRatio": 0.03,
+    "evaluationSteps": 25,
+    "saveSteps": 25,
+    "earlyStoppingPatience": 3,
+    "selectionMetric": "development-assistant-token-loss",
+    "maxStepsAllowedForCandidate": false
+  },
+  "artifactPolicy": {
+    "publicSafe": [
+      "schemas",
+      "machine-readable-plan",
+      "sanitized-register",
+      "dataset-card",
+      "aggregate-audit",
+      "sanitized-run-summaries",
+      "aggregate-evaluation"
+    ],
+    "controlled": [
+      "scenario-specifications",
+      "split-manifest",
+      "train-rows",
+      "development-rows",
+      "candidate-provenance",
+      "training-selection-records",
+      "content-free-run-manifests"
+    ],
+    "restricted": [
+      "candidate-conversations",
+      "review-ledger",
+      "reviewer-identities",
+      "quality-holdout",
+      "safety-holdout",
+      "blind-evaluation-prompts",
+      "raw-model-completions",
+      "exploit-sensitive-prompts",
+      "private-reviewer-notes",
+      "row-selection-inventory",
+      "semantic-leakage-row-details",
+      "dataset-audit-row-details"
+    ]
+  },
+  "requiredHumanGates": [
+    "approved-policy-and-system-prompt",
+    "scenario-matrix-approval",
+    "named-reviewer-roster",
+    "row-level-primary-and-safety-review",
+    "native-or-fluent-kiswahili-review",
+    "legal-and-derivative-use-approval",
+    "clinical-legal-privacy-safeguarding-domain-decisions",
+    "holdout-custody-evidence",
+    "semantic-leakage-adjudication",
+    "organization-owned-controlled-storage",
+    "unicef-workbook-reconciliation",
+    "gpu-colab-authorization"
+  ]
+}

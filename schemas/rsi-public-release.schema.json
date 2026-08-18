@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/rsi-public-release.schema.json",
+  "title": "SafeRide privacy-suppressed RSI release",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "releaseId", "viewId", "state", "cells", "revisionSha256"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "releaseId": { "type": "string", "format": "uuid" },
+    "viewId": { "const": "rsi-fixed-grid-v1" },
+    "state": { "enum": ["released", "no_data"] },
+    "revisionSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "cells": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["areaId", "timeBucket", "category", "state", "display"],
+            "properties": {
+              "areaId": { "type": "string" },
+              "timeBucket": { "type": "string", "format": "date-time" },
+              "category": { "type": "string" },
+              "state": { "const": "suppressed" },
+              "display": { "const": "No data" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["areaId", "timeBucket", "category", "state", "value", "noiseMemoized"],
+            "properties": {
+              "areaId": { "type": "string" },
+              "timeBucket": { "type": "string", "format": "date-time" },
+              "category": { "type": "string" },
+              "state": { "const": "released" },
+              "value": { "type": "number", "exclusiveMinimum": 0 },
+              "noiseMemoized": { "type": "boolean" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

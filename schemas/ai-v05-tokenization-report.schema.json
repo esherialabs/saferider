@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-tokenization-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "reportId", "datasetId", "status", "classification", "bindings", "method", "recordCount", "records", "approval", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-tokenization-report" },
+    "schemaVersion": { "const": 1 },
+    "reportId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "enum": ["test-only", "approved-controlled"] },
+    "classification": { "const": "restricted-content-free-identifiers" },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["planSha256", "candidateInventorySha256", "policySha256", "systemPromptConfigSha256", "systemPromptTextSha256"],
+      "properties": {
+        "planSha256": { "$ref": "#/$defs/sha" }, "candidateInventorySha256": { "$ref": "#/$defs/sha" },
+        "policySha256": { "$ref": "#/$defs/sha" }, "systemPromptConfigSha256": { "$ref": "#/$defs/sha" },
+        "systemPromptTextSha256": { "$ref": "#/$defs/sha" }
+      }
+    },
+    "method": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tokenizerId", "immutableRevision", "implementationId", "implementationSha256", "chatTemplateSha256", "canonicalApplyChatTemplate", "maximumSequenceLength", "rejectTruncation"],
+      "properties": {
+        "tokenizerId": { "type": "string", "minLength": 3, "maxLength": 200 },
+        "immutableRevision": { "type": "string", "minLength": 7, "maxLength": 160 },
+        "implementationId": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "implementationSha256": { "$ref": "#/$defs/sha" }, "chatTemplateSha256": { "$ref": "#/$defs/sha" },
+        "canonicalApplyChatTemplate": { "const": true }, "maximumSequenceLength": { "const": 1024 }, "rejectTruncation": { "const": true }
+      }
+    },
+    "recordCount": { "type": "integer", "minimum": 0, "maximum": 7800 },
+    "records": {
+      "type": "array", "maxItems": 7800,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["candidateId", "candidateContentSha256", "renderedSequenceSha256", "totalTokens", "assistantTokens", "truncated"],
+        "properties": {
+          "candidateId": { "$ref": "#/$defs/candidateId" }, "candidateContentSha256": { "$ref": "#/$defs/sha" },
+          "renderedSequenceSha256": { "$ref": "#/$defs/sha" }, "totalTokens": { "type": "integer", "minimum": 1 },
+          "assistantTokens": { "type": "integer", "minimum": 1 }, "truncated": { "const": false }
+        }
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reviewerRole", "evidenceRef"],
+      "properties": {
+        "status": { "enum": ["test-only", "approved"] }, "reviewerRole": { "enum": ["fixture", "technical-ml"] },
+        "evidenceRef": { "type": ["string", "null"], "minLength": 3 }
+      }
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["containsRawText", "containsTokenIds", "containsPrompts", "containsCompletions"],
+      "properties": { "containsRawText": { "const": false }, "containsTokenIds": { "const": false }, "containsPrompts": { "const": false }, "containsCompletions": { "const": false } }
+    }
+  },
+  "allOf": [{
+    "if": { "properties": { "status": { "const": "approved-controlled" } }, "required": ["status"] },
+    "then": { "properties": { "approval": { "properties": { "status": { "const": "approved" }, "reviewerRole": { "const": "technical-ml" }, "evidenceRef": { "type": "string" } } } } },
+    "else": { "properties": { "approval": { "properties": { "status": { "const": "test-only" }, "reviewerRole": { "const": "fixture" }, "evidenceRef": { "type": "null" } } } } }
+  }],
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "candidateId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" }
+  }
+}

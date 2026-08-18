@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.saferide.example/provider-pack-approval.schema.json",
+  "title": "SafeRide provider pack external approval evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "evidenceId", "kind", "status", "packId", "packVersion", "packSha256", "organizationId", "reviewerId", "reviewerRole", "reviewedAt", "expiresAt", "artifactReference", "artifactSha256"],
+  "properties": {
+    "schema": { "const": "com.saferide.provider-pack-approval" },
+    "schemaVersion": { "const": 1 },
+    "evidenceId": { "type": "string", "pattern": "^[A-Z0-9-]{6,120}$" },
+    "kind": { "enum": ["partner-validation", "release-attestation"] },
+    "status": { "enum": ["pending", "approved", "rejected", "expired", "revoked"] },
+    "packId": { "type": "string", "minLength": 3, "maxLength": 80 },
+    "packVersion": { "type": "string", "minLength": 5, "maxLength": 80 },
+    "packSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "organizationId": { "type": ["string", "null"], "minLength": 3, "maxLength": 160 },
+    "reviewerId": { "type": ["string", "null"], "minLength": 3, "maxLength": 120 },
+    "reviewerRole": { "type": "string", "minLength": 3, "maxLength": 120 },
+    "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+    "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+    "artifactReference": { "type": ["string", "null"], "minLength": 3, "maxLength": 500 },
+    "artifactSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "approved" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "packSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "reviewerId": { "type": "string", "minLength": 3 },
+          "reviewedAt": { "type": "string", "format": "date-time" },
+          "expiresAt": { "type": "string", "format": "date-time" },
+          "artifactReference": { "type": "string", "minLength": 3 },
+          "artifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      },
+      "else": {
+        "if": { "properties": { "status": { "const": "pending" } }, "required": ["status"] },
+        "then": {
+          "properties": {
+            "packSha256": { "type": "null" },
+            "organizationId": { "type": "null" },
+            "reviewerId": { "type": "null" },
+            "reviewedAt": { "type": "null" },
+            "expiresAt": { "type": "null" },
+            "artifactReference": { "type": "null" },
+            "artifactSha256": { "type": "null" }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "approved" }, "kind": { "const": "partner-validation" } },
+        "required": ["status", "kind"]
+      },
+      "then": { "properties": { "organizationId": { "type": "string", "minLength": 3 } } },
+      "else": {
+        "if": {
+          "properties": { "status": { "const": "approved" }, "kind": { "const": "release-attestation" } },
+          "required": ["status", "kind"]
+        },
+        "then": { "properties": { "organizationId": { "type": "null" } } }
+      }
+    }
+  ]
+}

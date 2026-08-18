@@ -1,0 +1,26 @@
+export const NAV_CTA = { label: 'Download App', href: '/download' } as const;
+
+export const NAV_LINKS = [
+  {
+    label: 'What We Do',
+    href: '/what-we-do',
+    children: [
+      { label: 'How It Works', href: '/how-it-works' },
+      { label: 'For Survivors', href: '/for-survivors' },
+      { label: 'Privacy & Trust', href: '/privacy-safety-trust' },
+      { label: 'Route Safety Index', href: '/route-safety-index' },
+      { label: 'Impact', href: '/impact' },
+    ],
+  },
+  { label: 'Source & Models', href: '/open-source' },
+  { label: 'Our Story', href: '/story' },
+  { label: 'Partners', href: '/partners' },
+  { label: 'Blog', href: '/blog' },
+] as const;
+
+export const PUBLIC_LINKS = {
+  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/esherialabs/saferider',
+  huggingface:
+    process.env.NEXT_PUBLIC_HUGGINGFACE_URL ??
+    'https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm',
+} as const;

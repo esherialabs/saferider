@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/tuned-artifact-qa-diagnostic.schema.json",
+  "title": "SafeRide content-free tuned artifact QA diagnostic",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "manifestId", "artifactSha256", "runtimeState", "artifactValidated", "realRuntimeLoaded", "deviceClass", "timings", "result", "capturedAt"],
+  "properties": {
+    "schema": { "const": "com.saferide.tuned-artifact-qa-diagnostic" },
+    "schemaVersion": { "const": 1 },
+    "manifestId": { "type": "string", "minLength": 1 },
+    "artifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "runtimeState": { "enum": ["unavailable", "idle", "prepared", "loaded", "generating", "error"] },
+    "artifactValidated": { "type": "boolean" },
+    "realRuntimeLoaded": { "type": "boolean" },
+    "deviceClass": { "enum": ["android-2-3gb", "android-4gb", "android-6-8gb", "android-unknown"] },
+    "timings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loadMs", "firstTokenMs", "totalGenerationMs"],
+      "properties": {
+        "loadMs": { "$ref": "#/$defs/nullableNonNegative" },
+        "firstTokenMs": { "$ref": "#/$defs/nullableNonNegative" },
+        "totalGenerationMs": { "$ref": "#/$defs/nullableNonNegative" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "errorCode"],
+      "properties": {
+        "status": { "enum": ["not-run", "passed", "failed", "cancelled"] },
+        "errorCode": { "oneOf": [{ "type": "string", "pattern": "^[A-Z0-9_]{1,80}$" }, { "type": "null" }] }
+      }
+    },
+    "capturedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" }
+  },
+  "$defs": {
+    "nullableNonNegative": { "oneOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }] }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "com.saferide.privacy-controls",
+  "schemaVersion": 1,
+  "controlVersion": "privacy-controls.2026-07-30.2",
+  "policyDocuments": [
+    {
+      "documentType": "privacy-policy",
+      "version": "2026-07-draft.1",
+      "locale": "en",
+      "path": "content/legal/privacy-policy/2026-07-draft.1/en.md",
+      "sha256": "a963d39da588baa5f440804a40033fbf600ce0d9dbda3243bed89105f6c4f335",
+      "effectiveDate": null,
+      "reviewStatus": "pending_legal",
+      "acceptanceEnabled": false
+    },
+    {
+      "documentType": "terms",
+      "version": "2026-07-draft.1",
+      "locale": "en",
+      "path": "content/legal/terms/2026-07-draft.1/en.md",
+      "sha256": "337247e83deae0aeb47c888e72ffe59f126956e49492cb812b0af2a6dda6b1a4",
+      "effectiveDate": null,
+      "reviewStatus": "pending_legal",
+      "acceptanceEnabled": false
+    }
+  ],
+  "consentPurposes": {
+    "pathway_submission": { "status": "disabled", "reason": "pending_legal_retention_and_deletion_approval" },
+    "anonymous_aggregate": { "status": "disabled", "reason": "pending_privacy_mentor_and_legal_approval" },
+    "policy_acceptance": { "status": "disabled", "reason": "pending_legal" },
+    "analytics": { "status": "disabled", "reason": "not_configured" },
+    "research": { "status": "disabled", "reason": "pending_ethics_review" },
+    "model_training": { "status": "disabled", "reason": "pending_data_governance" },
+    "partner_follow_up": { "status": "disabled", "reason": "pending_partner_agreement" }
+  },
+  "capabilities": {
+    "minor_processing": { "status": "disabled", "reason": "pending_legal_and_safeguarding" },
+    "submitted_case_ingestion": { "status": "disabled", "reason": "pending_legal_retention_deletion_and_scanner_approval" },
+    "remote_chat_ingestion": { "status": "disabled", "reason": "pending_legal_retention_and_deletion_approval" },
+    "anonymous_signal_ingestion": { "status": "disabled", "reason": "pending_privacy_parameter_approval" },
+    "dsar_server_processing": { "status": "disabled", "reason": "pending_legal_process_approval" },
+    "server_retention_execution": { "status": "disabled", "reason": "pending_legal_retention_approval" },
+    "evidence_transform_processing": { "status": "disabled", "reason": "pending_device_and_security_proof" },
+    "malware_scan_test_exception": { "status": "disabled", "reason": "no_approved_exception" }
+  },
+  "retentionPolicies": [
+    {
+      "policyId": "local-manual-v1",
+      "scope": "local",
+      "durationDays": null,
+      "approvalStatus": "approved_engineering",
+      "executionEnabled": true
+    },
+    {
+      "policyId": "local-30-days-v1",
+      "scope": "local",
+      "durationDays": 30,
+      "approvalStatus": "pending_legal",
+      "executionEnabled": false
+    },
+    {
+      "policyId": "local-90-days-v1",
+      "scope": "local",
+      "durationDays": 90,
+      "approvalStatus": "pending_legal",
+      "executionEnabled": false
+    },
+    {
+      "policyId": "submitted-case-pending-legal-v1",
+      "scope": "server",
+      "durationDays": null,
+      "approvalStatus": "pending_legal",
+      "executionEnabled": false
+    }
+  ],
+  "malwareScanPolicy": {
+    "status": "disabled",
+    "approvalId": null,
+    "scanner": null,
+    "definitionVersion": null,
+    "validFrom": null,
+    "validUntil": null,
+    "reason": "pending_scanner_and_security_approval"
+  },
+  "evidenceDownloadGate": {
+    "allowedAttachmentStatus": "uploaded",
+    "allowedMalwareStatus": "clean",
+    "quarantineOnUpload": true,
+    "hashRequired": true
+  }
+}

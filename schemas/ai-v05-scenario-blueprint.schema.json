@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-scenario-blueprint.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "blueprintId", "scenarioFamilyId", "primaryCategory",
+    "secondaryTags", "semanticClusterId", "riskLevel", "urgency", "emotionalState",
+    "appState", "informationState", "goalActionCode", "goalObjectCode",
+    "pressurePatternCode", "responseStrategyTarget", "policyRefs", "behaviorFlags",
+    "counterfactualPairId", "projectedAssignment", "sourceKind", "minorSpecific"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-scenario-blueprint" },
+    "schemaVersion": { "const": 1 },
+    "blueprintId": { "type": "string", "pattern": "^blueprint:v05-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}$" },
+    "scenarioFamilyId": { "type": "string", "pattern": "^v05-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}$" },
+    "primaryCategory": { "$ref": "#/$defs/category" },
+    "secondaryTags": { "type": "array", "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/category" } },
+    "semanticClusterId": { "type": "string", "pattern": "^v05-cluster-[a-z0-9][a-z0-9-]{2,95}$" },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"] },
+    "urgency": { "enum": ["no-immediate-danger", "uncertain-danger", "time-limited", "immediate-danger"] },
+    "emotionalState": { "enum": ["calm", "fearful", "ashamed", "angry", "uncertain", "fragmented", "pressured"] },
+    "appState": { "enum": ["not-applicable", "local-draft", "saved-locally", "queued", "syncing", "sent-unconfirmed", "received-confirmed", "model-unavailable", "offline", "upload-failed"] },
+    "informationState": { "enum": ["complete", "incomplete", "conflicting", "unknown", "user-provided-only", "visible-app-state-only"] },
+    "goalActionCode": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "goalObjectCode": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "pressurePatternCode": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "responseStrategyTarget": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,95}$" },
+    "policyRefs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^POLICY-[A-Z0-9-]{2,80}$" } },
+    "behaviorFlags": {
+      "type": "object", "additionalProperties": false,
+      "required": ["safeNextStep", "pureRefusal", "explicitUncertainty", "stateDistinction", "counterfactual", "benignHardNegative", "adversarialPressure"],
+      "properties": {
+        "safeNextStep": { "type": "boolean" }, "pureRefusal": { "type": "boolean" },
+        "explicitUncertainty": { "type": "boolean" }, "stateDistinction": { "type": "boolean" },
+        "counterfactual": { "type": "boolean" }, "benignHardNegative": { "type": "boolean" },
+        "adversarialPressure": { "type": "boolean" }
+      }
+    },
+    "counterfactualPairId": { "type": ["string", "null"], "pattern": "^counterfactual:v05:[a-zA-Z0-9:-]{8,120}$" },
+    "projectedAssignment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["split", "conversationForm"],
+      "properties": {
+        "split": { "enum": ["train", "dev", "quality-holdout", "safety-holdout"] },
+        "conversationForm": { "enum": ["single-turn", "multi-turn"] }
+      }
+    },
+    "sourceKind": { "const": "deterministic-v05-scenario-blueprint" },
+    "minorSpecific": { "const": false }
+  },
+  "$defs": {
+    "category": { "enum": ["privacy", "legal", "medical", "emergency", "tone", "coercion", "fabrication", "product", "jailbreak", "noNewFacts"] }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "com.saferide.provider-pack-approval",
+  "schemaVersion": 1,
+  "evidenceId": "PROVIDER-ATTESTATION-PENDING",
+  "kind": "release-attestation",
+  "status": "pending",
+  "packId": "ke-support-directory",
+  "packVersion": "1.0.0-candidate.2",
+  "packSha256": null,
+  "organizationId": null,
+  "reviewerId": null,
+  "reviewerRole": "provider directory release owner",
+  "reviewedAt": null,
+  "expiresAt": null,
+  "artifactReference": null,
+  "artifactSha256": null
+}

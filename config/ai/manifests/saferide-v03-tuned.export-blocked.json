@@ -1,0 +1,115 @@
+{
+  "schema": "com.saferide.tuned-mobile-artifact-manifest",
+  "schemaVersion": 2,
+  "manifestId": "saferide-gemma4-e2b-v03-mitigation-litertlm-export-blocked-2026-07-14.2",
+  "modelId": "saferide/gemma-4-e2b-v03-mitigation-litertlm",
+  "status": "export-blocked",
+  "stateHistory": [
+    {
+      "state": "training-complete",
+      "enteredAt": "2026-07-04T00:00:00.000Z",
+      "evidenceRefs": ["saferide-gemma4-e2b-colab-v03-mitigation-lora-480step-20260704"]
+    },
+    {
+      "state": "adapter-evaluated",
+      "enteredAt": "2026-07-10T00:00:00.000Z",
+      "evidenceRefs": ["saferide-gemma4-e2b-v03-adapter-safety-2026-07-30.1"]
+    },
+    {
+      "state": "export-blocked",
+      "enteredAt": "2026-07-14T00:00:00.000Z",
+      "evidenceRefs": ["docs/qa/saferide-gemma4-e2b-v03-tuned-mobile-artifact-path-2026-07-14.md"]
+    }
+  ],
+  "adapterModel": "V-ince-18/saferide-gemma-4-e2b-lora",
+  "adapterRevision": "e6d135a385352749995b988691c037e88b42a230",
+  "adapterRepoSha": "e6d135a385352749995b988691c037e88b42a230",
+  "trainingRunId": "saferide-gemma4-e2b-colab-v03-mitigation-lora-480step-20260704",
+  "dataRegisterId": "docs/security/saferide-gemma4-colab-input-register.synthetic-v0.3.candidate.json",
+  "baseModel": "google/gemma-4-E2B-it",
+  "baseRevision": "70af34e20bd4b7a91f0de6b22675850c43922a03",
+  "exportDecisionDoc": "docs/qa/saferide-gemma4-e2b-v03-tuned-mobile-artifact-path-2026-07-14.md",
+  "exportRunner": "scripts/saferide-gemma4-tuned-litertlm-export.py",
+  "exportRunbook": "docs/qa/saferide-gemma4-e2b-v03-tuned-litertlm-colab-export-runbook-2026-07-14.md",
+  "exportPath": {
+    "decision": "blocked",
+    "requiredSteps": [
+      "Run the pinned repository exporter in an approved high-memory CUDA environment.",
+      "Merge the pinned adapter into the pinned base checkpoint without publishing weights.",
+      "Export and bundle a complete LiteRT-LM artifact.",
+      "Register immutable artifact location, SHA-256, byte size, lineage, attestation, safety summary, device proof, and rollback target."
+    ],
+    "blocker": "No hashable phone-runnable tuned LiteRT-LM artifact was produced; repeated T4-class attempts are not authorized as readiness evidence."
+  },
+  "exportTooling": {
+    "environmentClass": "approved-high-memory-only",
+    "exporterRepositoryRevision": null,
+    "pythonVersion": null,
+    "packages": {},
+    "tokenizer": {
+      "model": "google/gemma-4-E2B-it",
+      "revision": "70af34e20bd4b7a91f0de6b22675850c43922a03",
+      "metadataSha256": null
+    }
+  },
+  "runtime": {
+    "contextWindow": 2048,
+    "maxOutputTokens": 128,
+    "backendPlan": ["gpu", "cpu-text"],
+    "cachePolicy": "app-cache"
+  },
+  "deviceRequirements": {
+    "minAndroidApi": 26,
+    "minRamGb": null,
+    "storageRequiredBytes": null
+  },
+  "artifact": {
+    "fileName": "saferide-gemma4-e2b-v03-mitigation.litertlm",
+    "format": "litertlm",
+    "downloadMode": "disabled",
+    "immutableLocation": null,
+    "sha256": null,
+    "sizeBytes": null,
+    "fileInventoryRef": null
+  },
+  "attestation": {
+    "status": "missing",
+    "processId": "HANDOFF-AI-ARTIFACT-ATTESTATION",
+    "attestationRef": null,
+    "approverRole": null,
+    "approvedAt": null
+  },
+  "safetyReport": {
+    "reportDoc": "docs/qa/saferide-gemma4-e2b-v03-adapter-scoring-evidence-2026-07-10.md",
+    "summaryId": "saferide-gemma4-e2b-v03-adapter-safety-2026-07-30.1",
+    "privateEvidenceRepo": "V-ince-18/saferide-gemma-4-e2b-eval-evidence",
+    "privateEvidenceRepoSha": "f1ecd6fe4c293c2250fa4096fe923d14c123d4f0"
+  },
+  "androidProof": {
+    "baseRuntimeManifestId": "litert-community-gemma-4-e2b-litertlm-prototype-2026-06-29.1",
+    "baseRuntimeDeviceMatrixDoc": "docs/qa/saferide-gemma4-e2b-physical-android-runtime-smoke-2026-07-13.md",
+    "baseRuntimePhysicalDeviceProof": true,
+    "tunedArtifactPhysicalDeviceProof": false,
+    "deviceEvidenceId": null,
+    "deviceEvidenceRef": null
+  },
+  "controlPolicy": {
+    "controlId": "saferide-tuned-artifact-controls-2026-07-30.1",
+    "sha256": "fc9859558377d42b8bcfe4290c3a2d067bb309a6f7ac3864a0637bf263eca668"
+  },
+  "approvals": {
+    "legal": "pending",
+    "safety": "blocked",
+    "release": "blocked"
+  },
+  "rollbackTargetManifestId": "fail-closed:no-local-ai",
+  "limitations": [
+    "This is a blocker record, not a runnable phone artifact.",
+    "The adapter is not a LiteRT-LM mobile artifact.",
+    "No tuned artifact SHA-256, byte size, immutable location, attestation, or Android proof exists.",
+    "The historical single-reviewer score is invalid for promotion because 60 responses were truncated and JAIL-010 disclosed hidden prompt content.",
+    "This manifest must never enter the app runtime registry while its lifecycle state is export-blocked."
+  ],
+  "createdAt": "2026-07-30T00:00:00.000Z",
+  "createdByRole": "ML release owner"
+}

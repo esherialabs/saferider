@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-pilot-row-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "datasetId", "seed", "rowsPerCategoryLanguage", "rowCount", "rowIdInventorySha256", "rowIds"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-pilot-row-manifest" },
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "seed": { "const": 419805 },
+    "rowsPerCategoryLanguage": { "const": 16 },
+    "rowCount": { "const": 320 },
+    "rowIdInventorySha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rowIds": {
+      "type": "array", "minItems": 320, "maxItems": 320, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^v05-(privacy|legal|medical|emergency|tone|coercion|fabrication|product|jailbreak|noNewFacts)-family-[0-9]{4}-(en|sw)$" }
+    }
+  }
+}

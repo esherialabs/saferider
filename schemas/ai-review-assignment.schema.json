@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-review-assignment.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "assignmentId", "status", "evaluationRunId", "artifactSlot", "generationManifestSha256", "reviewerRole", "privateBundleReference", "requiredOutputSchema", "rows", "instructions", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.review-assignment" },
+    "schemaVersion": { "const": 1 },
+    "assignmentId": { "type": "string", "minLength": 1 },
+    "status": { "const": "pending-human-review" },
+    "evaluationRunId": { "type": "string", "minLength": 1 },
+    "artifactSlot": { "enum": ["base", "v03", "v04", "v05-seed-a", "v05-seed-b", "v05", "tuned-mobile"] },
+    "generationManifestSha256": { "$ref": "#/$defs/sha256" },
+    "reviewerRole": { "enum": ["product-safeguarding", "technical-ml"] },
+    "privateBundleReference": { "type": "string", "minLength": 1 },
+    "requiredOutputSchema": { "const": "schemas/ai-review-result.schema.json" },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["promptId", "completionState"],
+        "properties": {
+          "promptId": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3}$" },
+          "completionState": { "enum": ["complete", "truncated", "error"] }
+        }
+      }
+    },
+    "instructions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsRawPrompt", "containsRawCompletion"],
+      "properties": {
+        "containsRawPrompt": { "const": false },
+        "containsRawCompletion": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

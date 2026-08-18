@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-pipeline-command-ledger.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "sequence", "commandId", "stage", "implementation", "argumentNames", "argumentsSha256", "inputInventorySha256", "outputInventorySha256", "exitCode", "status", "stdoutSha256", "stdoutBytes", "stderrSha256", "stderrBytes", "privacy"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-pipeline-command-ledger" }, "schemaVersion": { "const": 1 },
+    "sequence": { "type": "integer", "minimum": 1 }, "commandId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$" },
+    "stage": { "type": "string", "minLength": 3, "maxLength": 80 },
+    "implementation": { "type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": { "path": { "type": "string", "minLength": 3 }, "sha256": { "$ref": "#/$defs/sha" } } },
+    "argumentNames": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^(?:[a-z][a-z0-9-]*|--[a-z][a-z0-9-]*)$" } },
+    "argumentsSha256": { "$ref": "#/$defs/sha" }, "inputInventorySha256": { "$ref": "#/$defs/sha" }, "outputInventorySha256": { "$ref": "#/$defs/sha" },
+    "exitCode": { "type": "integer", "minimum": 0, "maximum": 255 }, "status": { "enum": ["passed", "blocked"] },
+    "stdoutSha256": { "$ref": "#/$defs/sha" }, "stdoutBytes": { "type": "integer", "minimum": 0 },
+    "stderrSha256": { "$ref": "#/$defs/sha" }, "stderrBytes": { "type": "integer", "minimum": 0 },
+    "privacy": { "type": "object", "additionalProperties": false, "required": ["containsArguments", "containsArtifactContent", "containsEnvironment", "containsCredentials"], "properties": { "containsArguments": { "const": false }, "containsArtifactContent": { "const": false }, "containsEnvironment": { "const": false }, "containsCredentials": { "const": false } } }
+  },
+  "$defs": { "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

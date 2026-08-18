@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/repository-publication-review.schema.json",
+  "title": "SafeRide repository publication review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "reviewId",
+    "status",
+    "sourceCommit",
+    "reviewedAt",
+    "reviewerRole",
+    "checks",
+    "blockers",
+    "externalHandoffId"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/repository-publication-review.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "reviewId": { "type": "string", "pattern": "^repository-publication-review-" },
+    "status": { "enum": ["blocked", "review-pending", "passed", "expired"] },
+    "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviewerRole": { "type": ["string", "null"], "minLength": 3 },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fullHistorySecretScan", "binaryHistoryReview", "restrictedMaterialReview", "lfsReview", "repositoryAuthority"],
+      "properties": {
+        "fullHistorySecretScan": { "enum": ["pending", "passed", "failed"] },
+        "binaryHistoryReview": { "enum": ["pending", "passed", "failed"] },
+        "restrictedMaterialReview": { "enum": ["pending", "passed", "failed"] },
+        "lfsReview": { "enum": ["pending", "passed", "failed"] },
+        "repositoryAuthority": { "enum": ["pending", "passed", "failed"] }
+      }
+    },
+    "blockers": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "externalHandoffId": { "const": "HANDOFF-OPEN-SOURCE-LEGAL" }
+  }
+}

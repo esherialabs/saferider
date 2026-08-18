@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/locale-availability.schema.json",
+  "title": "SafeRide product and AI language availability matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "matrixVersion", "resourceVersion", "sourceLocale", "locales"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "matrixVersion": { "type": "string", "pattern": "^locale-availability\\.[A-Za-z0-9._-]+$" },
+    "resourceVersion": { "type": "string", "pattern": "^product-copy\\.[A-Za-z0-9._-]+$" },
+    "sourceLocale": { "const": "en" },
+    "locales": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "name", "flag", "productStatus", "claimStatus", "resource", "review", "unavailableReason"],
+        "properties": {
+          "code": { "enum": ["en", "sw", "sh"] },
+          "name": { "type": "string", "minLength": 1 },
+          "flag": { "type": "string", "minLength": 2, "maxLength": 3 },
+          "productStatus": { "enum": ["enabled", "disabled"] },
+          "claimStatus": { "enum": ["enabled", "disabled"] },
+          "resource": { "type": ["string", "null"] },
+          "review": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["status", "reviewId", "reviewedAt", "reviewerRole", "scope", "findings"],
+            "properties": {
+              "status": { "enum": ["source", "pending", "approved", "expired", "revoked"] },
+              "reviewId": { "type": ["string", "null"] },
+              "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+              "reviewerRole": { "type": "string", "minLength": 1 },
+              "scope": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": { "enum": ["app-shell", "core-settings", "accessibility", "moderated-testing"] }
+              },
+              "findings": { "type": ["string", "null"] }
+            }
+          },
+          "unavailableReason": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

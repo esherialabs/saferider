@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/open-source-policy.schema.json",
+  "title": "SafeRide open-source and publication policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "policyId",
+    "status",
+    "repository",
+    "artifactClasses",
+    "governance",
+    "publicReleaseAuthorized",
+    "externalHandoffId",
+    "lastVerifiedDate",
+    "recheckDate"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/open-source-policy.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "policyId": { "const": "saferide-open-source-policy-v1" },
+    "status": { "enum": ["blocked", "review-pending", "approved"] },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authoritativeUrl", "visibility", "visibilityVerified", "unicefReviewerAccess", "publicationModel"],
+      "properties": {
+        "authoritativeUrl": { "type": ["string", "null"], "format": "uri" },
+        "visibility": { "enum": ["unknown", "private", "public"] },
+        "visibilityVerified": { "type": "boolean" },
+        "unicefReviewerAccess": { "type": "boolean" },
+        "publicationModel": { "enum": ["undecided", "authoritative-public-repository", "sanitized-public-mirror"] }
+      }
+    },
+    "artifactClasses": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["class", "licenseFile", "licenseExpression", "approvalStatus", "redistributionAuthorized"],
+        "properties": {
+          "class": { "enum": ["code", "content", "model", "dataset", "evaluation"] },
+          "licenseFile": { "type": "string", "minLength": 1 },
+          "licenseExpression": { "type": ["string", "null"] },
+          "approvalStatus": { "enum": ["pending-legal", "approved", "restricted"] },
+          "redistributionAuthorized": { "type": "boolean" }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maintainersConfirmed", "codeownersConfirmed", "trademarkDecisionApproved", "securityChannelVerified"],
+      "properties": {
+        "maintainersConfirmed": { "type": "boolean" },
+        "codeownersConfirmed": { "type": "boolean" },
+        "trademarkDecisionApproved": { "type": "boolean" },
+        "securityChannelVerified": { "type": "boolean" }
+      }
+    },
+    "publicReleaseAuthorized": { "type": "boolean" },
+    "externalHandoffId": { "const": "HANDOFF-OPEN-SOURCE-LEGAL" },
+    "lastVerifiedDate": { "type": "string", "format": "date" },
+    "recheckDate": { "type": "string", "format": "date" }
+  }
+}

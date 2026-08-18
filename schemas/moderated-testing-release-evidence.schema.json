@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/moderated-testing-release-evidence.schema.json",
+  "title": "SafeRide moderated-testing release evidence pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "status", "sourceRevision", "buildArtifactSha256", "cohortSummary", "findings", "approvals", "handoff"],
+  "properties": {
+    "schemaVersion": { "const": "moderated-testing-release-evidence.v1" },
+    "status": { "enum": ["pending_external_execution", "approved"] },
+    "sourceRevision": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" },
+    "buildArtifactSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "cohortSummary": { "$ref": "#/$defs/filePointer" },
+    "findings": { "$ref": "#/$defs/filePointer" },
+    "approvals": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "status", "reviewerId", "reviewedAt", "independent"],
+        "properties": {
+          "role": { "enum": ["product-safeguarding", "privacy", "independent-qa"] },
+          "status": { "enum": ["pending", "approved", "rejected", "expired"] },
+          "reviewerId": { "type": ["string", "null"] },
+          "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+          "independent": { "type": "boolean" }
+        }
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "requiredInput", "procedure", "expectedArtifact", "passGate", "failClosedEffect"],
+      "properties": {
+        "owner": { "type": "string", "minLength": 1 },
+        "requiredInput": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "procedure": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "expectedArtifact": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "passGate": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "failClosedEffect": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "filePointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": ["string", "null"] },
+        "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "cli": {
+    "version": ">= 16.24.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "development"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "env": {
+        "EAS_BUILD_PROFILE": "preview",
+        "EXPO_PUBLIC_ENVIRONMENT": "staging",
+        "EXPO_PUBLIC_API_BASE_URL": "https://d1wsat0xd3v4go.cloudfront.net/api",
+        "EXPO_PUBLIC_AUTH_BASE_URL": "https://d1wsat0xd3v4go.cloudfront.net/auth",
+        "EXPO_PUBLIC_WS_BASE_URL": "wss://d1wsat0xd3v4go.cloudfront.net",
+        "EXPO_PUBLIC_STORAGE_BASE_URL": "https://s3.eu-central-1.amazonaws.com/saferide-staging-api-runtime-evidencebucket-wr3fulb9om9k",
+        "EXPO_PUBLIC_RUNTIME_CONFIG_URL": "https://d1wsat0xd3v4go.cloudfront.net/api/config/runtime",
+        "EXPO_PUBLIC_API_TIMEOUT_MS": "10000",
+        "EXPO_PUBLIC_CONFIG_REFRESH_SECONDS": "60",
+        "EXPO_PUBLIC_OPENAI_ENABLED": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ENABLED": "true",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_PREFER_ON_DEVICE": "true",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_MODEL_ID": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ALLOW_REAL_LITERTLM_RUNTIME": "true",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_QA_TUNED_MANIFEST_ID": "saferide-gemma4-e2b-v058-original-419806-litertlm-artifact-produced-2026-08-10.1",
+        "EXPO_PUBLIC_AZURE_OPENAI_TRANSCRIPTION_ENABLED": "false",
+        "EXPO_PUBLIC_RELEASE_ENDPOINT_HOSTS": "d1wsat0xd3v4go.cloudfront.net",
+        "EXPO_PUBLIC_RELEASE_STORAGE_HOSTS": "s3.eu-central-1.amazonaws.com",
+        "SAFERIDE_LITERTLM_ENABLED": "true",
+        "SAFERIDE_LITERTLM_VERSION": "0.16.0"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "android-release-apk": {
+      "extends": "preview",
+      "distribution": "internal",
+      "channel": "preview",
+      "environment": "preview",
+      "autoIncrement": true,
+      "env": {
+        "EAS_BUILD_PROFILE": "android-release-apk"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "android-internal-ai": {
+      "extends": "preview",
+      "distribution": "store",
+      "channel": "preview",
+      "environment": "preview",
+      "autoIncrement": true,
+      "env": {
+        "EAS_BUILD_PROFILE": "android-internal-ai"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "prerelease": {
+      "distribution": "store",
+      "channel": "preview",
+      "environment": "preview",
+      "autoIncrement": true,
+      "env": {
+        "EAS_BUILD_PROFILE": "prerelease",
+        "EXPO_PUBLIC_ENVIRONMENT": "staging",
+        "EXPO_PUBLIC_API_BASE_URL": "https://d1wsat0xd3v4go.cloudfront.net/api",
+        "EXPO_PUBLIC_AUTH_BASE_URL": "https://d1wsat0xd3v4go.cloudfront.net/auth",
+        "EXPO_PUBLIC_WS_BASE_URL": "wss://d1wsat0xd3v4go.cloudfront.net",
+        "EXPO_PUBLIC_STORAGE_BASE_URL": "https://s3.eu-central-1.amazonaws.com/saferide-staging-api-runtime-evidencebucket-wr3fulb9om9k",
+        "EXPO_PUBLIC_RUNTIME_CONFIG_URL": "https://d1wsat0xd3v4go.cloudfront.net/api/config/runtime",
+        "EXPO_PUBLIC_API_TIMEOUT_MS": "10000",
+        "EXPO_PUBLIC_CONFIG_REFRESH_SECONDS": "60",
+        "EXPO_PUBLIC_OPENAI_ENABLED": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ENABLED": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_PREFER_ON_DEVICE": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_MODEL_ID": "litert-community/gemma-4-E2B-it-litert-lm",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ALLOW_REAL_LITERTLM_RUNTIME": "false",
+        "EXPO_PUBLIC_AZURE_OPENAI_TRANSCRIPTION_ENABLED": "false",
+        "EXPO_PUBLIC_RELEASE_ENDPOINT_HOSTS": "d1wsat0xd3v4go.cloudfront.net",
+        "EXPO_PUBLIC_RELEASE_STORAGE_HOSTS": "s3.eu-central-1.amazonaws.com"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "distribution": "store",
+      "channel": "production",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "production",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ENABLED": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_PREFER_ON_DEVICE": "false",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_MODEL_ID": "litert-community/gemma-4-E2B-it-litert-lm",
+        "EXPO_PUBLIC_LOCAL_ASSISTANT_ALLOW_REAL_LITERTLM_RUNTIME": "false"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false
+      }
+    }
+  },
+  "submit": {
+    "android-internal-ai": {
+      "android": {
+        "track": "internal"
+      }
+    },
+    "prerelease": {
+      "android": {
+        "track": "internal"
+      },
+      "ios": {}
+    },
+    "production": {
+      "android": {
+        "track": "internal"
+      },
+      "ios": {}
+    }
+  }
+}

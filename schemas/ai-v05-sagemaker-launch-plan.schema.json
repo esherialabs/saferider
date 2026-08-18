@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-v05-sagemaker-launch-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "launchId",
+    "createdAt",
+    "launcherSourceCommit",
+    "datasetSourceCommit",
+    "datasetId",
+    "status",
+    "runKind",
+    "runId",
+    "region",
+    "roleArn",
+    "image",
+    "inputManifest",
+    "instance",
+    "hyperparameters",
+    "output",
+    "security",
+    "privacy"
+  ],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.v05-sagemaker-launch-plan" },
+    "schemaVersion": { "const": 1 },
+    "launchId": { "type": "string", "pattern": "^saferide-v05-sagemaker-launch-[a-z0-9.-]{8,96}$" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "launcherSourceCommit": { "$ref": "#/$defs/commit" },
+    "datasetSourceCommit": { "$ref": "#/$defs/commit" },
+    "datasetId": { "const": "saferide-synthetic-guidance-v0.5.0" },
+    "status": { "const": "ready" },
+    "runKind": { "enum": ["preflight", "pilot", "candidate"] },
+    "runId": { "type": "string", "pattern": "^saferide-v05-[a-z0-9](?:[a-z0-9-]{6,49}[a-z0-9])$", "maxLength": 63 },
+    "region": { "const": "eu-central-1" },
+    "roleArn": { "type": "string", "pattern": "^arn:aws:iam::[0-9]{12}:role/[A-Za-z0-9+=,.@_/-]{1,128}$" },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "digest"],
+      "properties": {
+        "uri": { "type": "string", "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.eu-central-1\\.amazonaws\\.com/[a-z0-9._/-]+:[A-Za-z0-9._-]+$" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "inputManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "s3Uri", "versionId"],
+      "properties": {
+        "path": { "type": "string", "minLength": 3 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "s3Uri": { "$ref": "#/$defs/s3Uri" },
+        "versionId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "count", "volumeSizeGb", "maxRuntimeSeconds"],
+      "properties": {
+        "type": { "const": "ml.g5.xlarge" },
+        "count": { "const": 1 },
+        "volumeSizeGb": { "type": "integer", "minimum": 40, "maximum": 200 },
+        "maxRuntimeSeconds": { "type": "integer", "minimum": 900, "maximum": 43200 }
+      }
+    },
+    "hyperparameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "learningRate", "epochs", "maxSteps", "pairedRunId"],
+      "properties": {
+        "seed": { "enum": [419805, 419806] },
+        "learningRate": { "enum": [0.00001, 0.00002] },
+        "epochs": { "const": 1 },
+        "maxSteps": { "type": ["integer", "null"], "minimum": 1 },
+        "pairedRunId": { "type": ["string", "null"], "pattern": "^saferide-v05-[a-z0-9-]{8,96}$" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["s3Uri", "checkpointS3Uri"],
+      "properties": {
+        "s3Uri": { "$ref": "#/$defs/s3Uri" },
+        "checkpointS3Uri": { "$ref": "#/$defs/s3Uri" }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["networkIsolation", "interContainerTrafficEncryption", "trainingChannels"],
+      "properties": {
+        "networkIsolation": { "const": true },
+        "interContainerTrafficEncryption": { "const": true },
+        "trainingChannels": {
+          "type": "array",
+          "prefixItems": [{ "const": "handoff" }, { "const": "model" }],
+          "minItems": 2,
+          "maxItems": 2,
+          "items": false
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["containsHoldouts", "containsBlindPrompts", "containsReviewerIdentity", "containsCredentials", "rawContentLogging"],
+      "properties": {
+        "containsHoldouts": { "const": false },
+        "containsBlindPrompts": { "const": false },
+        "containsReviewerIdentity": { "const": false },
+        "containsCredentials": { "const": false },
+        "rawContentLogging": { "const": "forbidden" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "runKind": { "const": "preflight" } }, "required": ["runKind"] },
+      "then": { "properties": { "hyperparameters": { "properties": { "seed": { "const": 419805 }, "learningRate": { "const": 0.00001 }, "maxSteps": { "const": 1 }, "pairedRunId": { "type": "null" } } } } }
+    },
+    {
+      "if": { "properties": { "runKind": { "const": "pilot" } }, "required": ["runKind"] },
+      "then": { "properties": { "hyperparameters": { "properties": { "seed": { "const": 419805 }, "maxSteps": { "type": "null" }, "pairedRunId": { "type": "null" } } } } }
+    },
+    {
+      "if": { "properties": { "runKind": { "const": "candidate" } }, "required": ["runKind"] },
+      "then": { "properties": { "hyperparameters": { "properties": { "maxSteps": { "type": "null" } } } } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "s3Uri": { "type": "string", "pattern": "^s3://[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]/[^\\s]+$" }
+  }
+}

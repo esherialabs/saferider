@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/rsi-privacy-controls.schema.json",
+  "title": "SafeRide RSI privacy controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "controlVersion", "activation", "approval", "fixedBuckets", "spatialTransform", "consent", "queryPolicy", "differentialPrivacy", "rawSignalRetention", "syntheticTestProfile"],
+  "properties": {
+    "schema": { "const": "com.saferide.rsi-privacy-controls" },
+    "schemaVersion": { "const": 1 },
+    "controlVersion": { "$ref": "#/$defs/version" },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signalIngestion", "releaseGeneration", "retentionExecution", "operatorRead", "export", "dashboard"],
+      "properties": {
+        "signalIngestion": { "$ref": "#/$defs/activation" },
+        "releaseGeneration": { "$ref": "#/$defs/activation" },
+        "retentionExecution": { "$ref": "#/$defs/activation" },
+        "operatorRead": { "$ref": "#/$defs/activation" },
+        "export": { "$ref": "#/$defs/activation" },
+        "dashboard": { "$ref": "#/$defs/activation" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approvalId", "approvedByRole", "approvedAt", "expiresAt", "minimumCount"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "expired", "revoked"] },
+        "approvalId": { "type": ["string", "null"], "minLength": 1 },
+        "approvedByRole": { "type": ["string", "null"], "minLength": 1 },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" },
+        "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+        "minimumCount": { "type": ["integer", "null"], "minimum": 2 }
+      }
+    },
+    "fixedBuckets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["areaDefinitionVersion", "allowedAreaIds", "allowedAreaTypes", "timeBucketMinutes", "releaseCadenceHours", "categories"],
+      "properties": {
+        "areaDefinitionVersion": { "$ref": "#/$defs/version" },
+        "allowedAreaIds": { "type": "array", "maxItems": 500, "uniqueItems": true, "items": { "$ref": "#/$defs/areaId" } },
+        "allowedAreaTypes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["corridor", "coarse_cell"] } },
+        "timeBucketMinutes": { "enum": [30, 32, 36, 40, 45, 48, 60, 72, 80, 90, 96, 120, 144, 160, 180, 240, 288, 360, 480, 720, 1440] },
+        "releaseCadenceHours": { "type": "integer", "minimum": 1, "maximum": 744 },
+        "categories": { "type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": { "$ref": "#/$defs/category" } }
+      }
+    },
+    "spatialTransform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "executionBoundary", "implementationVersion", "coarseCellSizeDegrees", "rawCoordinatesTransmitted"],
+      "properties": {
+        "status": { "enum": ["pending_approval", "approved", "revoked"] },
+        "executionBoundary": { "const": "on_device" },
+        "implementationVersion": { "$ref": "#/$defs/version" },
+        "coarseCellSizeDegrees": { "type": ["number", "null"], "minimum": 0.01, "maximum": 10 },
+        "rawCoordinatesTransmitted": { "const": false }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredPurpose", "requiredVersion"],
+      "properties": {
+        "requiredPurpose": { "const": "anonymous_aggregate" },
+        "requiredVersion": { "anyOf": [{ "$ref": "#/$defs/version" }, { "type": "null" }] }
+      }
+    },
+    "queryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["viewId", "allowedQueryKeys", "operatorRole", "requestsPerMinute", "maxRows"],
+      "properties": {
+        "viewId": { "const": "rsi-fixed-grid-v1" },
+        "allowedQueryKeys": { "const": ["releaseId", "viewId"] },
+        "operatorRole": { "const": "rsi_operator" },
+        "requestsPerMinute": { "type": "integer", "minimum": 1, "maximum": 600 },
+        "maxRows": { "type": "integer", "minimum": 1, "maximum": 5000 }
+      }
+    },
+    "differentialPrivacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "epsilon", "delta", "sensitivity", "clipping", "composition", "releaseCadenceHours", "noiseMemoizationRequired"],
+      "properties": {
+        "status": { "enum": ["not_approved", "approved", "revoked"] },
+        "epsilon": { "$ref": "#/$defs/nullablePositive" },
+        "delta": { "type": ["number", "null"], "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+        "sensitivity": { "$ref": "#/$defs/nullablePositive" },
+        "clipping": { "$ref": "#/$defs/nullablePositive" },
+        "composition": { "type": ["string", "null"], "minLength": 1 },
+        "releaseCadenceHours": { "type": ["integer", "null"], "minimum": 1 },
+        "noiseMemoizationRequired": { "const": true }
+      }
+    },
+    "rawSignalRetention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "durationDays"],
+      "properties": {
+        "status": { "enum": ["pending_legal", "approved", "revoked"] },
+        "durationDays": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "syntheticTestProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["testOnly", "profileId", "minimumCount", "timeBucketMinutes", "releaseCadenceHours", "allowedAreaIds", "categories"],
+      "properties": {
+        "testOnly": { "const": true },
+        "profileId": { "$ref": "#/$defs/version" },
+        "minimumCount": { "type": "integer", "minimum": 2 },
+        "timeBucketMinutes": { "enum": [30, 32, 36, 40, 45, 48, 60, 72, 80, 90, 96, 120, 144, 160, 180, 240, 288, 360, 480, 720, 1440] },
+        "releaseCadenceHours": { "type": "integer", "minimum": 1 },
+        "allowedAreaIds": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/areaId" } },
+        "categories": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/category" } }
+      }
+    }
+  },
+  "$defs": {
+    "activation": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["status", "reason"], "properties": { "status": { "const": "enabled" }, "reason": { "type": "null" } } },
+        { "type": "object", "additionalProperties": false, "required": ["status", "reason"], "properties": { "status": { "const": "disabled" }, "reason": { "type": "string", "minLength": 1 } } }
+      ]
+    },
+    "areaId": { "type": "string", "pattern": "^(cell-[0-9]+-[0-9]+|corridor-[a-z0-9-]+)$" },
+    "category": { "type": "string", "pattern": "^[a-z0-9_]+$", "maxLength": 64 },
+    "version": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-zA-Z0-9._:-]+$" },
+    "nullablePositive": { "type": ["number", "null"], "exclusiveMinimum": 0 }
+  }
+}

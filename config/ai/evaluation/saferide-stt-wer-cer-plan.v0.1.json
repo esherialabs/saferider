@@ -1,0 +1,87 @@
+{
+  "schema": "com.saferide.ai.stt-wer-cer-plan",
+  "schemaVersion": 1,
+  "planId": "saferide-stt-wer-cer-v01-2026-08-13",
+  "status": "blocked-audio-capability-and-approval",
+  "createdDate": "2026-08-13",
+  "privacyClass": "public-safe-plan-no-audio-no-transcripts",
+  "artifact": {
+    "repository": "esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm",
+    "immutableRevision": "e91ea27c3134fe21fc5bc995141675756e2c4a21",
+    "sha256": "8b73fd844464f220955eeedc474c30f39e621458c7a6b092de5afa2c3d027fcd",
+    "audioCapabilityStatus": "unproven",
+    "observedBackendPlan": ["gpu", "cpu-text"],
+    "audioEncoderOrPreprocessorIdentified": false
+  },
+  "corpus": {
+    "totalClips": 120,
+    "syntheticActorReadOnly": true,
+    "minimumSpeakers": 6,
+    "maximumSpeakers": 10,
+    "losslessMaster": {
+      "format": "wav",
+      "sampleRateHz": 16000,
+      "channels": 1
+    },
+    "slices": [
+      { "id": "clear-en", "language": "en", "condition": "clear", "clipCount": 30 },
+      { "id": "clear-sw", "language": "sw", "condition": "clear", "clipCount": 30 },
+      { "id": "code-switch-en-sw", "language": "en-sw", "condition": "code-switch", "clipCount": 20 },
+      { "id": "background-noise", "language": "mixed", "condition": "noise", "clipCount": 20 },
+      { "id": "interrupted-unclear", "language": "mixed", "condition": "unclear", "clipCount": 10 },
+      { "id": "silence-non-speech", "language": "none", "condition": "silence", "clipCount": 10 }
+    ],
+    "realSurvivorAudioAllowed": false,
+    "rawAudioAllowedInPublicEvidence": false,
+    "rawTranscriptAllowedInPublicEvidence": false
+  },
+  "metrics": [
+    "strict_wer",
+    "normalized_wer",
+    "strict_cer",
+    "normalized_cer",
+    "critical_entity_error_count",
+    "invented_entity_count",
+    "silence_hallucination_count",
+    "latency_ms",
+    "cancellation_passed",
+    "offline_execution_passed"
+  ],
+  "normalization": {
+    "status": "must-be-frozen-before-run",
+    "unicodeNormalization": "NFKC",
+    "lowercase": true,
+    "punctuationPolicy": "report-strict-and-normalized-separately",
+    "criticalEntitiesMayBeNormalizedAway": false
+  },
+  "candidateThresholds": {
+    "status": "pending-ml-safeguarding-and-language-review-approval",
+    "clearEnglish": { "maximumWer": 0.15, "maximumCer": 0.08 },
+    "clearKiswahili": { "maximumWer": 0.20, "maximumCer": 0.12 },
+    "codeSwitchOrNoise": { "maximumWer": 0.30, "maximumCer": 0.18 },
+    "maximumCriticalEntitySubstitutions": 0,
+    "maximumInventedOffencesInjuriesThreatsIdentitiesOrEvents": 0,
+    "maximumSilenceHallucinations": 0
+  },
+  "execution": {
+    "repeatableImportedAudioRunRequired": true,
+    "liveMicrophoneSubsetRequired": true,
+    "physicalAndroidTiersRequired": 3,
+    "offlineRequired": true,
+    "cancellationRequired": true,
+    "restartRequired": true,
+    "contentFreeLogsRequired": true
+  },
+  "ownerTargets": [
+    { "action": "approve corpus and thresholds", "ownerRole": "ML/safeguarding and bilingual language reviewers", "targetDate": "2026-08-18", "status": "pending" },
+    { "action": "prove or export an audio-capable exact artifact", "ownerRole": "mobile ML/runtime lead", "targetDate": "2026-08-21", "status": "blocked" },
+    { "action": "record and independently verify synthetic corpus", "ownerRole": "research and bilingual language leads", "targetDate": "2026-08-24", "status": "blocked" },
+    { "action": "execute device benchmark and publish sanitized results", "ownerRole": "Android QA and ML evaluation leads", "targetDate": "2026-08-28", "status": "blocked" }
+  ],
+  "blockers": [
+    "The exact v0.5.8 LiteRT-LM artifact has no verified audio encoder/preprocessor or Android audio backend.",
+    "No approved synthetic actor-read corpus exists.",
+    "Candidate thresholds have not been approved.",
+    "Physical Android devices and independent reviewers have not been assigned."
+  ]
+}

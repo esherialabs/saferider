@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/ai-system-prompt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "promptId", "policyId", "status", "text", "textSha256", "approvals"],
+  "properties": {
+    "schema": { "const": "com.saferide.ai.system-prompt" },
+    "schemaVersion": { "const": 1 },
+    "promptId": { "$ref": "#/$defs/nonEmpty" },
+    "policyId": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "enum": ["review-pending", "approved", "retired"] },
+    "text": { "$ref": "#/$defs/nonEmpty" },
+    "textSha256": { "$ref": "#/$defs/sha256" },
+    "approvals": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "status", "evidenceRef"],
+        "properties": {
+          "role": { "enum": ["product-safeguarding", "legal", "privacy"] },
+          "status": { "enum": ["pending", "approved", "rejected"] },
+          "evidenceRef": { "type": ["string", "null"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "uid": "saferide-local",
+  "title": "SafeRide Local Migration",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "API Request Rate",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(saferide_api_request_duration_seconds_count[1m])) by (route, status_code)",
+          "legendFormat": "{{route}} {{status_code}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "API p95 Latency",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(saferide_api_request_duration_seconds_bucket[5m])) by (le, route))",
+          "legendFormat": "{{route}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Upload Outcomes",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(saferide_upload_requests_total[1m])) by (outcome)",
+          "legendFormat": "{{outcome}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "WebSocket Connections",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "saferide_ws_connections",
+          "legendFormat": "connections"
+        }
+      ]
+    }
+  ]
+}

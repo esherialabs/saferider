@@ -1,0 +1,16 @@
+{
+  "name": "SafeRide",
+  "short_name": "SafeRide",
+  "description": "An Android-first safety companion helping women document harassment, understand Kenyan support pathways, and choose exactly what leaves their device.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0D1B12",
+  "theme_color": "#0D1B12",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

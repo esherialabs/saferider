@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/release-controls.schema.json",
+  "title": "SafeRide release controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "controlsId",
+    "status",
+    "targetBranch",
+    "expiresOn",
+    "actions",
+    "requiredChecks",
+    "requiredReviewerRoles",
+    "rollback",
+    "externalHandoffIds"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/release-controls.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "controlsId": { "type": "string", "pattern": "^saferide-release-controls-v[0-9]+$" },
+    "status": { "enum": ["blocked", "review-pending", "approved"] },
+    "targetBranch": { "const": "feat/app-local-infra-phase-1" },
+    "expiresOn": { "type": "string", "format": "date" },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "createTag",
+        "uploadArtifact",
+        "changeRepositoryVisibility",
+        "publishPublicRelease",
+        "submitStoreBuild",
+        "submitUnicefPackage",
+        "deployProduction"
+      ],
+      "properties": {
+        "createTag": { "type": "boolean" },
+        "uploadArtifact": { "type": "boolean" },
+        "changeRepositoryVisibility": { "type": "boolean" },
+        "publishPublicRelease": { "type": "boolean" },
+        "submitStoreBuild": { "type": "boolean" },
+        "submitUnicefPackage": { "type": "boolean" },
+        "deployProduction": { "type": "boolean" }
+      }
+    },
+    "requiredChecks": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 3 }
+    },
+    "requiredReviewerRoles": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 3 }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defaultTarget", "artifactRevocationRequired", "dataRollbackMode"],
+      "properties": {
+        "defaultTarget": { "const": "fail-closed:no-unicef-release" },
+        "artifactRevocationRequired": { "const": true },
+        "dataRollbackMode": { "const": "forward-repair-only" }
+      }
+    },
+    "externalHandoffIds": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^HANDOFF-" }
+    }
+  }
+}

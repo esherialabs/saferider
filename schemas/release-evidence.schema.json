@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/release-evidence.schema.json",
+  "title": "SafeRide reproducible release evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "releaseId",
+    "state",
+    "classification",
+    "targetBranch",
+    "sourceCommit",
+    "releaseTag",
+    "versions",
+    "inputs",
+    "artifacts",
+    "sbom",
+    "verification",
+    "evidenceRefs",
+    "releaseNotes",
+    "knownLimitations",
+    "rollback",
+    "approvals",
+    "publication",
+    "blockers"
+  ],
+  "properties": {
+    "schema": { "const": "schemas/release-evidence.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "releaseId": { "type": "string", "pattern": "^saferide-unicef-" },
+    "state": { "enum": ["blocked", "candidate", "release-ready", "revoked"] },
+    "classification": { "const": "public-safe-metadata" },
+    "targetBranch": { "const": "feat/app-local-infra-phase-1" },
+    "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "releaseTag": { "type": ["string", "null"], "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-z0-9.-]+)?$" },
+    "versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageVersion", "expoVersion", "androidVersionCode", "node", "npm", "python", "java", "androidCompileSdk", "androidBuildTools", "androidNdk"],
+      "properties": {
+        "packageVersion": { "type": "string", "minLength": 1 },
+        "expoVersion": { "type": "string", "minLength": 1 },
+        "androidVersionCode": { "type": ["integer", "null"], "minimum": 1 },
+        "node": { "type": "string", "minLength": 1 },
+        "npm": { "type": "string", "minLength": 1 },
+        "python": { "type": "string", "minLength": 1 },
+        "java": { "type": "string", "minLength": 1 },
+        "androidCompileSdk": { "type": "string", "minLength": 1 },
+        "androidBuildTools": { "type": "string", "minLength": 1 },
+        "androidNdk": { "type": "string", "minLength": 1 }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["android", "tunedModel"],
+      "properties": {
+        "android": { "$ref": "#/$defs/artifact" },
+        "tunedModel": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "sbom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verificationMode", "githubActions", "ownerDecisionStatement", "ciRun", "testReportSha256", "coverageReportSha256", "dependencyAuditId", "rollbackRehearsal"],
+      "properties": {
+        "verificationMode": { "enum": ["github-actions", "local-owner-authorized"] },
+        "githubActions": { "enum": ["required", "intentionally-disabled"] },
+        "ownerDecisionStatement": { "type": ["string", "null"] },
+        "ciRun": { "type": ["string", "null"], "minLength": 1 },
+        "testReportSha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "coverageReportSha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "dependencyAuditId": { "type": "string", "minLength": 1 },
+        "rollbackRehearsal": { "enum": ["pending", "passed", "failed"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verificationMode": { "const": "local-owner-authorized" } }, "required": ["verificationMode"] },
+          "then": {
+            "properties": {
+              "githubActions": { "const": "intentionally-disabled" },
+              "ownerDecisionStatement": { "const": "GitHub Actions intentionally disabled by project-owner decision; verification performed locally." },
+              "ciRun": { "type": "null" }
+            }
+          },
+          "else": {
+            "properties": {
+              "githubActions": { "const": "required" },
+              "ownerDecisionStatement": { "type": "null" },
+              "ciRun": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "evidenceRefs": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "type": "string", "pattern": "^EVID-" } },
+    "releaseNotes": { "type": "string", "minLength": 1 },
+    "knownLimitations": { "type": "string", "minLength": 1 },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "procedure", "verified"],
+      "properties": {
+        "target": { "const": "fail-closed:no-unicef-release" },
+        "procedure": { "type": "string", "minLength": 1 },
+        "verified": { "type": "boolean" }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["releaseOwner", "independentReviewer", "privacySecurity", "productSafeguarding", "legal"],
+      "properties": {
+        "releaseOwner": { "type": "boolean" },
+        "independentReviewer": { "type": "boolean" },
+        "privacySecurity": { "type": "boolean" },
+        "productSafeguarding": { "type": "boolean" },
+        "legal": { "type": "boolean" }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publicRelease", "storeSubmission", "unicefSubmission"],
+      "properties": {
+        "publicRelease": { "type": "boolean" },
+        "storeSubmission": { "type": "boolean" },
+        "unicefSubmission": { "type": "boolean" }
+      }
+    },
+    "blockers": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "artifact": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fileName", "sha256", "sizeBytes", "provenanceId"],
+          "properties": {
+            "fileName": { "type": "string", "minLength": 1 },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "sizeBytes": { "type": "integer", "minimum": 1 },
+            "provenanceId": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

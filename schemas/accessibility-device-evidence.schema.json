@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://saferide.example/schemas/accessibility-device-evidence.schema.json",
+  "title": "SafeRide Android accessibility device evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "evidenceId",
+    "status",
+    "sourceRevision",
+    "syntheticOnly",
+    "contentFree",
+    "noParticipantData",
+    "executedBy",
+    "build",
+    "devices",
+    "scenarios",
+    "approval"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "evidenceId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{5,95}$" },
+    "status": { "enum": ["pending", "executed", "approved", "rejected"] },
+    "sourceRevision": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" },
+    "syntheticOnly": { "const": true },
+    "contentFree": { "const": true },
+    "noParticipantData": { "const": true },
+    "executedBy": { "type": ["string", "null"], "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$" },
+    "generatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "artifactSha256", "version"],
+      "properties": {
+        "platform": { "const": "android" },
+        "artifactSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "version": { "type": ["string", "null"], "maxLength": 64 }
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["deviceId", "deviceClass", "androidVersion", "evidenceHash"],
+        "properties": {
+          "deviceId": { "type": "string", "pattern": "^device-[a-z0-9-]+$" },
+          "deviceClass": { "enum": ["small-low-end", "standard"] },
+          "androidVersion": { "type": ["string", "null"], "maxLength": 32 },
+          "evidenceHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scenarioId", "status", "screenIds", "evidenceHash", "sanitizedSummary"],
+        "properties": {
+          "scenarioId": {
+            "enum": [
+              "talkback-home",
+              "talkback-report-selection",
+              "consent-gate",
+              "evidence-annotation",
+              "dynamic-type",
+              "focus-modals",
+              "touch-targets",
+              "high-contrast",
+              "reduced-motion",
+              "landscape",
+              "small-screen",
+              "chat-large-history",
+              "case-large-list",
+              "local-assistant-impact",
+              "offline-reconnect"
+            ]
+          },
+          "status": { "enum": ["not_run", "pass", "fail", "blocked"] },
+          "screenIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "maxLength": 80 }
+          },
+          "evidenceHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "sanitizedSummary": { "type": "string", "maxLength": 500 },
+          "defectIds": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^A11Y-[A-Z0-9-]+$" }
+          },
+          "retestCommit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" }
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "independent", "reviewerId", "reviewerRole", "reviewedAt"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "rejected"] },
+        "independent": { "type": "boolean" },
+        "reviewerId": { "type": ["string", "null"], "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$" },
+        "reviewerRole": { "type": "string", "maxLength": 96 },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

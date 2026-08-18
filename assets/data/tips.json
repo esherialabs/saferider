@@ -1,0 +1,829 @@
+[
+  {
+    "id": "1",
+    "title": "PEP & EC time windows (don't miss the clock)",
+    "body": "HIV Post-Exposure Prophylaxis (PEP) is a 28-day medication course that should start as soon as possible and no later than 72 hours after exposure. Emergency contraception (EC) works best within 72 hours; some options (levonorgestrel, ulipristal) can be used up to 120 hours with decreasing effectiveness; a copper IUD is >99% effective if inserted within 120 hours. Go to the nearest public health facility or hospital immediately. You do not need a police report to receive medical care.",
+    "updated": "2025-10-19",
+    "category": "Medical care",
+    "tags": [
+      "medical",
+      "time-sensitive",
+      "HIV-PEP",
+      "pregnancy-prevention"
+    ],
+    "sources": [
+      {
+        "title": "WHO - Emergency Contraception (120-hour window; copper IUD efficacy)",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/emergency-contraception"
+      },
+      {
+        "title": "CDC - Sexual Assault & STIs (PEP & prophylaxis)",
+        "url": "https://www.cdc.gov/std/treatment-guidelines/sexual-assault-adults.htm"
+      },
+      {
+        "title": "HHS/HIV.gov - First 72 hours are critical for PEP",
+        "url": "https://www.hiv.gov/blog/first-72-hours-after-sexual-assault-are-critical-hiv-prevention"
+      },
+      {
+        "title": "Kenya MoH - National Guidelines on Management of Sexual Violence (portal)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "copySteps": [
+      "Go to the nearest public health facility or hospital immediately (triage or casualty).",
+      "Tell the clinician you need HIV PEP and emergency contraception after sexual assault.",
+      "If eligible, start PEP within 72 hours and take it for 28 days without missing doses.",
+      "Discuss EC options: levonorgestrel/ulipristal pills or copper IUD (within 120 hours).",
+      "Ask for baseline tests and written follow-up plan (HIV, pregnancy, STIs)."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "2",
+    "title": "Hotline: 1195 (24/7 GBV help)",
+    "body": "Dial 1195 (toll-free within Kenya) for confidential GBV support, safety guidance, and referral to nearby services. If you are in immediate danger, leave to a safe location and call 1195 or local emergency services.",
+    "updated": "2025-10-19",
+    "category": "Emergency contacts",
+    "tags": [
+      "hotline",
+      "safety",
+      "referrals"
+    ],
+    "sources": [
+      {
+        "title": "UN Women - Kenya's toll-free 1195 helpline",
+        "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+      },
+      {
+        "title": "Healthcare Assistance Kenya (HAK) - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      }
+    ],
+    "copySteps": [
+      "Move to a safe place if you can.",
+      "Dial 1195 (toll-free) and say: \"I need help after sexual/physical assault.\"",
+      "Share only what you're comfortable sharing; ask for nearest GBV Recovery Centre.",
+      "Note the case/reference number and any instructions you're given."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "3",
+    "title": "P3 Form: what it is, where to get it",
+    "body": "A P3 is the Kenya Police 'Medical Examination Report' used to document injuries for court. You can obtain it at a police station or be issued one to take to a health facility for completion by a qualified clinician. It is typically free of charge. You can seek medical care first; you can still obtain a P3 later.",
+    "updated": "2025-10-19",
+    "category": "Legal process",
+    "tags": [
+      "legal",
+      "documentation",
+      "P3"
+    ],
+    "sources": [
+      {
+        "title": "HAK - The Kenya Police P3 Medical Examination Report (sample/info)",
+        "url": "https://hakicentre.org/docs/P3.pdf"
+      },
+      {
+        "title": "Medico-legal documentation in Kenya (P3/PRC forms overview)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4496633/"
+      }
+    ],
+    "copySteps": [
+      "Visit a public hospital or police station and request a 'P3 Medical Examination Report'.",
+      "Have a qualified medical officer/clinician complete the clinical sections.",
+      "Ask the officer to record the Occurrence Book (OB) number if you choose to report.",
+      "Make 3-4 photocopies and keep them separately in a safe place."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "4",
+    "title": "Evidence care: simple do's and don'ts",
+    "body": "If safe, avoid bathing, douching, brushing teeth, or changing clothes before examination. If you already changed, place each clothing item in a clean paper bag (not plastic), label separately, and keep dry. Write down date, time, and location details while fresh. Photos of visible injuries can help-only if you feel comfortable.",
+    "updated": "2025-10-19",
+    "category": "Safety & evidence",
+    "tags": [
+      "evidence",
+      "forensics",
+      "safety"
+    ],
+    "sources": [
+      {
+        "title": "Kenya MoH - National Guidelines on Management of Sexual Violence",
+        "url": "https://guidelines.health.go.ke/"
+      },
+      {
+        "title": "LVCT/BERKELEY - Chain of Medical-Legal Evidence (Kenya)",
+        "url": "https://www.law.berkeley.edu/wp-content/uploads/2015/10/Kenya_Chain-of-Med-Legal-Evidence-Rept_LVCT_2012.pdf"
+      }
+    ],
+    "copySteps": [
+      "Do not wash or clean the body if you can safely avoid it until after a medical exam.",
+      "Store each clothing item in its own clean paper bag; label with date/time.",
+      "Write a quick timeline: what, where, when, and any witness names/contact.",
+      "Photograph visible injuries with date/time enabled (if comfortable)."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "5",
+    "title": "How to report safely (your pace, your choice)",
+    "body": "Reporting is your decision. Start with core facts-what happened, when, where. Request the OB number and the investigating officer's name. You are entitled to a copy of your statement. You can add details later. Bring a trusted person if possible.",
+    "updated": "2025-10-19",
+    "category": "Reporting",
+    "tags": [
+      "reporting",
+      "safety",
+      "police"
+    ],
+    "sources": [
+      {
+        "title": "Kenya GBV Helpline (1195) - reporting support & referrals",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "Kenya MoH - Sexual Violence Management (survivor rights & process)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "copySteps": [
+      "Go to a police station with a trusted person if possible.",
+      "State you want to report GBV and request an OB number.",
+      "Record the officer's name, rank, and contacts.",
+      "Ask for a copy of your statement; keep it with your files."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "6",
+    "title": "Know your rights (plain language snapshot)",
+    "body": "You have the right to urgent medical care without filing a police report. You have the right to privacy and dignity during care and proceedings. You have the right to legal representation and to request a support person. No one can force a medical exam without your informed consent.",
+    "updated": "2025-10-19",
+    "category": "Rights",
+    "tags": [
+      "rights",
+      "legal",
+      "consent"
+    ],
+    "sources": [
+      {
+        "title": "Kenya - National Guidelines on Sexual Violence (rights-based care)",
+        "url": "https://guidelines.health.go.ke/"
+      },
+      {
+        "title": "Sexual Offences Act (Kenya) - overview",
+        "url": "https://www.kenyalaw.org/"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "7",
+    "title": "Follow-up care timeline",
+    "body": "Follow-up matters. Typical schedule: 48-72h review (side-effects, injuries), 1-2 weeks (STI results, wound care), 4-6 weeks (HIV and pregnancy testing as advised), and 3 months (final HIV test if PEP used). Ask for counselling at each visit.",
+    "updated": "2025-10-19",
+    "category": "Medical care",
+    "tags": [
+      "follow-up",
+      "testing",
+      "counselling"
+    ],
+    "sources": [
+      {
+        "title": "CDC - Sexual Assault & STIs (follow-up testing)",
+        "url": "https://www.cdc.gov/std/treatment-guidelines/sexual-assault-adults.htm"
+      },
+      {
+        "title": "Kenya MoH - Sexual Violence Management (follow-up schedules)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "copySteps": [
+      "Book a follow-up before you leave the facility; add alarms to your phone.",
+      "Collect lab results and file them with your documents.",
+      "Finish the full 28-day PEP if started; ask about side-effect management.",
+      "Request referral to counselling/psychosocial support."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "8",
+    "title": "Safety plan basics (today, tonight, next week)",
+    "body": "Plan for immediate, short-term, and ongoing safety. Pack essentials (IDs, meds, cash, phone, keys) in a go-bag. Agree a code word with a trusted contact. Identify safe places (friend, relative, shelter, church/mosque/temple).",
+    "updated": "2025-10-19",
+    "category": "Safety planning",
+    "tags": [
+      "safety",
+      "planning",
+      "hotline"
+    ],
+    "sources": [
+      {
+        "title": "UN Women - 1195 helpline overview (Kenya)",
+        "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+      }
+    ],
+    "copySteps": [
+      "Create a 'code word' and share with one trusted person.",
+      "Pre-pack a discreet go-bag (ID, meds, charger, cash, copies of documents).",
+      "Save 1195 and local emergency numbers under innocuous names.",
+      "Map two safe places you can reach quickly; keep transport money ready."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "9",
+    "title": "Digital safety & data hygiene",
+    "body": "Use a strong phone PIN. Enable 'hide alerts' for sensitive contacts. Back up critical evidence to an encrypted drive or trusted person. Be cautious with location sharing, cloud photo sync, and chat backups. If your device is shared, use guest mode or web access for sensitive notes.",
+    "updated": "2025-10-19",
+    "category": "Your data",
+    "tags": [
+      "privacy",
+      "digital-safety"
+    ],
+    "copySteps": [
+      "Set a phone PIN and disable lock-screen previews for messages.",
+      "Rename key contacts (e.g., 'Auntie') and mute/show no alerts.",
+      "Back up photos/evidence to a secure, separate location you control.",
+      "Use in-app locks or web versions for sensitive apps when needed."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "10",
+    "title": "Your consent controls your data (in-app)",
+    "body": "Your data stays local first. Sharing requires explicit consent each time. You can review, export, or delete records. Always confirm recipients and exact fields before sending any report or referral.",
+    "updated": "2025-10-19",
+    "category": "Your data",
+    "tags": [
+      "consent",
+      "privacy",
+      "data-minimization"
+    ],
+    "sources": [
+      {
+        "title": "App privacy notice (project-specific)",
+        "url": "https://example.com/privacy"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "11",
+    "title": "If you think you might be pregnant",
+    "body": "EC can reduce the chance of pregnancy if taken promptly. If your period is late by a week or more, take a pregnancy test. Discuss all options confidentially with a clinician and request psychosocial support.",
+    "updated": "2025-10-19",
+    "category": "Medical care",
+    "tags": [
+      "pregnancy",
+      "EC"
+    ],
+    "sources": [
+      {
+        "title": "WHO - Emergency Contraception",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/emergency-contraception"
+      },
+      {
+        "title": "ACOG - Access to Emergency Contraception",
+        "url": "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/07/access-to-emergency-contraception"
+      }
+    ],
+    "copySteps": [
+      "If within 120 hours, ask about EC options (pill vs copper IUD).",
+      "Schedule a follow-up pregnancy test if your period is late.",
+      "Ask for counselling and non-judgmental support."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "12",
+    "title": "STI prophylaxis & vaccinations",
+    "body": "Ask about prophylaxis for chlamydia, gonorrhoea, trichomonas, hepatitis B (vaccine/booster), and tetanus as indicated. Request written instructions and side-effect guidance.",
+    "updated": "2025-10-19",
+    "category": "Medical care",
+    "tags": [
+      "STIs",
+      "prophylaxis"
+    ],
+    "sources": [
+      {
+        "title": "CDC - Sexual Assault & STIs (prophylaxis guidance)",
+        "url": "https://www.cdc.gov/std/treatment-guidelines/sexual-assault-adults.htm"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "13",
+    "title": "Children & minors: additional safeguards",
+    "body": "For survivors under 18, insist on child-sensitive procedures and presence of a guardian/trusted adult where appropriate. Clinicians should use age-appropriate consent/assent and mandatory reporting standards defined by Kenyan law.",
+    "updated": "2025-10-19",
+    "category": "Special populations",
+    "tags": [
+      "children",
+      "minors",
+      "safeguarding"
+    ],
+    "sources": [
+      {
+        "title": "Kenya - Sexual Violence Management Guidelines (child protocols)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "14",
+    "title": "Disability-inclusive access",
+    "body": "You are entitled to reasonable accommodation at facilities and police stations (physical access, sign-language interpretation, caregiver presence). Ask staff to document the accommodation provided.",
+    "updated": "2025-10-19",
+    "category": "Special populations",
+    "tags": [
+      "disability",
+      "accessibility"
+    ],
+    "sources": [
+      {
+        "title": "Kenya - Sexual Violence Management Guidelines (inclusive care)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "15",
+    "title": "LGBTQ+ survivors: confidential, rights-based care",
+    "body": "Care is confidential and should be free from discrimination. Request respectful handling, privacy during examination, and protection from secondary victimization. Seek referral to sensitized providers if needed via 1195.",
+    "updated": "2025-10-19",
+    "category": "Special populations",
+    "tags": [
+      "LGBTQ+",
+      "non-discrimination"
+    ],
+    "sources": [
+      {
+        "title": "UN & Kenya partners - survivor-centred services (general)",
+        "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "16",
+    "title": "Mental health first aid",
+    "body": "Shock, numbness, anger, and fear are common. Breathing exercises and grounding help. Avoid self-blame; trauma responses are not character flaws. Ask for psychosocial support and consider peer support groups.",
+    "updated": "2025-10-19",
+    "category": "Psychosocial",
+    "tags": [
+      "mental-health",
+      "counselling"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya (HAK) - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "UN Women - Kenya 1195 helpline support and referrals",
+        "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+      }
+    ],
+    "copySteps": [
+      "Try 4-7-8 breathing: inhale 4s, hold 7s, exhale 8s (repeat \u00d74).",
+      "Name 5 things you can see, 4 you can touch, 3 you can hear (grounding).",
+      "Call 1195 or ask your facility for a counselling referral."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "17",
+    "title": "Protection & restraining orders",
+    "body": "If violence is domestic/intimate-partner, ask about protection orders under Kenyan law. Keep copies of orders on you and share with trusted contacts and local chief where appropriate.",
+    "updated": "2025-10-19",
+    "category": "Legal process",
+    "tags": [
+      "protection-orders",
+      "domestic-violence"
+    ],
+    "sources": [
+      {
+        "title": "Kenya Law - Protection Against Domestic Violence Act (overview)",
+        "url": "https://www.kenyalaw.org/"
+      }
+    ],
+    "hasCopySteps": false
+  },
+  {
+    "id": "18",
+    "title": "Transport & arrival script (hospital)",
+    "body": "On arrival, go to triage/casualty and say clearly: \"I need urgent care after sexual assault. I may need HIV PEP, emergency contraception, STI prophylaxis, and forensic examination.\" This helps staff prioritize you quickly.",
+    "updated": "2025-10-19",
+    "category": "Medical care",
+    "tags": [
+      "triage",
+      "scripts"
+    ],
+    "sources": [
+      {
+        "title": "HHS/HIV.gov - First 72 hours critical",
+        "url": "https://www.hiv.gov/blog/first-72-hours-after-sexual-assault-are-critical-hiv-prevention"
+      }
+    ],
+    "copySteps": [
+      "Go straight to triage/casualty desk.",
+      "Use the script; repeat 'within 72 hours' if applicable.",
+      "Request written after-care instructions before discharge."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "19",
+    "title": "If staff seem unsure: escalation script",
+    "body": "If you encounter delays, calmly ask for the duty doctor/clinical officer or the facility in-charge. Reference the 'National Guidelines on Management of Sexual Violence' and request adherence to survivor-centred care.",
+    "updated": "2025-10-19",
+    "category": "Advocacy",
+    "tags": [
+      "escalation",
+      "patient-rights"
+    ],
+    "sources": [
+      {
+        "title": "Kenya MoH - National Guidelines (portal)",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "copySteps": [
+      "Ask for the duty clinician or in-charge politely but firmly.",
+      "Say: \"The National Guidelines require timely PEP/EC and survivor-centred care.\"",
+      "Request to record any refusals/delays in your notes."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "20",
+    "title": "Documentation checklist (keep a file)",
+    "body": "Keep a simple folder with: OB number and station, officer contact, copies of P3/PRC forms, medical notes, lab results, prescriptions, receipts, referral letters, and your own incident timeline.",
+    "updated": "2025-10-19",
+    "category": "Safety & evidence",
+    "tags": [
+      "documentation",
+      "checklist"
+    ],
+    "sources": [
+      {
+        "title": "Kenya - Medico-legal documentation overview",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4496633/"
+      }
+    ],
+    "copySteps": [
+      "Write your own one-page timeline with dates/times.",
+      "File copies of forms (P3/PRC), lab results, receipts.",
+      "Store duplicates separately with a trusted person."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "21",
+    "title": "If the incident involved a vehicle or operator",
+    "body": "If it is safe, write down the route, stage, vehicle plate, SACCO or operator name, time, and any driver or conductor details you remember. Do not confront anyone alone. You can use these notes later if you choose to seek support or report.",
+    "updated": "2026-07-10",
+    "category": "Reporting",
+    "tags": [
+      "transport-operator",
+      "route-details",
+      "reporting"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "UN Women - Kenya's national toll-free helpline 1195",
+        "url": "https://africa.unwomen.org/en/stories/news/2024/10/kenyas-national-toll-free-helpline-1195-a-lifeline-for-gender-based-violence-survivors"
+      }
+    ],
+    "copySteps": [
+      "Write the route, stage, vehicle plate, date, and time if you can.",
+      "Add driver, conductor, or operator details only if you remember them.",
+      "Save any fare receipt, ticket, M-Pesa message, or ride screenshot.",
+      "Choose whether to call 1195, seek medical care, or make a report later."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "22",
+    "title": "Sharing with a trusted person",
+    "body": "A trusted person can help with transport, documents, calls, or sitting with you. Share only what you want them to know. If using messages, remember that screenshots and backups may be visible on other devices.",
+    "updated": "2026-07-10",
+    "category": "Safety planning",
+    "tags": [
+      "trusted-contact",
+      "witness-support",
+      "privacy"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      }
+    ],
+    "copySteps": [
+      "Choose one person who is calm and practical.",
+      "Say what you need: transport, documents, a call, or quiet company.",
+      "Avoid forwarding private files unless you want that person to keep them.",
+      "Agree on a code word or simple check-in time."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "23",
+    "title": "Before sharing details with a hotline or provider",
+    "body": "You can ask what information is needed, why it is needed, and what may happen next. Share only what you are comfortable sharing. If you call or message, the provider may see your phone number through that channel.",
+    "updated": "2026-07-10",
+    "category": "Emergency contacts",
+    "tags": [
+      "hotline",
+      "consent",
+      "referrals"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "UNFPA Kenya - HAK 1195 survivor-centered services",
+        "url": "https://kenya.unfpa.org/en/news/kenyas-gbv-helpline-hak-1195-leveraging-data-offer-survivor-centered-services"
+      }
+    ],
+    "copySteps": [
+      "Ask what details are needed before you share them.",
+      "Ask whether your name, phone number, location, or report details will be recorded.",
+      "Ask what referral options are nearby.",
+      "Write down any reference number or instructions."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "24",
+    "title": "Consent before a medical exam or support brief",
+    "body": "Consent means you understand what is being done and agree to it. You can ask what an exam, referral, or support brief includes before it happens. SafeRide should show what leaves the device before you send anything.",
+    "updated": "2026-07-10",
+    "category": "Rights",
+    "tags": [
+      "consent",
+      "medical",
+      "data-minimization"
+    ],
+    "sources": [
+      {
+        "title": "Kenya MoH - National Guidelines on Management of Sexual Violence",
+        "url": "https://guidelines.health.go.ke/"
+      },
+      {
+        "title": "Victim Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2014/17/eng@2022-12-31"
+      }
+    ],
+    "copySteps": [
+      "Ask what will be checked, recorded, or shared.",
+      "Ask who will see the information.",
+      "Ask whether you can pause, decline, or bring a support person.",
+      "Review any SafeRide support brief before sending."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "25",
+    "title": "If more than 72 hours have passed",
+    "body": "Medical care can still help even if the PEP window may have passed. A clinician can assess injuries, pregnancy concerns, STI testing or treatment, counselling referral, and follow-up needs. If you are unsure, ask a health facility or 1195 what options are available.",
+    "updated": "2026-07-10",
+    "category": "Medical care",
+    "tags": [
+      "aftercare",
+      "follow-up",
+      "testing"
+    ],
+    "sources": [
+      {
+        "title": "CDC - Sexual Assault and Abuse and STIs",
+        "url": "https://www.cdc.gov/std/treatment-guidelines/sexual-assault-adults.htm"
+      },
+      {
+        "title": "WHO - Emergency Contraception",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/emergency-contraception"
+      },
+      {
+        "title": "Kenya MoH - National Guidelines on Management of Sexual Violence",
+        "url": "https://guidelines.health.go.ke/"
+      }
+    ],
+    "copySteps": [
+      "Seek medical care if you can, even if the first 72 hours have passed.",
+      "Ask about injury care, STI testing, pregnancy testing, and counselling referral.",
+      "Ask what follow-up dates you should keep.",
+      "Save discharge notes and prescriptions with your documents."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "26",
+    "title": "Screenshots and chat evidence",
+    "body": "Screenshots can help preserve context, but they may reveal names, phone numbers, locations, or account handles. Keep originals where possible. Avoid editing the only copy. Review details before exporting or sharing.",
+    "updated": "2026-07-10",
+    "category": "Safety & evidence",
+    "tags": [
+      "screenshots",
+      "evidence",
+      "privacy"
+    ],
+    "sources": [
+      {
+        "title": "LVCT/Berkeley - Chain of Medical-Legal Evidence in Kenya",
+        "url": "https://www.law.berkeley.edu/wp-content/uploads/2015/10/Kenya_Chain-of-Med-Legal-Evidence-Rept_LVCT_2012.pdf"
+      },
+      {
+        "title": "ODPC Kenya - Rights of a Data Subject",
+        "url": "https://www.odpc.go.ke/rights-of-a-data-subject/"
+      }
+    ],
+    "copySteps": [
+      "Capture the message, sender, date, and surrounding context where possible.",
+      "Keep the original chat or file if you can.",
+      "Store a copy in a place you control.",
+      "Review names, numbers, handles, and locations before sharing."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "27",
+    "title": "Your data rights with apps and services",
+    "body": "Kenya's data protection framework includes rights for people whose personal data is processed. You can ask what data is held, why it is used, and whether correction or deletion is available. This may not remove copies already exported, shared, or held by another service.",
+    "updated": "2026-07-10",
+    "category": "Your data",
+    "tags": [
+      "data-rights",
+      "privacy",
+      "data-minimization"
+    ],
+    "sources": [
+      {
+        "title": "ODPC Kenya - Rights of a Data Subject",
+        "url": "https://www.odpc.go.ke/rights-of-a-data-subject/"
+      },
+      {
+        "title": "Data Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2019/24/eng@2022-12-31"
+      }
+    ],
+    "copySteps": [
+      "Ask what personal data is held about you.",
+      "Ask why it is being used and who can receive it.",
+      "Ask how to correct or delete data where the service supports that.",
+      "Remember exported or already-shared files may need separate follow-up."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "28",
+    "title": "Victim rights: information and support services",
+    "body": "Kenya's Victim Protection Act creates a framework for victim information, support services, and special protection for vulnerable victims. Ask the relevant provider, station, or court contact what information and support options are available for your situation.",
+    "updated": "2026-07-10",
+    "category": "Rights",
+    "tags": [
+      "victim-rights",
+      "support",
+      "legal"
+    ],
+    "sources": [
+      {
+        "title": "Victim Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2014/17/eng@2022-12-31"
+      },
+      {
+        "title": "Victim Protection Board - Office of the Attorney General",
+        "url": "https://www.statelaw.go.ke/departments/victim-protection-board/"
+      }
+    ],
+    "copySteps": [
+      "Ask what information you are entitled to receive about the process.",
+      "Ask whether support services or vulnerable-victim protections are available.",
+      "Write down the office, name, date, and any reference number.",
+      "Keep copies of letters, forms, and referrals."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "29",
+    "title": "If property is kept as evidence",
+    "body": "If a phone, clothing, document, or other item is kept as evidence, ask who has it, the reference number, and how to request return when it is no longer needed. Do not rely only on memory; keep a written receipt or note.",
+    "updated": "2026-07-10",
+    "category": "Legal process",
+    "tags": [
+      "victim-rights",
+      "evidence",
+      "documentation"
+    ],
+    "sources": [
+      {
+        "title": "Victim Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2014/17/eng@2022-12-31"
+      }
+    ],
+    "copySteps": [
+      "Ask for the item description and reference number.",
+      "Write down who received it and where it is stored.",
+      "Ask how and when to follow up.",
+      "Keep copies or photos of any receipt if safe."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "30",
+    "title": "Ask for language or accessibility support",
+    "body": "If language, disability, age, or trauma makes communication harder, ask for support such as interpretation, sign-language support, private space, slower explanation, or a trusted support person where appropriate.",
+    "updated": "2026-07-10",
+    "category": "Special populations",
+    "tags": [
+      "interpretation",
+      "accessibility",
+      "consent"
+    ],
+    "sources": [
+      {
+        "title": "Kenya MoH - National Guidelines on Management of Sexual Violence",
+        "url": "https://guidelines.health.go.ke/"
+      },
+      {
+        "title": "Victim Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2014/17/eng@2022-12-31"
+      }
+    ],
+    "copySteps": [
+      "Say what would help you understand or communicate.",
+      "Ask for a private space if the setting feels exposed.",
+      "Ask staff to explain forms before you sign.",
+      "Ask them to note any accommodation provided."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "31",
+    "title": "If the incident connects to school or work",
+    "body": "You can keep notes about internal reporting channels, supervisors, school officials, security desk entries, and witnesses. Internal reporting is separate from medical care, 1195 support, or a police report; you choose what path to use.",
+    "updated": "2026-07-10",
+    "category": "Reporting",
+    "tags": [
+      "documentation",
+      "witness-support",
+      "reporting"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "Victim Protection Act - Kenya Law",
+        "url": "https://new.kenyalaw.org/akn/ke/act/2014/17/eng@2022-12-31"
+      }
+    ],
+    "copySteps": [
+      "Write the school, workplace, route, or location involved.",
+      "Record who you spoke to and when.",
+      "Keep copies of internal emails, forms, or security desk notes.",
+      "Decide separately whether to seek medical care, 1195 support, or police reporting."
+    ],
+    "hasCopySteps": true
+  },
+  {
+    "id": "32",
+    "title": "After a referral: what to write down",
+    "body": "After any hotline, facility, police, or legal-aid referral, write down the date, contact, location, instructions, and next step. A short record can help you avoid repeating details and can make follow-up easier.",
+    "updated": "2026-07-10",
+    "category": "Advocacy",
+    "tags": [
+      "referrals",
+      "documentation",
+      "follow-up"
+    ],
+    "sources": [
+      {
+        "title": "Healthcare Assistance Kenya - 1195 Helpline",
+        "url": "https://hakgbv1195.org/"
+      },
+      {
+        "title": "UNFPA Kenya - HAK 1195 survivor-centered services",
+        "url": "https://kenya.unfpa.org/en/news/kenyas-gbv-helpline-hak-1195-leveraging-data-offer-survivor-centered-services"
+      }
+    ],
+    "copySteps": [
+      "Write the date, time, provider, and contact person if shared.",
+      "Record the next step and any deadline.",
+      "Save referral letters, messages, or reference numbers.",
+      "Add reminders for follow-up appointments."
+    ],
+    "hasCopySteps": true
+  }
+]
