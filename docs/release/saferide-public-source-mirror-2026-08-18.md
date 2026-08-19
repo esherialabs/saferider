@@ -1,6 +1,7 @@
 # SafeRide canonical open-source repository publication
 
-Date: 2026-08-18
+Prepared: 2026-08-18
+Published and verified: 2026-08-19
 
 Issue lineage: ESH-4198
 
@@ -56,6 +57,33 @@ the private integration repository's all-rights-reserved notice is not copied.
 Public CI uploads coverage and reproducibility artifacts. Tag automation builds
 the source archive twice, compares the bytes, and publishes the archive,
 SHA-256 ledger, and provenance JSON.
+
+## Publication result
+
+- Private integration PR:
+  `https://github.com/esherialabs/saferide-internal/pull/219`
+- Integration merge commit on `feat/app-local-infra-phase-1`:
+  `9170ac20f9f6c8d8602a06c3c7ade29397b8ebd1`
+- Canonical public commit:
+  `77456116f142ede857f07c8725f99a3e9136c888`
+- Tagged source release:
+  `https://github.com/esherialabs/saferide/releases/tag/v0.5.8-open-source.1`
+- Public CI and coverage:
+  `https://github.com/esherialabs/saferide/actions/runs/32235579369`
+- Tagged-release reproducibility:
+  `https://github.com/esherialabs/saferide/actions/runs/32235409808`
+- Public documentation deployment:
+  `https://github.com/esherialabs/saferide/actions/runs/32235582918`
+- Public documentation: `https://esherialabs.github.io/saferide/`
+- Reproducible source archive SHA-256:
+  `75cade8931ae39fbc77d97525ce80de2a406e944afae74e07df88334bc0ffb26`
+
+The canonical public `main` branch requires review, conversation resolution,
+and the successful CI and reproducibility checks. Force pushes and branch
+deletion are disabled. Seven public issues are available, including five
+bounded `good first issue` tasks. The GitHub Project V2 board is the only
+incomplete community-governance item because the active GitHub token lacks the
+`project` and `read:project` OAuth scopes.
 
 ## Android preview retained
 

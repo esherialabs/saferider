@@ -42,5 +42,18 @@ tests passed.
   `docs/open-source/evidence/coverage-report-2026-08-18.json`
 
 GitHub Actions repeats the public gates from a clean checkout. This record
-documents the local release-candidate run; it does not claim a remote workflow
-run until the canonical public repository reports one.
+documents the local release-candidate run.
+
+## Canonical public CI verification
+
+On 19 August 2026, the canonical public repository repeated the gates from a
+clean checkout at public commit
+`77456116f142ede857f07c8725f99a3e9136c888`:
+
+- CI and coverage:
+  `https://github.com/esherialabs/saferide/actions/runs/32235579369`
+- tagged-release reproducibility:
+  `https://github.com/esherialabs/saferide/actions/runs/32235409808`
+
+Both jobs completed successfully. The CI run uploaded its coverage artifact,
+and the reproducibility job built the archive twice and compared the bytes.

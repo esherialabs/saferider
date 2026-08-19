@@ -28,10 +28,17 @@ This is the first canonical SafeRide open-source source release.
 - critical safety/privacy coverage: 41 tests; 90.18% branches and 95.75% lines
 - static website build/export validation: passed
 
-GitHub-hosted jobs were configured but could not start during publication
-because the organization Actions budget blocked runner allocation. No remote
-job is represented as executed or passed; the local clean-checkout evidence is
-published under `docs/open-source/evidence/`.
+The canonical public GitHub workflows subsequently completed successfully:
+
+- CI, audits, typechecks, coverage, and reproducibility:
+  `https://github.com/esherialabs/saferide/actions/runs/32235579369`
+- tagged-release source evidence:
+  `https://github.com/esherialabs/saferide/actions/runs/32235409808`
+- public documentation deployment:
+  `https://github.com/esherialabs/saferide/actions/runs/32235582918`
+
+An earlier private-integration run was rejected before execution by an Actions
+budget limit; it is not represented as a test failure or successful run.
 
 ## Distribution
 
