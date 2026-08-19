@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "reportDate": "2026-08-18",
   "generatedAt": "2026-08-18T19:39:19Z",
   "sourceCommit": "ed22536d6a0881b023af25c79c4a11e946e5ae4b",
@@ -47,5 +47,11 @@
       "publicationScope": "aggregate-only"
     }
   },
-  "remoteCiClaim": "not-yet-recorded"
+  "remoteCi": {
+    "status": "passed",
+    "verifiedAt": "2026-08-19T09:03:51Z",
+    "publicCommit": "77456116f142ede857f07c8725f99a3e9136c888",
+    "coverageRunUrl": "https://github.com/esherialabs/saferide/actions/runs/32235579369",
+    "releaseReproducibilityRunUrl": "https://github.com/esherialabs/saferide/actions/runs/32235409808"
+  }
 }
