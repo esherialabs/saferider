@@ -4,12 +4,12 @@
   "repositoryUrl": "https://github.com/esherialabs/saferide",
   "sourceRepository": "https://github.com/esherialabs/saferide-internal",
   "sourceBranch": "feat/app-local-infra-phase-1",
-  "sourceCommit": "5c6014c2dda85b9eba5faa602f9b9d5586c1639a",
-  "sourceCommittedAt": "2026-08-19T14:18:07+03:00",
+  "sourceCommit": "f90ddd78d0c8e642aafe4791f3d1a1aa26525a32",
+  "sourceCommittedAt": "2026-08-19T19:16:54+03:00",
   "publicationModel": "history-free-authoritative-public-snapshot",
   "sourceTreeState": "clean",
   "fileCount": 930,
-  "totalBytes": 15746408,
+  "totalBytes": 15746807,
   "licenseBoundary": "Public source code is Apache-2.0; enumerated public documentation and content are CC-BY-4.0; trademarks and restricted records are excluded.",
   "releaseMetadata": "web/public/releases/saferide-v0.5.8-android.json"
 }
