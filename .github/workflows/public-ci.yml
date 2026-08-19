@@ -1,0 +1,115 @@
+name: Public CI and Coverage
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '24.18.1'
+  NPM_VERSION: '11.16.0'
+
+jobs:
+  verify:
+    name: Typecheck, Test, Coverage, Public Safety
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/api/package-lock.json
+
+      - name: Pin and verify npm
+        run: |
+          npm install --global "npm@${NPM_VERSION}" --ignore-scripts
+          test "$(node --version)" = "v${NODE_VERSION}"
+          test "$(npm --version)" = "${NPM_VERSION}"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm --prefix apps/api ci --ignore-scripts
+
+      - name: Validate public repository boundary
+        run: npm run public:repository:check
+
+      - name: Scan for committed secrets
+        run: npm run secrets:scan
+
+      - name: Validate dependency integrity and reviewed licenses
+        run: npm run security:dependency:check
+
+      - name: Audit API production dependencies
+        run: npm --prefix apps/api audit --omit=dev --audit-level=high
+
+      - name: Audit website production dependencies
+        run: npm --prefix web audit --omit=dev --audit-level=high
+
+      - name: Validate time-bounded mobile build-tool audit exception
+        run: npm run security:mobile-audit:check
+
+      - name: Typecheck mobile
+        run: npx tsc --noEmit
+
+      - name: Typecheck API
+        run: npm --prefix apps/api run typecheck
+
+      - name: Run public global and critical coverage gates
+        run: npm run coverage:check:public
+
+      - name: Upload public coverage evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: saferide-coverage-${{ github.sha }}
+          path: coverage
+          if-no-files-found: error
+          retention-days: 30
+
+  reproducibility:
+    name: Reproducible Source Archive
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build twice and compare
+        run: |
+          node scripts/create-reproducible-source-bundle.mjs --ref HEAD --out dist/repro-a
+          node scripts/create-reproducible-source-bundle.mjs --ref HEAD --out dist/repro-b
+          cmp "$(find dist/repro-a -name '*-source.tar')" "$(find dist/repro-b -name '*-source.tar')"
+          diff -u dist/repro-a/SHA256SUMS.txt dist/repro-b/SHA256SUMS.txt
+
+      - name: Upload reproducibility evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: saferide-reproducible-source-${{ github.sha }}
+          path: dist/repro-a
+          if-no-files-found: error
+          retention-days: 30

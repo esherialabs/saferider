@@ -52,7 +52,7 @@ Set `PLAYWRIGHT_BASE_URL` when testing against a non-default local or preview se
 - Do not publish medical, legal, emergency, or survivor-support guidance without a named safeguarding review. Source time-sensitive claims from official or qualified organizations.
 - Keep private evidence, survivor narratives, exact journeys, and credentials out of pages, logs, test fixtures, screenshots, and analytics.
 - New guides need a specific reader intent, an honest editorial boundary, useful internal next steps, and source links where claims require verification. Word count is not an acceptance criterion.
-- SafeRide is a brand operated by Esheria. Keep the parent entity ID aligned with `https://esheria.ai/#org`, use the sanitized public source mirror at `https://github.com/esherialabs/saferider`, and do not describe the all-rights-reserved app code as OSI-licensed.
+- SafeRide is an Esheria For Good initiative. Keep the parent entity aligned with `https://esheria.org/#organization`, use the canonical Apache-2.0 repository at `https://github.com/esherialabs/saferide`, and do not link or model SafeRide as part of the commercial `esheria.ai` product site.
 - The canonical Android preview record is `public/releases/saferide-v0.5.8-android.json`. Website copy, JSON-LD, download links, checksums, GitHub release notes, and Hugging Face project links must remain aligned with that record.
 - Production deployment is manual from `feat/app-local-infra-phase-1`. The workflow must pass static-export validation, Playwright against the export, manifest verification, production smoke tests, and deployed-file hash verification.
 

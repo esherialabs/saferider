@@ -3,17 +3,16 @@ import { ANDROID_RELEASE } from '@/lib/android-release';
 
 export const PRODUCTION_ORIGIN = 'https://saferide.esheria.org';
 
-// Parent-company entity. SafeRide is framed as "SafeRide by Esheria" across
-// SEO surfaces, and every page links back to the parent site (entity link +
-// followed backlink; see SEO_REMEDIATION_PLAN.md P3-4).
+// SafeRide is an Esheria For Good initiative. It is intentionally separate
+// from the commercial esheria.ai product site.
 export const PARENT_ORG = {
-  name: 'Esheria',
-  legalName: 'Esheria, Inc.',
-  schemaId: 'https://esheria.ai/#org',
-  url: 'https://esheria.ai',
+  name: 'Esheria For Good',
+  legalName: 'Esheria Ventures Limited',
+  schemaId: 'https://esheria.org/#organization',
+  url: 'https://esheria.org/',
 } as const;
 
-export const BRAND_NAME = 'SafeRide by Esheria';
+export const BRAND_NAME = 'SafeRide by Esheria For Good';
 
 const configuredSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_ORIGIN).replace(/\/+$/, '');
 
@@ -24,7 +23,7 @@ export const SITE = {
   description:
     'An Android-first, offline-capable safety companion helping women document harassment, understand Kenyan support pathways, and choose exactly what leaves their device.',
   url: configuredSiteUrl,
-  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/esherialabs/saferider',
+  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/esherialabs/saferide',
   huggingface:
     process.env.NEXT_PUBLIC_HUGGINGFACE_URL ??
     ANDROID_RELEASE.model.huggingFaceUrl,
@@ -97,7 +96,7 @@ export const SITE = {
       label: 'Review the stack',
       headline: 'Safety technology reviewers can inspect.',
       body:
-        'The public mirror includes the current Android app, website, owned API, privacy controls, and on-device AI integration. App code is source-visible under an all-rights-reserved notice; the model and dataset keep their separate approved licenses.',
+        'The Apache-2.0 public repository includes the current Android app, website, owned API, privacy controls, on-device AI integration, tests, and reproducible release evidence.',
       cta: { label: 'View the stack', href: '/open-source' },
       tone: 'bg-[#EED800]',
       imageTone: 'from-[#f7ec36] via-[#06d6a0] to-[#1b4332]',

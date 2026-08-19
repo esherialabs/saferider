@@ -2,16 +2,21 @@
 
 # SafeRide Mobile
 
+[![Public CI and Coverage](https://github.com/esherialabs/saferide/actions/workflows/public-ci.yml/badge.svg)](https://github.com/esherialabs/saferide/actions/workflows/public-ci.yml)
+[![Public Documentation](https://github.com/esherialabs/saferide/actions/workflows/public-docs.yml/badge.svg)](https://esherialabs.github.io/saferide/)
+[![License](https://img.shields.io/badge/code-Apache--2.0-blue.svg)](LICENSE)
+
 *From your pocket, capture, classify, and submit a harassment incident privately and fast.*
 
-SafeRide is an Android-first development prototype that helps women capture evidence, get trauma-informed guidance, and prepare structured reports. The app is designed for offline-first use and explicit consent boundaries. A sanitized, history-free source mirror is public for review under the repository's all-rights-reserved notice; no OSI code license, production deployment, survivor-facing launch, or UNICEF approval is claimed.
+SafeRide is an Android-first development prototype that helps women capture evidence, get trauma-informed guidance, and prepare structured reports. The app is designed for offline-first use and explicit consent boundaries. The canonical public repository is open source under Apache-2.0, with separately scoped CC-BY-4.0 content and artifact-specific model/data terms. Publication does not claim production deployment, survivor-facing launch, emergency-service status, partner endorsement, or UNICEF approval.
 
 **Release status:** [SafeRide v0.5.8 Android Preview](https://saferide.esheria.org/download/) is approved for public controlled testing on `arm64-v8a` Android devices. The signed APK SHA-256 is `56b61c7a7002a97aedc0c943a382d0e200ef152aec398ea82720effe235c65f5`. It is not a production, emergency-service, survivor-facing, Google Play, or UNICEF-approved release.
 
 Public surfaces:
 
 - Website and APK verification: `https://saferide.esheria.org/download/`
-- Sanitized source mirror: `https://github.com/esherialabs/saferider`
+- Open-source repository: `https://github.com/esherialabs/saferide`
+- Public documentation: `https://esherialabs.github.io/saferide/`
 - v0.5.8 LiteRT-LM model: `https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm`
 
 ## Mission & Approach
@@ -131,7 +136,7 @@ The signed v0.5.8 APK is approved only for public controlled testing through the
 **Steps**
 1. Clone the repository and change into it:
    ```bash
-   git clone <your-fork-or-https-url>
+   git clone https://github.com/esherialabs/saferide.git
    cd saferide
    ```
 2. Install dependencies:
@@ -212,7 +217,7 @@ Additional roots of note:
 - Local-first design keeps drafts on-device unless a survivor chooses export, share, or submit through consent.
 - Granular consent gates and explicit export steps guard sharing paths; independent device/privacy review remains required.
 - Route-safety records use coarse or saved location fields when allowed; media metadata stripping is not complete in this Expo build.
-- Code, content, model, dataset, and evaluation terms remain separate. The sanitized app source is public for review under an all-rights-reserved notice. The frozen v0.5.8 dataset, adapter, and LiteRT-LM artifact use the licenses recorded in `MODEL-DATA-LICENSES.md`. Public testing of the signed APK does not authorize production or survivor-facing use.
+- Code, content, models, datasets, evaluation assets, third-party media, and trademarks have explicit separate boundaries. Public code is Apache-2.0; enumerated original content is CC-BY-4.0; frozen v0.5.8 model/data terms are recorded in `MODEL-DATA-LICENSES.md`. Public testing of the signed APK does not authorize production or survivor-facing use.
 
 ## Quality & Testing
 
@@ -220,7 +225,7 @@ Additional roots of note:
   ```bash
   npm test
   ```
-- Run `npm run coverage:check` for the 15 percent global and 80 percent critical-module gates.
+- Run `npm run coverage:check:public` for the public 15 percent global and 80 percent critical-module gates. Private release integration adds the restricted-evidence Node gate through `npm run coverage:check`.
 - Run `npm run release:validators`, `npm run security:audit:high`, and `npm run sbom:check` for repository release evidence.
 - `npm run release:evidence:check` validates the blocked evidence structure; `npm run release:evidence:release-check` must fail until every external release gate is real and current.
 - Manual end-to-end testing prioritized on low-cost Android hardware (2–3GB RAM).
@@ -230,15 +235,19 @@ Additional roots of note:
 
 ## Contributing
 
-- Follow existing naming patterns and maintain the offline-first contract.
-- Preserve privacy-by-design features; never log sensitive survivor information.
-- Test on physical low-end Android devices whenever possible.
-- Coordinate schema changes through owned Postgres migrations and document rationale.
-- Submit pull requests with clear testing notes and screenshots for UI adjustments.
+- Public issues and pull requests are welcome. Start with `CONTRIBUTING.md` and
+  the public project board.
+- Preserve the offline-first and explicit-consent contracts; never use or log
+  real survivor information.
+- Use synthetic fixtures and include focused verification for behavior changes.
+- Security vulnerabilities must use the private channel in `SECURITY.md`.
 
 ## License
 
-No project-wide OSI code license has been approved. The public source mirror grants visibility, not redistribution rights. See `LICENSE`, `CONTENT-LICENSE.md`, and `MODEL-DATA-LICENSES.md`. The separately licensed v0.5.8 model and dataset and the public Android testing preview do not authorize production or survivor-facing deployment.
+The canonical public repository code is licensed under Apache-2.0. Enumerated original documentation, educational content, and guardrails are CC-BY-4.0. Models, datasets, media, fonts, and trademarks retain their separate terms. See `OPEN_SOURCE.md`, `CONTENT-LICENSE.md`, `MODEL-DATA-LICENSES.md`, `ASSET-LICENSES.md`, and `TRADEMARKS.md`.
+
+The private full-history integration repository remains restricted and is not
+relicensed by the clean public snapshot.
 
 ## Support & Resources
 

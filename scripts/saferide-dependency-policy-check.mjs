@@ -16,5 +16,5 @@ if (!result.ok) {
 
 console.log(
   `Dependency policy check passed (${result.summary.map(item => `${item.workspace}=${item.packages}`).join(', ')}; `
-  + `${result.unknownLicenseCount} explicitly blocked for legal review).`,
+  + `${result.reviewedLicenseCount} manually verified; ${result.unknownLicenseCount} blocked for legal review).`,
 );

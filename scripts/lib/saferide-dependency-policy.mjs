@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 
 const POLICY_PATH = 'config/release/dependency-policy.v1.json';
 
@@ -16,6 +17,10 @@ function packageName(packagePath, entry) {
 
 function inventoryKey(item) {
   return `${item.workspace}\0${item.packagePath}\0${item.name}\0${item.version}`;
+}
+
+function sha256File(filePath) {
+  return createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
 }
 
 export function validateDependencyPolicy({ rootDir, policy = readJson(rootDir, POLICY_PATH), lockOverrides = {} }) {
@@ -70,16 +75,38 @@ export function validateDependencyPolicy({ rootDir, policy = readJson(rootDir, P
   }
 
   const expectedUnknown = new Set(policy.unknownLicenseInventory.map(inventoryKey));
+  const reviewedLicenses = new Map((policy.reviewedLicenseInventory ?? []).map(item => [inventoryKey(item), item]));
   const actualUnknown = new Set(actualUnknownLicenses.map(inventoryKey));
   for (const key of actualUnknown) {
-    if (!expectedUnknown.has(key)) errors.push(`dependency policy: unregistered unknown-license package ${key.replaceAll('\0', '/')}`);
+    if (!expectedUnknown.has(key) && !reviewedLicenses.has(key)) {
+      errors.push(`dependency policy: unregistered unknown-license package ${key.replaceAll('\0', '/')}`);
+    }
   }
   for (const key of expectedUnknown) {
     if (!actualUnknown.has(key)) errors.push(`dependency policy: stale unknown-license inventory entry ${key.replaceAll('\0', '/')}`);
   }
-  if (actualUnknown.size > 0 && !policy.unknownLicensesRequireLegalReview) {
+  for (const [key, review] of reviewedLicenses) {
+    if (!actualUnknown.has(key)) {
+      errors.push(`dependency policy: stale reviewed-license inventory entry ${key.replaceAll('\0', '/')}`);
+      continue;
+    }
+    const evidencePath = path.resolve(rootDir, review.evidencePath);
+    if (!evidencePath.startsWith(`${path.resolve(rootDir)}${path.sep}`) || !fs.existsSync(evidencePath)) {
+      errors.push(`dependency policy: reviewed-license evidence is unavailable (${review.evidencePath})`);
+    } else if (sha256File(evidencePath) !== review.evidenceSha256) {
+      errors.push(`dependency policy: reviewed-license evidence hash mismatch (${review.evidencePath})`);
+    }
+  }
+  const unresolvedUnknownCount = [...actualUnknown].filter(key => !reviewedLicenses.has(key)).length;
+  if (unresolvedUnknownCount > 0 && !policy.unknownLicensesRequireLegalReview) {
     errors.push('dependency policy: unknown-license packages must require legal review');
   }
 
-  return { ok: errors.length === 0, errors, summary, unknownLicenseCount: actualUnknown.size };
+  return {
+    ok: errors.length === 0,
+    errors,
+    summary,
+    unknownLicenseCount: unresolvedUnknownCount,
+    reviewedLicenseCount: reviewedLicenses.size,
+  };
 }

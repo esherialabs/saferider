@@ -3,7 +3,7 @@
   "$id": "https://saferide.example/schemas/dependency-policy.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "schemaVersion", "policyId", "lockfiles", "allowedRegistryOrigins", "forbiddenDependencyProtocols", "ciAuditLevel", "releaseAuditMaximum", "releaseAuditMaxAgeHours", "unknownLicenseInventory", "unknownLicensesRequireLegalReview"],
+  "required": ["schema", "schemaVersion", "policyId", "lockfiles", "allowedRegistryOrigins", "forbiddenDependencyProtocols", "ciAuditLevel", "releaseAuditMaximum", "releaseAuditMaxAgeHours", "unknownLicenseInventory", "reviewedLicenseInventory", "unknownLicensesRequireLegalReview"],
   "properties": {
     "schema": { "const": "schemas/dependency-policy.schema.json" },
     "schemaVersion": { "const": 1 },
@@ -42,6 +42,23 @@
           "packagePath": { "type": "string", "minLength": 1 },
           "name": { "type": "string", "minLength": 1 },
           "version": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "reviewedLicenseInventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["workspace", "packagePath", "name", "version", "licenseExpression", "evidencePath", "evidenceSha256"],
+        "properties": {
+          "workspace": { "enum": ["mobile", "api", "web"] },
+          "packagePath": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "version": { "type": "string", "minLength": 1 },
+          "licenseExpression": { "type": "string", "minLength": 1 },
+          "evidencePath": { "type": "string", "minLength": 1 },
+          "evidenceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
         }
       }
     },

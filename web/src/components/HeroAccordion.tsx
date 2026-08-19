@@ -99,7 +99,7 @@ export default function HeroAccordion({ panels }: { panels: readonly HeroPanel[]
           >
             {PARENT_ORG.name}
           </Link>
-          , the legal AI and regulatory intelligence company for African markets.
+          , the public-interest and social-impact initiative at esheria.org.
         </p>
       </section>
       <section

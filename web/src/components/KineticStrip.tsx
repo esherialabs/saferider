@@ -40,7 +40,7 @@ export default function KineticStrip() {
             );
           })}
         </div>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-black/75">A source-visible safety app for women using Nairobi&apos;s public transport.</p>
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-black/75">An open-source safety app for women using Nairobi&apos;s public transport.</p>
       </div>
     </section>
   );

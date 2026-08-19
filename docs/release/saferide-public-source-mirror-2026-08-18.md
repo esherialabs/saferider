@@ -1,45 +1,80 @@
-# SafeRide sanitized public source mirror
+# SafeRide canonical open-source repository publication
 
 Date: 2026-08-18
 
-Issue: ESH-4198
+Issue lineage: ESH-4198
 
-Target branch: `feat/app-local-infra-phase-1`
-Public repository: `https://github.com/esherialabs/saferider`
+Integration target: `feat/app-local-infra-phase-1`
+
+Canonical public repository: `https://github.com/esherialabs/saferide`
 
 ## Decision
 
-The project owner authorized replacement of the stale 2025 public repository
-with a clean, history-free source snapshot of the current SafeRide mobile,
-owned API, local infrastructure, website, and release-metadata implementation.
+The project owner authorized publication of a clean, history-free snapshot of
+the current SafeRide mobile application, owned API, local infrastructure,
+website, public-safe AI tooling, schemas, tests, documentation, and release
+evidence as the official open-source repository.
 
-This is a source-visibility decision, not an OSI license decision. Application
-code and product content remain all rights reserved. The v0.5.8 model, adapter,
-dataset, and model-card documentation retain their separately approved terms.
+The private full-history repository remains restricted and is retained under an
+internal repository name. Its private history, credentials, production cloud
+configuration, restricted evidence, and submission records are not transferred
+to the public repository.
 
-## Excluded material
+## License boundary
 
-The mirror generator excludes private Git history, APK/AAB/model binaries,
-debug and production keys, ignored environment files, internal agent material,
-restricted security evidence, UNICEF submission material, private artifact
-bucket/version records, production cloud infrastructure, training datasets,
-notebooks, and account-specific web resource records. GitHub Actions are not
-copied or enabled.
+- Public code, tests, schemas, and build tooling: Apache-2.0.
+- Enumerated original documentation, educational content, and guardrails:
+  CC-BY-4.0.
+- Model, adapter, dataset, and benchmark artifacts: terms recorded in
+  `MODEL-DATA-LICENSES.md`.
+- Fonts, media, partner marks, and brand assets: terms recorded in
+  `ASSET-LICENSES.md` and `TRADEMARKS.md`.
+- Real-person data, credentials, private security material, partner agreements,
+  production records, risk/incident registers, and UNICEF submission records:
+  excluded and not licensed.
 
-## Required verification
+The public `LICENSE` and `NOTICE` are inserted by the publication generator;
+the private integration repository's all-rights-reserved notice is not copied.
 
-- Generate from the exact merged integration commit.
-- Confirm the output contains only Git-tracked allowlisted files.
-- Reject forbidden binary and credential extensions.
-- Run the SafeRide secret scanner inside the generated mirror.
-- Record source commit, file count, total bytes, and SHA-256 ledger.
-- Force-replace only the stale `esherialabs/saferider` repository, which had no
-  stars, forks, issues, pull requests, tags, or releases at review time.
-- Enable secret scanning, push protection, private vulnerability reporting,
-  branch protection, and disable GitHub Actions on the public mirror.
+## Public engineering evidence
 
-## Boundary
+- Mobile and API TypeScript checks pass.
+- Website lint, typecheck, production build, and 16-route static-export
+  validation pass.
+- Secret scanning passes across the reviewed tracked tree.
+- Global coverage passes the 15% contractual floor at 35.60% statements,
+  33.77% branches, 34.37% functions, and 36.07% lines (630 tests).
+- Named critical TypeScript modules pass 80% per-file gates, with aggregate
+  93.59% statements, 90.18% branches, 98.73% functions, and 95.75% lines.
+- Critical Node evidence modules pass at 95.62% lines, 87.50% branches, and
+  94.17% functions.
+- API and website production dependency audits report zero vulnerabilities.
+- The remaining mobile npm findings are a time-bounded public-source CI
+  exception for reviewed Expo/Metro/Xcode build-tool advisories; they do not
+  authorize a production or store release.
 
-The public mirror does not authorize production deployment, Google Play
-submission, UNICEF submission, use of real survivor data, or publication of
-the private AAB or private release-bucket objects.
+Public CI uploads coverage and reproducibility artifacts. Tag automation builds
+the source archive twice, compares the bytes, and publishes the archive,
+SHA-256 ledger, and provenance JSON.
+
+## Android preview retained
+
+Canonical download page:
+`https://saferide.esheria.org/download/`
+
+Tested APK SHA-256:
+`56b61c7a7002a97aedc0c943a382d0e200ef152aec398ea82720effe235c65f5`
+
+The preview remains controlled testing only. It is not a production,
+emergency-service, survivor-facing, Google Play, partner-pilot, or
+UNICEF-approved release.
+
+## Ecosystem boundary
+
+- Esheria For Good: `https://esheria.org/`
+- SafeRide website: `https://saferide.esheria.org/`
+- Canonical source: `https://github.com/esherialabs/saferide`
+- Current mobile model:
+  `https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm`
+
+SafeRide is not part of the commercial `esheria.ai` product site.

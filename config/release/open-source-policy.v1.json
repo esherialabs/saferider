@@ -4,26 +4,26 @@
   "policyId": "saferide-open-source-policy-v1",
   "status": "approved",
   "repository": {
-    "authoritativeUrl": "https://github.com/esherialabs/saferider",
+    "authoritativeUrl": "https://github.com/esherialabs/saferide",
     "visibility": "public",
     "visibilityVerified": true,
     "unicefReviewerAccess": true,
-    "publicationModel": "sanitized-public-mirror"
+    "publicationModel": "authoritative-public-repository"
   },
   "artifactClasses": [
     {
       "class": "code",
       "licenseFile": "LICENSE",
-      "licenseExpression": null,
-      "approvalStatus": "restricted",
-      "redistributionAuthorized": false
+      "licenseExpression": "Apache-2.0",
+      "approvalStatus": "approved",
+      "redistributionAuthorized": true
     },
     {
       "class": "content",
       "licenseFile": "CONTENT-LICENSE.md",
-      "licenseExpression": null,
-      "approvalStatus": "restricted",
-      "redistributionAuthorized": false
+      "licenseExpression": "CC-BY-4.0",
+      "approvalStatus": "approved",
+      "redistributionAuthorized": true
     },
     {
       "class": "model",
@@ -42,9 +42,9 @@
     {
       "class": "evaluation",
       "licenseFile": "MODEL-DATA-LICENSES.md",
-      "licenseExpression": null,
-      "approvalStatus": "restricted",
-      "redistributionAuthorized": false
+      "licenseExpression": "Apache-2.0 AND CC-BY-4.0",
+      "approvalStatus": "approved",
+      "redistributionAuthorized": true
     }
   ],
   "governance": {
@@ -56,5 +56,5 @@
   "publicReleaseAuthorized": true,
   "externalHandoffId": "HANDOFF-OPEN-SOURCE-LEGAL",
   "lastVerifiedDate": "2026-08-18",
-  "recheckDate": "2026-09-18"
+  "recheckDate": "2027-08-18"
 }

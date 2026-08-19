@@ -50,10 +50,11 @@ test('rejects unknown SBOM dependency references', () => {
   assert(validateSourceSbom(sbom).some(error => error.includes('target is unknown')));
 });
 
-test('validates lock integrity, registry origins, and the exact unknown-license inventory', () => {
+test('validates lock integrity, registry origins, and reviewed license evidence', () => {
   const result = validateDependencyPolicy({ rootDir });
   assert.equal(result.ok, true, result.errors.join('\n'));
-  assert.equal(result.unknownLicenseCount, 1);
+  assert.equal(result.reviewedLicenseCount, 1);
+  assert.equal(result.unknownLicenseCount, 0);
 
   const lock = clone(readJson('package-lock.json'));
   const [packagePath] = Object.keys(lock.packages).filter(Boolean);
@@ -79,7 +80,7 @@ test('accepts the checked-in blocked release structure and exposes its blockers'
   assert.equal(result.structurallyValid, true, result.errors.join('\n'));
   assert(result.blockers.length > 20);
   assert(result.blockers.some(blocker => blocker.includes('exact-artifact matrix remains incomplete')));
-  assert(result.blockers.some(blocker => blocker.includes('code license/redistribution')));
+  assert(!result.blockers.some(blocker => blocker.includes('code license/redistribution')));
   assert(!result.blockers.some(blocker => blocker.includes('protected-branch CI run')));
   assert.equal(result.documents.manifest.verification.githubActions, 'intentionally-disabled');
 });

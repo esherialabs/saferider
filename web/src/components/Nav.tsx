@@ -71,9 +71,9 @@ function Logo() {
         target="_blank"
         rel="noopener"
         className="mt-0.5 inline-flex min-h-6 items-center gap-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-green-700 underline decoration-green-300 underline-offset-2 hover:text-green-950"
-        aria-label={`A product of ${PARENT_ORG.name}; visit esheria.ai`}
+        aria-label={`An ${PARENT_ORG.name} initiative; visit esheria.org`}
       >
-        A product of {PARENT_ORG.name} <span aria-hidden="true">↗</span>
+        An initiative of {PARENT_ORG.name} <span aria-hidden="true">↗</span>
       </Link>
     </div>
   );
@@ -259,9 +259,9 @@ export default function Nav() {
               target="_blank"
               rel="noopener"
               className="inline-flex flex-col text-[0.65rem] font-bold uppercase leading-tight tracking-[0.08em] text-green-700 sm:hidden"
-              aria-label={`A product of ${PARENT_ORG.name}; visit esheria.ai`}
+              aria-label={`An ${PARENT_ORG.name} initiative; visit esheria.org`}
             >
-              <span>A product of</span>
+              <span>An initiative of</span>
               <span className="text-xs text-green-950">{PARENT_ORG.name} ↗</span>
             </Link>
           </div>

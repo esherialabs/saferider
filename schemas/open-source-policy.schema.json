@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://saferide.example/schemas/open-source-policy.schema.json",
+  "$id": "https://saferide.esheria.org/schemas/open-source-policy.schema.json",
   "title": "SafeRide open-source and publication policy",
   "type": "object",
   "additionalProperties": false,

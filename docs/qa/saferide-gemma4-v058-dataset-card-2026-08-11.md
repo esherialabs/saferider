@@ -293,7 +293,7 @@ state or imply UNICEF endorsement, certification, or approval.
 - [LiteRT-LM mobile package](https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm/tree/e91ea27c3134fe21fc5bc995141675756e2c4a21)
 - [SafeRide website](https://saferide.esheria.org/)
 - [Android v0.5.8 testing preview and checksum](https://saferide.esheria.org/download/)
-- [Sanitized public source mirror](https://github.com/esherialabs/saferider)
+- [Canonical open-source repository](https://github.com/esherialabs/saferide)
 
 ## Technical provenance and integrity
 

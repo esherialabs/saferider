@@ -295,7 +295,7 @@ does not imply Android, production, survivor-facing, or external approval.
 
 - [SafeRide website](https://saferide.esheria.org/)
 - [Android v0.5.8 testing preview and checksum](https://saferide.esheria.org/download/)
-- [Sanitized public source mirror](https://github.com/esherialabs/saferider)
+- [Canonical open-source repository](https://github.com/esherialabs/saferide)
 - [Canonical public release metadata](https://saferide.esheria.org/releases/saferide-v0.5.8-android.json)
 
 ## Citation, maintainers, and contact
@@ -341,7 +341,7 @@ validated LiteRT-LM parser. The final package replaced that metadata while
 retaining the already-converted model and tokenizer payloads. Exact changed and
 unchanged package sections, toolchain hashes, and the replacement template hash
 remain in the source-controlled
-[`export receipt`](https://github.com/esherialabs/saferider/blob/main/docs/qa/saferide-gemma4-e2b-v058-litertlm-export-receipt-2026-08-10.json).
+[`export receipt`](https://github.com/esherialabs/saferide/blob/main/docs/qa/saferide-gemma4-e2b-v058-litertlm-export-receipt-2026-08-10.json).
 
 Documentation-only revisions and README hashes are recorded separately from
 the immutable artifact revision and `.litertlm` hash. Updating this card does

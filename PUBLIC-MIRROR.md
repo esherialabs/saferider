@@ -1,25 +1,42 @@
-# SafeRide public source mirror
+# SafeRide public repository boundary
 
-The official public source mirror is:
+The canonical open-source repository is:
 
-`https://github.com/esherialabs/saferider`
+`https://github.com/esherialabs/saferide`
 
-It is generated as a clean snapshot from the reviewed
-`feat/app-local-infra-phase-1` branch. Private Git history, release binaries,
-model weights, internal agent instructions, restricted security evidence,
-UNICEF submission material, private release-bucket records, production cloud
-infrastructure, training datasets, notebooks, credentials, and local
-environment files are not copied.
+It is published as a clean, reviewed snapshot from the private SafeRide
+release-integration repository. The public repository is authoritative for
+community documentation, issues, project planning, pull requests, tags, and
+open-source releases; private Git history is not part of the publication.
 
-The mirror grants source visibility for review. It does not grant an OSI code
-license or general redistribution rights. See `LICENSE`,
-`CONTENT-LICENSE.md`, and `MODEL-DATA-LICENSES.md` for the separate terms that
-apply to app code, content, models, and datasets.
+## Included
 
-The canonical Android testing release metadata is published at:
+- Android/iOS mobile source and tests;
+- owned API and local development infrastructure;
+- the SafeRide website;
+- public-safe model training, evaluation, manifest, and release scripts;
+- schemas, synthetic/public-safe fixtures, documentation, and governance;
+- public CI, coverage, source-provenance, and reproducible-build tooling.
 
-`https://saferide.esheria.org/releases/saferide-v0.5.8-android.json`
+## Excluded
 
-Security reports must use GitHub private vulnerability reporting. Never place
-survivor reports, evidence, credentials, exact private locations, prompts,
-completions, transcripts, or partner-confidential information in public issues.
+- signing keys, keystores, credentials, ignored environment files, and private
+  release-bucket records;
+- real survivor/participant records, evidence, exact locations, consent/event
+  logs, telemetry, or production payloads;
+- partner agreements, risk/incident registers, restricted security evidence,
+  private red-team material, and UNICEF submission records;
+- production cloud infrastructure and account-specific operational records;
+- model binaries, APK/AAB/IPA files, and large datasets stored in their
+  separately governed release systems.
+
+The generator records the private source commit, selected file count, byte
+count, publication policy, and SHA-256 ledger. The public `LICENSE` and `NOTICE`
+are substituted only into the clean snapshot; the restricted private
+repository remains all rights reserved.
+
+See `OPEN_SOURCE.md`, `CONTENT-LICENSE.md`, `MODEL-DATA-LICENSES.md`,
+`ASSET-LICENSES.md`, and `TRADEMARKS.md` for the complete rights boundary.
+
+The canonical Android download page is:
+`https://saferide.esheria.org/download/`.

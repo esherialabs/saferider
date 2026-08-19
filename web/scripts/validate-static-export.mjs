@@ -118,16 +118,16 @@ const allHtml = [...sitemapByPath.keys()]
   .map((htmlFile) => fs.readFileSync(htmlFile, 'utf8'))
   .join('\n');
 
-if (/https:\/\/github\.com\/esherialabs\/saferide(?:[/?#"'\s<]|$)/.test(allHtml)) {
-  errors.push('Export still links to the unavailable esherialabs/saferide repository.');
+if (/https:\/\/github\.com\/esherialabs\/saferider(?:[/?#"'\s<]|$)/.test(allHtml)) {
+  errors.push('Export still links to the retired esherialabs/saferider repository.');
 }
 
 const homeHtml = fs.readFileSync(path.join(outDir, 'index.html'), 'utf8');
 
-const visibleParentLinks = [...homeHtml.matchAll(/<a\b[^>]*href="https:\/\/esheria\.ai\/?"[^>]*>([\s\S]*?)<\/a>/g)];
+const visibleParentLinks = [...homeHtml.matchAll(/<a\b[^>]*href="https:\/\/esheria\.org\/?"[^>]*>([\s\S]*?)<\/a>/g)];
 
 if (visibleParentLinks.length < 4 || visibleParentLinks.some(([, text]) => !/Esheria/i.test(text))) {
-  errors.push('Homepage must contain at least four visible, descriptive links to https://esheria.ai.');
+  errors.push('Homepage must contain at least four visible, descriptive links to https://esheria.org/.');
 }
 
 if (visibleParentLinks.some(([anchor]) => /rel="[^"]*(?:nofollow|ugc|sponsored|noreferrer)/i.test(anchor))) {
@@ -135,11 +135,11 @@ if (visibleParentLinks.some(([anchor]) => /rel="[^"]*(?:nofollow|ugc|sponsored|n
 }
 
 if (
-  !homeHtml.includes('https://esheria.ai/#org') ||
+  !homeHtml.includes('https://esheria.org/#organization') ||
   !homeHtml.includes('"@type":"Brand"') ||
   !homeHtml.includes('"brand":{"@id":"https://saferide.esheria.org/#brand"}')
 ) {
-  errors.push('Homepage structured data must connect the SafeRide Brand to https://esheria.ai/#org.');
+  errors.push('Homepage structured data must connect the SafeRide Brand to https://esheria.org/#organization.');
 }
 
 if (homeHtml.includes('aria-label="Loading"') || homeHtml.includes('<div hidden id="S:0">')) {

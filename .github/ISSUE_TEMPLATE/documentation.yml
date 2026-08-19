@@ -1,0 +1,31 @@
+name: Documentation improvement
+description: Report missing, stale, or unclear public documentation.
+title: "[Docs] "
+labels: ["documentation", "triage"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or file
+      description: Link to the public page or repository path.
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is unclear or stale?
+      description: Do not include private, security-sensitive, or real-person information.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction
+      description: Optional public-safe replacement wording or source.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I confirm this report contains public-safe information only.
+          required: true

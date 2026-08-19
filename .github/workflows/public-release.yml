@@ -1,0 +1,74 @@
+name: Public Tagged Release Evidence
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Existing public tag or commit to package
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  NODE_VERSION: '24.18.1'
+
+jobs:
+  source-release:
+    name: Source Bundle, Checksums, Provenance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Resolve release ref
+        id: release
+        env:
+          REQUESTED_REF: ${{ inputs.ref }}
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            echo "ref=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${REQUESTED_REF}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate public repository
+        run: node scripts/validate-public-repository.mjs
+
+      - name: Reproduce source bundle twice
+        env:
+          RELEASE_REF: ${{ steps.release.outputs.ref }}
+        run: |
+          node scripts/create-reproducible-source-bundle.mjs --ref "$RELEASE_REF" --out dist/repro-a
+          node scripts/create-reproducible-source-bundle.mjs --ref "$RELEASE_REF" --out dist/repro-b
+          cmp "$(find dist/repro-a -name '*-source.tar')" "$(find dist/repro-b -name '*-source.tar')"
+          diff -u dist/repro-a/SHA256SUMS.txt dist/repro-b/SHA256SUMS.txt
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_REF: ${{ steps.release.outputs.ref }}
+        run: |
+          gh release view "$RELEASE_REF" >/dev/null 2>&1 || \
+            gh release create "$RELEASE_REF" --verify-tag --generate-notes --title "SafeRide $RELEASE_REF"
+          gh release upload "$RELEASE_REF" dist/repro-a/* --clobber
+
+      - name: Upload workflow evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: saferide-release-evidence-${{ steps.release.outputs.ref }}
+          path: dist/repro-a
+          if-no-files-found: error
+          retention-days: 90

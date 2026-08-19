@@ -1,0 +1,39 @@
+name: Public feature proposal
+description: Propose a bounded SafeRide improvement using public-safe information.
+title: "[Feature] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic information only. Never include survivor data, evidence,
+        exact private locations, credentials, vulnerabilities, raw prompts or
+        completions, consent/event logs, or partner-confidential material.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Public-safe problem statement
+      description: Who benefits and what verified problem should be solved?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected outcome
+      description: Describe observable behavior and a synthetic verification.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Mobile, API, Website, Documentation, Testing, Accessibility, On-device AI, Build and release]
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I confirm this proposal contains public-safe, synthetic information only.
+          required: true

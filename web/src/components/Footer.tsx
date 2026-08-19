@@ -21,7 +21,7 @@ const footerGroups = [
     title: 'Source & Models',
     links: [
       { label: 'Source & Licenses', href: '/open-source' },
-      { label: 'Public Source Mirror', href: PUBLIC_LINKS.github, external: true },
+      { label: 'Open-source repository', href: PUBLIC_LINKS.github, external: true },
       { label: 'Hugging Face Model', href: PUBLIC_LINKS.huggingface, external: true },
       { label: 'Download App', href: '/download' },
     ],
@@ -38,7 +38,7 @@ const footerGroups = [
   {
     title: 'Organisation',
     links: [
-      { label: 'Esheria — Legal AI for Africa', href: PARENT_ORG.url, external: true },
+      { label: 'Esheria For Good', href: PARENT_ORG.url, external: true },
       { label: 'Privacy Guide', href: '/blog/private-reporting-control' },
       { label: 'Contact', href: '/contact' },
     ],
@@ -94,7 +94,7 @@ export default function Footer() {
               <Link href={PARENT_ORG.url} className="font-semibold text-white underline decoration-green-300 underline-offset-4 hover:text-green-300">
                 {PARENT_ORG.name}
               </Link>
-              . Explore Esheria&apos;s legal AI and regulatory intelligence work for African markets.
+              , the public-interest and social-impact home for the project.
             </p>
           </div>
         </div>

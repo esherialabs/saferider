@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "reportDate": "2026-08-18",
+  "generatedAt": "2026-08-18T19:39:19Z",
+  "sourceCommit": "ed22536d6a0881b023af25c79c4a11e946e5ae4b",
+  "toolchain": {
+    "node": "v22.22.0",
+    "npm": "10.9.4"
+  },
+  "gates": {
+    "publicAllSource": {
+      "command": "npm run test:coverage",
+      "testFiles": 106,
+      "tests": 630,
+      "result": "passed",
+      "thresholdPercent": 15,
+      "coverage": {
+        "statements": { "covered": 6261, "total": 17586, "percent": 35.6 },
+        "branches": { "covered": 4840, "total": 14329, "percent": 33.77 },
+        "functions": { "covered": 1348, "total": 3921, "percent": 34.37 },
+        "lines": { "covered": 5934, "total": 16451, "percent": 36.07 }
+      }
+    },
+    "publicCriticalSafetyPrivacy": {
+      "command": "npm run test:coverage:critical",
+      "testFiles": 7,
+      "tests": 41,
+      "result": "passed",
+      "thresholdPercent": 80,
+      "coverage": {
+        "statements": { "covered": 307, "total": 328, "percent": 93.59 },
+        "branches": { "covered": 239, "total": 265, "percent": 90.18 },
+        "functions": { "covered": 78, "total": 79, "percent": 98.73 },
+        "lines": { "covered": 271, "total": 283, "percent": 95.75 }
+      }
+    },
+    "privateIntegrationEvidenceContracts": {
+      "command": "npm run test:coverage:critical:node",
+      "tests": 34,
+      "result": "passed",
+      "thresholdPercent": 80,
+      "aggregateCoverage": {
+        "branchesPercent": 87.5,
+        "functionsPercent": 94.17,
+        "linesPercent": 95.62
+      },
+      "publicationScope": "aggregate-only"
+    }
+  },
+  "remoteCiClaim": "not-yet-recorded"
+}

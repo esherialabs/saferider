@@ -171,9 +171,9 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
       await expect(footer.getByText(column, { exact: true }).first()).toBeVisible();
     }
     await expect(footer).toContainText(`© ${new Date().getFullYear()} Esheria Ventures Limited`);
-    await expect(footer.getByRole('link', { name: 'Esheria — Legal AI for Africa' })).toHaveAttribute(
+    await expect(footer.getByRole('link', { name: 'Esheria For Good' })).toHaveAttribute(
       'href',
-      'https://esheria.ai',
+      'https://esheria.org/',
     );
   });
 
@@ -184,7 +184,7 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
     await expect(affiliation).toBeVisible();
     await expect(affiliation).toContainText('SafeRide is developed by Esheria');
 
-    const parentLinks = page.locator('a[href="https://esheria.ai"]:visible');
+    const parentLinks = page.locator('a[href="https://esheria.org/"]:visible');
     await expect(parentLinks).toHaveCount(5);
 
     for (const link of await parentLinks.all()) {
@@ -193,8 +193,8 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
       expect(rel).not.toMatch(/nofollow|ugc|sponsored|noreferrer/);
     }
 
-    await expect(page.locator('[data-testid="main-nav"]').getByRole('link', { name: /A product of Esheria/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Esheria — Legal AI for Africa' })).toBeVisible();
+    await expect(page.locator('[data-testid="main-nav"]').getByRole('link', { name: /Esheria For Good initiative/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Esheria For Good' })).toBeVisible();
   });
 
   test('all routes return 200', async ({ page }) => {
@@ -228,7 +228,7 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
       ['/how-it-works', 'document and report harassment on a matatu'],
       ['/for-survivors', 'your options in Kenya, at your pace'],
       ['/route-safety-index', 'Which Nairobi routes are safer?'],
-      ['/open-source', 'current public source mirror'],
+      ['/open-source', 'production-grade open-source repository'],
       ['/partners', 'GBV organizations, matatu operators, funders'],
       ['/contact', 'Talk to the SafeRide team'],
       ['/story', 'Built in Nairobi, for the rides women take every day'],
@@ -281,7 +281,7 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
 
     await page.goto(BASE);
     expect(await jsonLdText('script[type="application/ld+json"]#site-structured-data')).toContain('Organization');
-    expect(await jsonLdText('script[type="application/ld+json"]#site-structured-data')).toContain('https://esheria.ai/#org');
+    expect(await jsonLdText('script[type="application/ld+json"]#site-structured-data')).toContain('https://esheria.org/#organization');
     expect(await jsonLdText('script[type="application/ld+json"]#site-structured-data')).toContain('"@type":"Brand"');
     expect(await jsonLdText('script[type="application/ld+json"]#home-structured-data')).toContain('BreadcrumbList');
 
@@ -320,13 +320,13 @@ test.describe('SafeRide v2  Mozilla near-clone', () => {
     await expect(image).toHaveAttribute('height', '848');
   });
 
-  test('public source links do not point visitors to the private repository', async ({ page }) => {
+  test('public source links point to the canonical open-source repository', async ({ page }) => {
     await page.goto(`${BASE}/open-source`);
-    await expect(page.getByRole('link', { name: 'Sanitized GitHub mirror' })).toHaveAttribute(
+    await expect(page.getByRole('link', { name: 'Canonical GitHub repository' })).toHaveAttribute(
       'href',
-      'https://github.com/esherialabs/saferider',
+      'https://github.com/esherialabs/saferide',
     );
-    await expect(page.locator('a[href="https://github.com/esherialabs/saferide"]')).toHaveCount(0);
+    await expect(page.locator('a[href="https://github.com/esherialabs/saferider"]')).toHaveCount(0);
   });
 
   test('download page publishes the exact APK and checksum', async ({ page }) => {

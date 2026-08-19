@@ -1,36 +1,78 @@
 # Contributing to SafeRide
 
+Thank you for helping improve SafeRide. The project welcomes public issues,
+documentation changes, tests, accessibility work, and focused code
+contributions through `https://github.com/esherialabs/saferide`.
+
 SafeRide handles unusually sensitive safety, evidence, and location workflows.
-Contributions must protect people before convenience.
+Protecting people takes priority over convenience or speed.
 
-## Public mirror boundary
+## Before you contribute
 
-`esherialabs/saferider` is a clean, history-free source mirror of reviewed
-SafeRide code. It grants visibility, not an OSI license or redistribution
-rights. External pull requests are not accepted until contribution and code
-licensing terms are approved. Use the SafeRide website contact page for general
-review feedback and GitHub private vulnerability reporting for security issues.
+- Read `CODE_OF_CONDUCT.md`, `SECURITY.md`, `GOVERNANCE.md`, and
+  `docs/open-source/restricted-material.md`.
+- Search existing issues and the public project board before opening a new one.
+- Use synthetic examples only. Never submit survivor or participant details,
+  evidence, exact private locations, credentials, raw prompts/completions,
+  private security findings, consent/event logs, or partner-confidential data.
+- Report vulnerabilities privately through GitHub Security Advisories rather
+  than a public issue.
+- Keep capability and privacy wording truthful. Do not solve implementation
+  gaps by weakening warnings or making unsupported readiness claims.
 
-## Before changing code
+## Development setup
 
-- Work from origin/feat/app-local-infra-phase-1 on an existing ESH issue branch.
-- Do not target or commit to main, and do not commit directly to the base.
-- Read AGENTS.md, the issue comments, and the relevant safety/privacy runbook.
-- Use synthetic fixtures only. Never paste survivor, participant, evidence,
-  prompt/completion, exact-location, credential, or partner-confidential data.
-- Keep one focused issue, branch, worktree, write scope, and verification list.
+```bash
+git clone https://github.com/esherialabs/saferide.git
+cd saferide
+npm ci
+npm --prefix apps/api ci
+cp .env.example .env.local
+cp infra/local/.env.example infra/local/.env
+npx tsc --noEmit
+npm --prefix apps/api run typecheck
+npm test
+```
+
+The local stack is described in `docs/migration/local-setup.md`. Do not use
+production credentials or real records in development.
+
+## Issues
+
+Use the supplied issue forms. A good issue states the affected public revision,
+uses a synthetic reproduction, defines expected behavior, and identifies any
+safety, privacy, accessibility, or compatibility impact.
+
+Issues suitable for new contributors carry the `good first issue` label. A
+maintainer may reserve an issue before substantial work begins.
 
 ## Pull requests
 
-Describe behavior, safety/privacy impact, verification, limitations, rollback,
-and evidence updates. Link the existing issue. New claims require structured
-evidence; screenshots and prose alone are not sufficient. Required independent
-review cannot be self-approved.
+1. Fork the public repository and branch from `main`.
+2. Keep the change focused on one public issue.
+3. Add or update tests and public documentation where behavior changes.
+4. Run the smallest relevant checks, plus:
 
-Run the smallest relevant checks plus typecheck, tests, staged secret scan, and
-the affected evidence validator. Release changes also require coverage, SBOM,
-dependency, repository-safety, and release-evidence gates.
+   ```bash
+   npx tsc --noEmit
+   npm --prefix apps/api run typecheck
+   npm run secrets:scan
+   npm test
+   ```
 
-Do not run deployments, public releases, store submissions, model downloads,
-training/export, destructive resets, or production changes unless the issue
-explicitly authorizes them.
+5. Include behavior, safety/privacy impact, verification, limitations, and
+   rollback notes in the pull request.
+6. Add a `Signed-off-by:` line using `git commit -s` to certify the Developer
+   Certificate of Origin 1.1.
+
+Release, model, privacy, security, and safeguarding changes require the
+independent reviews described in `GOVERNANCE.md`. Maintainers may port an
+accepted public contribution into the private release-integration repository
+before it appears in the next generated public snapshot.
+
+## Contribution license
+
+Unless marked “Not a Contribution,” code intentionally submitted for inclusion
+is licensed under Apache-2.0 under section 5 of that license. Original public
+documentation and content contributions are licensed under CC-BY-4.0. No
+contribution grants rights to trademarks or restricted material.

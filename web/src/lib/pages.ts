@@ -257,9 +257,9 @@ export const INTERIOR_PAGES = {
     evidenceTitle: 'What reviewers can inspect publicly.',
     variant: 'editorial',
     eyebrow: 'Source and model transparency',
-    title: 'A current public source mirror with explicit license boundaries.',
+    title: 'A production-grade open-source repository with explicit boundaries.',
     intro:
-      'SafeRide publishes a clean, history-free mirror so safeguarding reviewers, engineers, funders, and civic partners can inspect the current implementation without exposing private release history or restricted evidence.',
+      'SafeRide publishes its reviewed mobile app, website, owned API, local infrastructure, public-safe AI tooling, tests, and release evidence under approved open licenses without exposing restricted people or operational records.',
     heroTitle: 'Public-interest technology needs public accountability.',
     heroBody:
       'The public surface includes the Android client, owned API, local infrastructure, website, on-device assistant configuration, release checksums, model cards, and clear statements about what is tested, restricted, or still pending.',
@@ -292,9 +292,9 @@ export const INTERIOR_PAGES = {
     resources: [
       {
         label: 'Source',
-        title: 'Sanitized GitHub mirror',
-        body: 'Review the current Android app, website, owned API, local infrastructure, tests, and release metadata in a clean snapshot with no private Git history.',
-        href: 'https://github.com/esherialabs/saferider',
+        title: 'Canonical GitHub repository',
+        body: 'Review, build, test, discuss, and contribute to the Apache-2.0 mobile app, website, owned API, local infrastructure, public AI tooling, and release evidence.',
+        href: 'https://github.com/esherialabs/saferide',
       },
       {
         label: 'Model',

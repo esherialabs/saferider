@@ -6,7 +6,7 @@ import { INTERIOR_PAGES } from '@/lib/pages';
 export const metadata = pageMetadata({
   title: 'Source, Models & Licenses',
   description:
-    "Review SafeRide's sanitized source mirror, Android testing preview, on-device Gemma 4 model, dataset, artifact checksums, and separate license boundaries.",
+    "Review and contribute to SafeRide's open-source mobile app, API, website, public AI tooling, Android testing preview, checksums, and license boundaries.",
   path: '/open-source',
   image: INTERIOR_PAGES['open-source'].ogImage,
   imageAlt: INTERIOR_PAGES['open-source'].imageAlt,

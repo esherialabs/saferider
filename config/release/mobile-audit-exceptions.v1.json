@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "exceptionId": "saferide-mobile-build-tool-audit-exception-2026-08-18",
+  "status": "approved-public-source-ci-only",
+  "observedDate": "2026-08-18",
+  "expiresOn": "2026-09-18",
+  "allowedAdvisoryIds": [1119441, 1138808, 1138809],
+  "allowedPackages": ["image-size", "uuid"],
+  "scope": "Expo/Metro and Xcode local build/configuration tooling",
+  "notAuthorizedFor": [
+    "production-release",
+    "store-submission",
+    "survivor-facing-deployment",
+    "UNICEF-submission-approval"
+  ],
+  "reviewRequirement": "Re-run npm audit on every public commit and remove this exception when fixed upstream versions are compatible with the pinned Expo SDK. Any new advisory ID or critical finding fails CI."
+}

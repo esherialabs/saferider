@@ -1,31 +1,32 @@
-## Existing issue and target
+## Linked issue and scope
 
-- ESH issue:
-- Target branch: feat/app-local-infra-phase-1
-
-## Behavior and scope
-
+- Closes:
+- Target branch:
 - What changed:
-- Safety/privacy impact:
 - Files intentionally out of scope:
 
-## Verification and evidence
+## Safety, privacy, and user impact
+
+- User-visible impact:
+- Safety/privacy impact:
+- Accessibility impact:
+- Rollback or disable path:
+
+## Verification
 
 - Automated checks:
-- Manual/device/Colab/human evidence:
-- Claim/evidence records updated:
+- Synthetic manual/device evidence:
+- Documentation/evidence updated:
 
-## Limitations and rollback
+## Checklist
 
-- Remaining blockers:
-- Disable/rollback procedure:
-
-## Safety checklist
-
-- [ ] Synthetic fixtures only; no survivor, participant, evidence, exact
-      location, credential, raw prompt/completion, or restricted material.
-- [ ] Copy matches actual behavior and no unsupported readiness claim was added.
-- [ ] Required independent reviewers are requested and not self-approved.
-- [ ] No deployment, public release, store/UNICEF submission, or production
-      mutation is included without explicit issue authority.
-- [ ] Main is not the target.
+- [ ] This pull request uses synthetic/public-safe information only; it contains
+      no survivor, participant, evidence, exact-location, credential, raw
+      prompt/completion, consent/event-log, vulnerability, or restricted data.
+- [ ] Behavior and copy match the implementation; no unsupported readiness,
+      privacy, partner, or UNICEF claim was added.
+- [ ] Tests or a focused explanation cover the changed behavior.
+- [ ] Required independent safety/privacy/security/model/release reviewers are
+      requested and are not self-approved.
+- [ ] I signed my commits (`git commit -s`) under the Developer Certificate of
+      Origin 1.1.

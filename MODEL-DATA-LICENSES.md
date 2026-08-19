@@ -16,6 +16,8 @@ artifacts:
 | SafeRide PEFT LoRA adapter | Apache License 2.0 (`Apache-2.0`) | SafeRide adapter modifications distributed with the pinned Gemma 4 base-model attribution and change notice. |
 | Merged LiteRT-LM mobile artifact | Apache License 2.0 (`Apache-2.0`) | The merged, quantized, and packaged model artifact, subject to the pinned base-model license and preserved notices. |
 | Model-card documentation | Creative Commons Attribution 4.0 International (`CC-BY-4.0`) | Public-safe explanatory documentation authored by Esheria Ventures Limited. |
+| Public evaluation code | Apache License 2.0 (`Apache-2.0`) | Public-safe harnesses, validators, schemas, and synthetic evaluation tooling in the canonical repository. |
+| Public-safe benchmark content and summaries | Creative Commons Attribution 4.0 International (`CC-BY-4.0`) | Published synthetic prompts, rubrics, aggregate results, and explanatory records expressly included in the public repository or artifact release. |
 
 The pinned base model is `google/gemma-4-E2B-it` at revision
 `70af34e20bd4b7a91f0de6b22675850c43922a03`. Its immutable model card declares

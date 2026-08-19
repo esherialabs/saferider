@@ -19,7 +19,7 @@ export const NAV_LINKS = [
 ] as const;
 
 export const PUBLIC_LINKS = {
-  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/esherialabs/saferider',
+  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/esherialabs/saferide',
   huggingface:
     process.env.NEXT_PUBLIC_HUGGINGFACE_URL ??
     'https://huggingface.co/esherialabs/saferide-gemma-4-e2b-v058-original-419806-litertlm',
